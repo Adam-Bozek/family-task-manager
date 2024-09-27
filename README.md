@@ -26,3 +26,7 @@ This project exemplifies the principles of project management, including scope d
 
 > **Note:** For detailed information, refer to the documentation files located in the `documentation/` folder. Documentation for each Python file is provided in a corresponding `.md` file.
 
+### Poznamky
+- rodic posle request pre dieta na prihlasenie do rodiny
+- ulohy na tyzdennej alebo dennej baze
+- potvrdzovanie uloh dieta->rodic (automaticke pridelenie bodov)
