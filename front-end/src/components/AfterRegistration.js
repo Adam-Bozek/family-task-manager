@@ -1,6 +1,4 @@
-import React from 'react';
-
-import './AfterRegistration.css'; // You can create this CSS file for styling.
+import React, { useState } from "react";
 
 const AfterRegistration = () => {
   const [familyName, setFamilyName] = useState('');
