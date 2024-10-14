@@ -8,7 +8,8 @@ import AfterRegistration from "./components/AfterRegistration";
 const App = () => {
   return (
     <>
-      <Routes>
+    {/* KOmetar */}
+    <Routes>
         <Route path="/Home" element={<Home />} />
         <Route path="/MoreInfo" element={<MoreInfo />} />
         <Route path="/AfterRegistration" element={<AfterRegistration />} />
