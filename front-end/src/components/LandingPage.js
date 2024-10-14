@@ -36,7 +36,7 @@ const LandingPage = () => {
 						<button className="btn btn-primary btn-lg btn-dark my-2" onClick={handle_redirect("/LogIn")}>
 							Prihlásiť sa
 						</button>
-						<button className="btn btn-primary btn-lg btn-dark my-2" onClick={handle_redirect("/Register")}>
+						<button className="btn btn-primary btn-lg btn-dark my-2" onClick={() => handle_redirect("/Register")}>
 							Registrovať sa
 						</button>
 					</div>
