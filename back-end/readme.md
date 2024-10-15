@@ -1,1 +1,1 @@
-kjgajfahoj!
+Konektivita server funguje.
