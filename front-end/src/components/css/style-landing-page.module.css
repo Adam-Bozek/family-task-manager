@@ -14,6 +14,7 @@ main {
 a {
   color: inherit;
   text-decoration: none;
+  font-weight: 650;
   position: relative;
   transition: color 0.3s ease, text-decoration 0.3s ease;
 }

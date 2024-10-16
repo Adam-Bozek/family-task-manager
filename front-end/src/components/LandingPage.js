@@ -24,7 +24,7 @@ const LandingPage = () => {
 						</p>
 						<a
 							href="/MoreInfo"
-							className="mx-5 text-body-dark"
+							className="mx-5"
 							onClick={(e) => {
 								e.preventDefault();
 								handle_redirect("/MoreInfo");
