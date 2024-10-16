@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./css/MoreInfo.css";
+import style from "./css/style-more-info.module.css";
 
 const MoreInfo = () => {
 	const navigate = useNavigate();
@@ -12,10 +12,10 @@ const MoreInfo = () => {
 
 	return (
 		<main>
-			<div className="container blur-container row">
+			<div className={`container row ${style["blur-container"]}`}>
 				<div className="col-md-6 text-start">
-					<h1 className="welcome-header mx-5 mb-2 mt-4"> Info. </h1>
-					<p className="mx-5 some-info">
+					<h1 className={`mx-5 mb-2 mt-4 ${style["welcome-header"]}`}> Info. </h1>
+					<p className={`mx-5 ${style["some-info"]}`}>
 						Praesent a erat turpis. Nunc lectus eros, vehicula sed aliquam non, convallis ut neque. Duis in cursus sapien. Interdum et malesuada fames ac
 						ante ipsum primis in faucibus. Etiam dignissim, augue in pretium feugiat, libero felis sagittis diam, ac scelerisque eros justo ac quam. Sed
 						condimentum a est molestie suscipit. Suspendisse id facilisis erat, et lacinia tortor. Etiam ac est massa. In ut facilisis leo. Donec a elit
@@ -31,7 +31,7 @@ const MoreInfo = () => {
 							onClick={() => handle_redirect("/Home")} // Use an arrow function to pass the argument
 						></i>
 					</div>
-					<p className="mx-5 text-start some-info">
+					<p className={`mx-5 text-start ${style["some-info"]}`}>
 						Proin tristique iaculis erat, vehicula consectetur ligula laoreet vitae. Curabitur ac pretium sapien. Aenean semper ultricies lacus at feugiat.
 						Quisque nec risus et nibh commodo rutrum a eu sapien. Sed in mauris tempus, mattis ipsum in, mollis ante. In porta nisl sit amet nisl tempor,
 						at hendrerit turpis maximus. Quisque ac ex et ligula facilisis tincidunt. Aliquam dolor nunc, vulputate id purus a, bibendum euismod nisi.

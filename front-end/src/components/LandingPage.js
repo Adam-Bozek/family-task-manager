@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import "./css/LandingPage.css";
+import style from "./css/style-landing-page.module.css";
 
 const LandingPage = () => {
 	const navigate = useNavigate();
@@ -12,10 +12,10 @@ const LandingPage = () => {
 
 	return (
 		<main>
-			<div className="container blur-container">
-				<h1 className="welcome-header text-start mx-5 mb-5 mt-4"> Vitajte! </h1>
+			<div className={`container row ${style["blur-container"]}`}>
+				<h1 className={`text-start mx-5 mb-5 mt-4 ${style["welcome-header"]}`}> Vitajte! </h1>
 				<div className="row p-4 text-start">
-					<div className="col-md-7 some-info">
+					<div className={`col-md-7 ${style["some-info"]}`}>
 						<p className="mx-5">
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quam eros, porttitor nec pulvinar ut, feugiat sed lectus. Curabitur tincidunt
 							erat eu purus euismod, eget semper mauris sollicitudin. Quisque convallis est turpis. Mauris finibus vestibulum lorem, a malesuada magna
