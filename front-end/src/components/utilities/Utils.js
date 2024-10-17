@@ -20,4 +20,8 @@ export async function logInUser(email, password) {}; // maybe compare on device 
 export async function logOutUser() {};
 
 
-// Other necessary functions rework
+// Functions for user "parent"
+
+
+
+// Functions for user "kid"
