@@ -50,9 +50,9 @@ def create_user():
 
     return "Používateľ vytvorený."
 
-@app.route('/Check_user_exist', methods=['GET'])
+@app.route('/Check_user_exist', methods=['POST'])
 def check_user_exist():
-    email = request.args.get('email')
+    email = request.form.get('email')
     
     syntax = "SELECT * FROM uzivatel WHERE email = %s;"
     result = connectiondb(syntax, (email,))
