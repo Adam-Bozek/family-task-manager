@@ -87,7 +87,7 @@ export async function createUserAccount(name, surname, email, password) {
 }
 
 export async function checkUserExists(email) {
-  	// Basic input validation before proceeding
+	// Basic input validation before proceeding
 	if (!email) {
 		console.error("Please fill out all fields.");
 		return;
@@ -105,8 +105,8 @@ export async function checkUserExists(email) {
 				"Content-Type": "application/json",
 			},
 		});
-    
-    return true
+
+		return true;
 	} catch (err) {
 		// Enhanced error handling
 		console.error("Error verifying user", err);
@@ -115,15 +115,15 @@ export async function checkUserExists(email) {
 		if (err.response) {
 			// Server responded with a status other than 2xx
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
-      return  false
+			return false;
 		} else if (err.request) {
 			// Request was made but no response was received (network error)
 			alert("Network error. Please check your connection and try again.");
-      return  false
+			return false;
 		} else {
 			// Something else happened
 			alert("An unexpected error occurred. Please try again.");
-      return  false
+			return false;
 		}
 	}
 }
@@ -172,16 +172,15 @@ export async function logInUser(email, password) {
 }
 
 export async function logOutUser(setIsLoggedIn, setEmail, setRole) {
-  try {
-    // Call the setter functions to reset login state in context
-    setIsLoggedIn(false);
-    setEmail("");
-    setRole(null);
+	try {
+		// Call the setter functions to reset login state in context
+		setIsLoggedIn(false);
+		setEmail("");
+		setRole(null);
 
-    return true;
-  } catch (error) {
-    console.error('Error logging out:', error);
-    return false;
-  }
+		return true;
+	} catch (error) {
+		console.error("Error logging out:", error);
+		return false;
+	}
 }
-
