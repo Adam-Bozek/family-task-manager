@@ -11,7 +11,6 @@ export function validatePasswordMatch(password, confirmPassword) {};
 
 export async function createUserAccount(name, surname, email, password) {}; // maybe create hash only and send it to database instead
 
-
 // Functions for logging in and logging out of the user
 export async function checkUserExists(email) {};
 
@@ -19,9 +18,3 @@ export async function logInUser(email, password) {}; // maybe compare on device 
 
 export async function logOutUser() {};
 
-
-// Functions for user "parent"
-
-
-
-// Functions for user "kid"
