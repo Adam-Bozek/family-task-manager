@@ -17,6 +17,12 @@ const LoginPage = () => {
 	const const_handle_user_login = () => {
     if (!checkIfUserExists(email)) {
       alert("Neexistujuci používateľ!");
+    } else {
+      if (logInUser(email, password)) {
+        handle_redirect("/Dashboard");
+      } else {
+        alert("Email alebo heslo je zle.");
+      }
     }
   };
 
