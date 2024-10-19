@@ -86,7 +86,8 @@ export async function createUserAccount(name, surname, email, password) {
 	}
 }
 
-export async function checkUserExists(email) {
+// Functions for logging in a user
+export async function checkIfUserExists(email) {
 	// Basic input validation before proceeding
 	if (!email) {
 		console.error("Please fill out all fields.");
