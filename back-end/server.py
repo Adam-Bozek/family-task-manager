@@ -1,5 +1,5 @@
 import psycopg2
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 def connectiondb(query, params=None):
     print("Start")
@@ -8,11 +8,11 @@ def connectiondb(query, params=None):
     try:
         # Establish the database connection
         connection = psycopg2.connect(
-            dbname='ftm',      # Replace with your database name
-            user='admin',      # Replace with your username
-            password='password',  # Replace with your password
-            host='147.232.205.117',          # Replace with your host (e.g., 'localhost')
-            port='5432'           # Replace with your database port
+            dbname='ftm',
+            user='admin',
+            password='password',
+            host='147.232.205.117',
+            port='5432'
         )
         cursor = connection.cursor()  # Now it is safe to create the cursor
 
@@ -46,9 +46,15 @@ def create_user():
     password = request.form.get('password')
 
     syntax = "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
-    connectiondb(syntax, (name, surname, email, password))
+    result = connectiondb(syntax, (name, surname, email, password))
 
-    return "Používateľ vytvorený."
+    if result:
+        return jsonify({"message": "Používateľ vytvorený."}), 201 # Created
+    elif result == None:
+        return jsonify({"message": "Používateľ nevytvorený."}), 400 # Bad Request
+    else:
+        return jsonify({"error": f"Nastala chyba!!!"}), 404 #Not Found
+    
 
 @app.route('/Check_user_exist', methods=['POST'])
 def check_user_exist():
@@ -58,9 +64,12 @@ def check_user_exist():
     result = connectiondb(syntax, (email,))
     
     if result:
-        return "Používateľ existuje."
+        return jsonify({"message": "Používateľ existuje."}), 200 # OK
+    elif result == None:
+        return jsonify({"message": "Používateľ neexistuje."}), 204 # No Content
     else:
-        return "Používateľ neexistuje."
+        return jsonify({"error": f"Nastala chyba!!!"}), 404 #Not Found
+    
 
 @app.route('/Login', methods=['POST'])
 def login():
@@ -71,9 +80,11 @@ def login():
     result = connectiondb(syntax, (email, password))
     
     if result:
-        return "Prihlásenie úspešné."
+        return jsonify({"message": "Prihlásenie úspešné."}), 202 # Accepted
+    elif result == None:
+        return jsonify({"message": "Prihlásenie neúspešné."}), 406 # Not Acceptable
     else:
-        return "Nesprávne prihlasovacie údaje."
+        return jsonify({"error": f"Nastala chyba!!!"}), 404 #Not Found
 
 if __name__ == '__main__':
     app.run(debug=True)
