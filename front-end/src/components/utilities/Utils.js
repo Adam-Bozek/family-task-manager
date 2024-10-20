@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import Axios from "axios";
 
+
+
 // Functions for creating a user
 export function validateName(name) {
 	if (typeof name !== "string" || !name.trim()) {
@@ -184,4 +186,4 @@ export async function logOutUser(setIsLoggedIn, setEmail, setRole) {
 		console.error("Error logging out:", error);
 		return false;
 	}
-}
+} 

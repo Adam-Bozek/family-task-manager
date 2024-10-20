@@ -1,6 +1,7 @@
-/* General layout */
-main {
-  background-image: url('../../media/background.png'); /* Upravte cestu k obrázku na pozadí */
+/* LoginPage.module.css */
+
+.loginMain {
+  background-image: url('../../media/background.png');
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -9,19 +10,19 @@ main {
   align-items: center;
 }
 
-.login-container {
+.loginContainer {
   display: flex;
   justify-content: space-between;
   width: 80%;
   max-width: 1200px;
   background-color: rgba(248, 254, 255, 0.70);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.left-side {
+.loginLeftSide {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -29,18 +30,20 @@ main {
   padding: 40px;
 }
 
-.welcome-header {
-  font-size: 7rem;
-  font-weight: 700;
+.loginWelcomeHeader {
+  font-size: 6rem;
+  font-weight: 650;
+  text-size-adjust: auto;
   margin-bottom: 20px;
 }
 
-.info-text {
-  font-size: 1.2rem;
+.loginInfoText {
+  font-size: large;
+  font-weight: 500;
   margin-bottom: 40px;
 }
 
-.right-side {
+.loginRightSide {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -49,14 +52,14 @@ main {
   padding: 40px;
 }
 
-.login-form {
+.loginForm {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.form-input {
+.loginFormInput {
   width: 80%;
   padding: 10px;
   margin-bottom: 20px;
@@ -64,14 +67,14 @@ main {
   border-radius: 5px;
 }
 
-.login-title {
-  font-size: 2rem; 
-  margin-bottom: 20px; 
-  font-weight: bold; /* Použitie tučného písma */
+.loginTitle {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
-button {
-  width: 80%;
+.loginButton {
+  width: 60%;
   padding: 15px;
   background-color: #000;
   color: #fff;
@@ -81,39 +84,73 @@ button {
   font-size: 1rem;
 }
 
-button:hover {
+.loginButton:hover {
   background-color: #333;
 }
 
-.register-text {
+.loginRegisterText {
   margin-top: 20px;
   color: #000;
   cursor: pointer;
   font-size: 1rem;
 }
 
-.register-text:hover {
-  text-decoration: underline;
+/* Media queries for responsive text size */
+@media (max-width: 1400px) {
+  .loginWelcomeHeader {
+    font-size: 15rem;
+  }
+
+  .loginInfoText {
+    font-size: 1.5rem;
+  }
 }
 
-/* Media queries for responsiveness */
 @media (max-width: 1200px) {
-  .welcome-header {
-    font-size: 6rem;
+  .loginWelcomeHeader {
+    font-size: 10rem;
+  }
+
+  .loginInfoText {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .loginWelcomeHeader {
+    font-size: 8rem;
+  }
+
+  .loginInfoText {
+    font-size: 1.2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .welcome-header {
-    font-size: 4rem;
+  .loginWelcomeHeader {
+    font-size: 5rem;
   }
 
-  .login-container {
+  .loginInfoText {
+    font-size: 1rem;
+  }
+
+  .loginContainer {
     flex-direction: column;
     align-items: center;
   }
 
-  .right-side {
+  .loginRightSide {
     padding-top: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .loginWelcomeHeader {
+    font-size: 3rem;
+  }
+
+  .loginInfoText {
+    font-size: 0.9rem;
   }
 }
