@@ -53,7 +53,7 @@ def create_user():
     elif result == None:
         return jsonify({"message": "Používateľ nevytvorený."}), 400 # Bad Request
     else:
-        return jsonify({"error": f"Nastala chyba!!!"}), 404 #Not Found
+        return jsonify({"error": "Nastala chyba!!!"}), 404 #Not Found
     
 
 @app.route('/Check_user_exist', methods=['POST'])
@@ -68,7 +68,7 @@ def check_user_exist():
     elif result == None:
         return jsonify({"message": "Používateľ neexistuje."}), 204 # No Content
     else:
-        return jsonify({"error": f"Nastala chyba!!!"}), 404 #Not Found
+        return jsonify({"error": "Nastala chyba!!!"}), 404 #Not Found
     
 
 @app.route('/Login', methods=['POST'])
@@ -84,7 +84,7 @@ def login():
     elif result == None:
         return jsonify({"message": "Prihlásenie neúspešné."}), 406 # Not Acceptable
     else:
-        return jsonify({"error": f"Nastala chyba!!!"}), 404 #Not Found
+        return jsonify({"error": "Nastala chyba!!!"}), 404 #Not Found
 
 if __name__ == '__main__':
     app.run(debug=True)
