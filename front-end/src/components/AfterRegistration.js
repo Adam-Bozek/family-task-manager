@@ -27,6 +27,7 @@ const AfterRegistration = () => {
 
       <div className={styles.formContainer}>
         <div className={styles.joinFamilySection}>
+        <p className={styles.instructions}>Ak už máte kľúč na pridanie sa do rodiny tak ho zadajte sem.</p>
           <input
             type="text"
             placeholder="Kód"
@@ -40,6 +41,7 @@ const AfterRegistration = () => {
         </div>
 
         <div className={styles.createFamilySection}>
+        <p className={styles.instructions}>Ak nemáte ešte rodinu tak si ju vytvorte.</p>
           <input
             type="text"
             placeholder="Názov rodiny"

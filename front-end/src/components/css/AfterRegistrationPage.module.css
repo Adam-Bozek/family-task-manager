@@ -51,6 +51,16 @@
   width: 45%;
 }
 
+/* Nový štýl pre inštrukcie */
+.instructions {
+  font-weight: bold;            /* Tučné písmo */
+  font-size: 1.2rem;           /* Veľkosť písma */
+  text-align: center;          /* Centrovanie textu */
+  color: #333;                 /* Farba textu */
+  margin-bottom: 20px;         /* Spodný okraj pre oddelenie od ostatného obsahu */
+  z-index: 1;                  /* Z-index pre správne prekrytie */
+}
+
 /* Vstupné polia */
 .inputField {
   width: 100%;
