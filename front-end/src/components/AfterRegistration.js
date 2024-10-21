@@ -6,12 +6,12 @@ const AfterRegistration = () => {
   const [familyCode, setFamilyCode] = useState('');
 
   const handleFamilyCreation = () => {
-    console.log('Family created:', familyName);
+    console.log('Rodina vytvorená:', familyName);
     // Add functionality for family creation
   };
 
   const handleJoinFamily = () => {
-    console.log('Joining family with code:', familyCode);
+    console.log('Prihlásenie do rodiny pomocou kódu:', familyCode);
     // Add functionality for joining a family
   };
 
