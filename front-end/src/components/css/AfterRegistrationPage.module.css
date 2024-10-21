@@ -30,6 +30,16 @@
   z-index: 1;
 }
 
+/* Kontajner na text s rozmazaným pozadím */
+.textContainer {
+  padding: 20px; /* Padding pre text */
+  background-color: rgba(255, 255, 255, 0.7); /* Polopriehľadné pozadie */
+  backdrop-filter: blur(15px); /* Rozmazané pozadie */
+  border-radius: 15px; /* Zaoblené rohy kontajnera */
+  margin-bottom: 40px; /* Oddeľuje text od formulárov */
+  text-align: center; /* Centrovanie textu */
+}
+
 /* Kontajner na formuláre a tlačidlá */
 .formContainer {
   display: flex;
@@ -63,39 +73,40 @@
 
 /* Vstupné polia */
 .inputField {
-  width: 100%;
-  padding: 15px;
+  width: 60%;                  /* Zmenšená šírka vstupných polí na 60% */
+  padding: 10px;              /* Zmenšené padding */
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 10px; /* Zaoblené rohy vstupných polí */
-  font-size: 1rem;
+  font-size: 1rem;       /* Veľkosť písma */
 }
 
 /* Základný štýl pre nové pole "Rodina" a "Kód" */
 .familyField, .codeField {
-  width: 100%;
-  padding: 15px;
+  width: 60%;                  /* Zmenšená šírka vstupných polí na 60% */
+  padding: 10px;              /* Zmenšené padding */
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 10px; /* Zaoblené rohy */
-  font-size: 1rem;
+  font-size: 1rem;       /* Veľkosť písma */
 }
 
 /* Čierne tlačidlá s oblejšími rohmi */
 .actionButton {
-  width: 100%;
-  padding: 15px;
-  background-color: #000; /* Čierna farba tlačidiel */
+  width: 40%;                /* Zmenšená šírka tlačidla na 40% */
+  padding: 10px;            /* Zmenšené padding */
+  background-color: #000;   /* Čierna farba tlačidiel */
   color: #fff;
   border: none;
-  border-radius: 10px; /* Zaoblené tlačidlá */
-  font-size: 1.2rem;
+  border-radius: 10px;      /* Zaoblené tlačidlá */
+  font-size: 1rem;          /* Zmenšená veľkosť písma */
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 5px 0;            /* Pridanie menších okrajov pre oddelenie */
 }
 
 .actionButton:hover {
-  background-color: #333; /* Odtieň tmavšej šedej pri hover */
+  background-color: #333;    /* Odtieň tmavšej šedej pri hover */
 }
 
 /* Veľkosť písma a usporiadanie pri menších obrazovkách */
