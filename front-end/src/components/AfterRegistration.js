@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
 import styles from "./css/AfterRegistrationPage.module.css"; // Import CSS module
 
 const AfterRegistration = () => {
   const [familyName, setFamilyName] = useState('');
   const [familyCode, setFamilyCode] = useState('');
+  
+  const navigate = useNavigate(); 
 
   const handleFamilyCreation = () => {
     console.log('Rodina vytvorená:', familyName);
