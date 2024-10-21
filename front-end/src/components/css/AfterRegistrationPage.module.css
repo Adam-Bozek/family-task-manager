@@ -1,59 +1,64 @@
-/* AfterRegistrationPage.module.css */
-
+/* Overall container that centers everything on the page */
 .afterRegistrationContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh; 
-  background-image: url('../../media/background.png');
+  background-image: url('../../media/background.png'); /* Background image */
   background-size: cover;
   background-position: center;
+  padding: 0 20px; /* Padding for responsiveness on smaller screens */
+  z-index: 0; /* Ensure text and elements are above background */
+ 
 }
 
-/* Veľký titulok centrovaný */
+/* New container for the entire blurred section */
+.blurredBannerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  max-width: 1200px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
+  backdrop-filter: blur(15px); /* Apply blur effect */
+  border-radius: 15px;
+  z-index: 1; /* Ensure the content stays above the background */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  margin-bottom: 40px; /* Add some space below the banner */
+}
+
+/* Style for the large centered title */
 .title {
   font-size: 8rem;
   font-weight: bold;
   text-align: center;
   color: #000;
   margin-bottom: 20px;
-  z-index: 1;
+  z-index: 1; /* Keeps the title above the background */
 }
 
-/* Text pod titulkom */
+/* Description text style */
 .description {
   font-size: 1.5rem;
   text-align: center;
   color: #333;
   margin-bottom: 40px;
   z-index: 1;
+  font-weight: bold; /* Bold text */
 }
 
-/* Kontajner na text s rozmazaným pozadím */
-.textContainer {
-  padding: 20px; /* Padding pre text */
-  background-color: rgba(255, 255, 255, 0.7); /* Polopriehľadné pozadie */
-  backdrop-filter: blur(15px); /* Rozmazané pozadie */
-  border-radius: 15px; /* Zaoblené rohy kontajnera */
-  margin-bottom: 40px; /* Oddeľuje text od formulárov */
-  text-align: center; /* Centrovanie textu */
-}
-
-/* Kontajner na formuláre a tlačidlá */
+/* Style for the form container within the blurred banner */
 .formContainer {
   display: flex;
   justify-content: space-between;
-  width: 80%;
-  max-width: 1200px;
-  padding: 40px;
-  background-color: rgba(255, 255, 255, 0.7); /* Polopriehľadné pozadie */
-  backdrop-filter: blur(15px); /* Rozmazané pozadie */
-  border-radius: 15px; /* Zaoblené rohy kontajnera */
+  width: 100%;
+  padding: 20px;
   z-index: 1;
 }
 
-/* Sekcia pre prihlásenie a vytvorenie rodiny */
 .joinFamilySection, .createFamilySection {
   display: flex;
   flex-direction: column;
@@ -61,70 +66,101 @@
   width: 45%;
 }
 
-/* Nový štýl pre inštrukcie */
+
+/* Text container with blurred background for better readability */
+.textContainer {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+  backdrop-filter: blur(15px); /* Adds a blur effect */
+  border-radius: 15px; /* Smooth border radius */
+  margin-bottom: 40px;
+  text-align: center;
+  z-index: 1; /* Ensures text container appears above background */
+}
+
+
+
+/* Center the paragraph text with the input field */
 .instructions {
-  font-weight: bold;            /* Tučné písmo */
-  font-size: 1.2rem;           /* Veľkosť písma */
-  text-align: center;          /* Centrovanie textu */
-  color: #333;                 /* Farba textu */
-  margin-bottom: 20px;         /* Spodný okraj pre oddelenie od ostatného obsahu */
-  z-index: 1;                  /* Z-index pre správne prekrytie */
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px; /* Adjust spacing between paragraph and input */
+  align-self: center; /* Ensure the paragraph is aligned in the center */
+  width: 60%; /* Same width as the input field for perfect alignment */
 }
 
-/* Vstupné polia */
+
+/* Input fields shared styles */
 .inputField {
-  width: 60%;                  /* Zmenšená šírka vstupných polí na 60% */
-  padding: 10px;              /* Zmenšené padding */
+  width: 60%; /* Reduced width for cleaner form appearance */
+  padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 10px; /* Zaoblené rohy vstupných polí */
-  font-size: 1rem;       /* Veľkosť písma */
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: border-color 0.2s ease;
 }
 
-/* Základný štýl pre nové pole "Rodina" a "Kód" */
+.inputField:focus {
+  border-color: #000; /* Darker border on focus */
+  outline: none;
+}
+
+/* Reusable styles for family and code input fields */
 .familyField, .codeField {
-  width: 60%;                  /* Zmenšená šírka vstupných polí na 60% */
-  padding: 10px;              /* Zmenšené padding */
+  width: 60%; /* Same styling as inputField */
+  padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 10px; /* Zaoblené rohy */
-  font-size: 1rem;       /* Veľkosť písma */
+  border-radius: 10px;
+  font-size: 1rem;
 }
 
-/* Čierne tlačidlá s oblejšími rohmi */
+/* Action buttons with a smooth transition effect */
 .actionButton {
-  width: 40%;                /* Zmenšená šírka tlačidla na 40% */
-  padding: 10px;            /* Zmenšené padding */
-  background-color: #000;   /* Čierna farba tlačidiel */
+  width: 40%; /* Reduced button width for a cleaner look */
+  padding: 10px;
+  background-color: #000; /* Black background */
   color: #fff;
   border: none;
-  border-radius: 10px;      /* Zaoblené tlačidlá */
-  font-size: 1rem;          /* Zmenšená veľkosť písma */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin: 5px 0;            /* Pridanie menších okrajov pre oddelenie */
+  margin: 5px 0; /* Small margins to space buttons evenly */
 }
 
 .actionButton:hover {
-  background-color: #333;    /* Odtieň tmavšej šedej pri hover */
+  background-color: #333; /* Darker shade on hover */
 }
 
-/* Veľkosť písma a usporiadanie pri menších obrazovkách */
+/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .title {
-    font-size: 5rem;
+    font-size: 5rem; /* Reduce title size on smaller screens */
   }
 
   .description {
-    font-size: 1.2rem;
+    font-size: 1.2rem; /* Smaller text size for better readability */
   }
 
   .formContainer {
-    flex-direction: column;
+    flex-direction: column; /* Stack sections vertically on small screens */
     align-items: center;
   }
 
   .joinFamilySection, .createFamilySection {
-    width: 100%;
+    width: 100%; /* Full width for each section on smaller screens */
+  }
+
+  .actionButton {
+    width: 60%; /* Increase button width for mobile */
+  }
+
+  .inputField {
+    width: 80%; /* Expand input fields on smaller screens */
   }
 }
