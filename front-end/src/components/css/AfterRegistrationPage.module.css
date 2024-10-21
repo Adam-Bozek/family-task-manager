@@ -5,34 +5,45 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-image: url('../../media/background-pattern.png'); /* Pridaj pozadie */
+  height: 100vh; 
+  background-image: url('../../media/background.png');
   background-size: cover;
   background-position: center;
 }
 
+/* Veľký titulok centrovaný */
 .title {
-  font-size: 6rem;
+  font-size: 8rem;
   font-weight: bold;
   text-align: center;
   color: #000;
   margin-bottom: 20px;
+  z-index: 1;
 }
 
+/* Text pod titulkom */
 .description {
   font-size: 1.5rem;
   text-align: center;
   color: #333;
   margin-bottom: 40px;
+  z-index: 1;
 }
 
+/* Kontajner na formuláre a tlačidlá */
 .formContainer {
   display: flex;
   justify-content: space-between;
   width: 80%;
   max-width: 1200px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.7); /* Polopriehľadné pozadie */
+  backdrop-filter: blur(15px); /* Rozmazané pozadie */
+  border-radius: 15px; /* Zaoblené rohy kontajnera */
+  z-index: 1;
 }
 
+/* Sekcia pre prihlásenie a vytvorenie rodiny */
 .joinFamilySection, .createFamilySection {
   display: flex;
   flex-direction: column;
@@ -40,33 +51,47 @@
   width: 45%;
 }
 
+/* Vstupné polia */
 .inputField {
   width: 100%;
   padding: 15px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px; /* Zaoblené rohy vstupných polí */
   font-size: 1rem;
 }
 
+/* Základný štýl pre nové pole "Rodina" a "Kód" */
+.familyField, .codeField {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px; /* Zaoblené rohy */
+  font-size: 1rem;
+}
+
+/* Čierne tlačidlá s oblejšími rohmi */
 .actionButton {
   width: 100%;
   padding: 15px;
-  background-color: #000;
+  background-color: #000; /* Čierna farba tlačidiel */
   color: #fff;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
+  border-radius: 10px; /* Zaoblené tlačidlá */
+  font-size: 1.2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .actionButton:hover {
-  background-color: #292929;
+  background-color: #333; /* Odtieň tmavšej šedej pri hover */
 }
 
+/* Veľkosť písma a usporiadanie pri menších obrazovkách */
 @media (max-width: 768px) {
   .title {
-    font-size: 4rem;
+    font-size: 5rem;
   }
 
   .description {
