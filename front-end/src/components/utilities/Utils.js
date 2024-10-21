@@ -142,7 +142,7 @@ export async function logInUser(email, password) {
 		// Defining payload
 		const payload = {
 			email: email,
-			password: hashedPassword,
+			password: password,
 		};
 
 		// Send user details with the hashed password to the backend

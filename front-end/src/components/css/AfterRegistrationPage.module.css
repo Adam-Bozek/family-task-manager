@@ -1,0 +1,84 @@
+/* AfterRegistrationPage.module.css */
+
+.afterRegistrationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('../../media/background-pattern.png'); /* Pridaj pozadie */
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  font-size: 6rem;
+  font-weight: bold;
+  text-align: center;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 1200px;
+}
+
+.joinFamilySection, .createFamilySection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+}
+
+.inputField {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.actionButton {
+  width: 100%;
+  padding: 15px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  background-color: #292929;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 4rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+  }
+
+  .formContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .joinFamilySection, .createFamilySection {
+    width: 100%;
+  }
+}
