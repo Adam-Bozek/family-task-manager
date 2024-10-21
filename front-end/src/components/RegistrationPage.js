@@ -7,39 +7,85 @@ import { AppContext } from "./utilities/AppContext";
 import { validateName, validateSurname, validateEmail, validatePassword, validatePasswordMatch, createUserAccount } from "./utilities/Utils";
 
 const RegistrationPage = () => {
-	const { setEmail, setRole, setIsLoggedIn } = useContext(AppContext);
-	const [formData, setFormData] = useState({
-		firstName: "",
-		lastName: "",
-		email: "",
-		password: "",
-		confirmPassword: "",
-	});
+    const { setEmail, setRole, setIsLoggedIn } = useContext(AppContext);
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
 
-	const navigate = useNavigate();
+    const navigate = useNavigate();
 
-	const handleChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
-	};
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-	const handleSubmit = (e) => {
-		// FIXME: TOTO JE IBA PRISTUP NA DALSIE STRANKY BEZ BACK-END
-		// FIXME: NASLEDUJUCE 3 RIADKY JE POTREBNE VYMAZAT KED BUDE BACKEND HOTOVY
-		setEmail(formData.email);
-		setRole("after-reg");
-		setIsLoggedIn(true);
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-		e.preventDefault();
+        // Validácie
+        if (!validateName(formData.firstName)) {
+            alert("Nesprávne meno.");
+            return;
+        }
 
-		if (formData.password !== formData.confirmPassword) {
-			alert("Heslá sa nezhodujú");
-			return;
-		}
+        if (!validateSurname(formData.lastName)) {
+            alert("Nesprávne priezvisko.");
+            return;
+        }
 
-		console.log("Registered:", formData);
+        if (!validateEmail(formData.email)) {
+            alert("Nesprávny email.");
+            return;
+        }
 
-		navigate("/AfterRegistration"); // Po registrácii ťa presmeruje
-	};
+        // Validácia hesla
+        const isPasswordValid = validatePassword(formData.password);
+        if (!isPasswordValid) {
+            const errorMessages = [];
+            if (formData.password.length < 8) {
+                errorMessages.push("Heslo musí obsahovať aspoň 8 znakov.");
+            }
+            if (!/[A-Z]/.test(formData.password)) {
+                errorMessages.push("Heslo musí obsahovať aspoň jedno veľké písmeno.");
+            }
+            if (!/[a-z]/.test(formData.password)) {
+                errorMessages.push("Heslo musí obsahovať aspoň jedno malé písmeno.");
+            }
+            if (!/\d/.test(formData.password)) {
+                errorMessages.push("Heslo musí obsahovať aspoň jedno číslo.");
+            }
+            if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+                errorMessages.push("Heslo musí obsahovať aspoň jeden špeciálny znak.");
+            }
+
+            alert("Nesprávne heslo:\n" + errorMessages.join("\n"));
+            return;
+        }
+
+        if (!validatePasswordMatch(formData.password, formData.confirmPassword)) {
+            alert("Heslá sa nezhodujú.");
+            return;
+        }
+
+        // Vytvorenie používateľského účtu
+        createUserAccount(formData.firstName, formData.lastName, formData.email, formData.password)
+            .then(() => {
+                // FIXME: Nasledujúce riadky odstrániť pri hotovom backende
+                setEmail(formData.email);
+                setRole("after-reg");
+                setIsLoggedIn(true);
+
+                console.log("Registered:", formData);
+                navigate("/AfterRegistration");
+            })
+            .catch((error) => {
+                console.error("Registration error:", error);
+                alert("Nastala chyba pri registrácii.");
+            });
+    };
 
 	return (
 		<main className={styles.registrationMain}>

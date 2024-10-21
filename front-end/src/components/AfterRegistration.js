@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import styles from "./css/AfterRegistrationPage.module.css"; // Import CSS module
+import styles from "./css/AfterRegistrationModule.css"; // Import CSS module
 
 const AfterRegistration = () => {
   const [familyName, setFamilyName] = useState('');//Set family name
