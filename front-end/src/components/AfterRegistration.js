@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./css/AfterRegistrationPage.module.css"; // Import CSS module
 
 const AfterRegistration = () => {
-  const [familyName, setFamilyName] = useState('');
+  const [familyName, setFamilyName] = useState('');//Set family name
   const [familyCode, setFamilyCode] = useState('');
   
   const navigate = useNavigate(); 
