@@ -151,7 +151,7 @@ export async function checkIfUserExists(email) {
 	}
 }
 
-export async function logInUser(email, password, setRole) {
+export async function logInUser(email, password, setRole, setIsLoggedIn, setEmail, setRole) {
 	// Validate inputs
 	if (!validateEmail(email)) {
 		console.error("Invalid email. Please enter a valid email address.");
@@ -181,10 +181,11 @@ export async function logInUser(email, password, setRole) {
 		const { message, role } = response.data;
 
 		if (response.status === 202) {
-			console.log(message); // Example: "Prihlásenie úspešné."
+			console.log(message);
 			if (role) {
-				console.log(`User role: ${role}`);
-				setRole(role); // Set the role state with the extracted role
+				setEmail(email);
+				setRole(role);
+				setIsLoggedIn(true);
 			}
 			return true;
 		} else {
