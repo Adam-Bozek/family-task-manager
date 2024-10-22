@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import Axios from "axios";
 
-
+const apiAddress = "http://147.232.205.117";
 
 // Functions for creating a user
 export function validateName(name) {
@@ -10,7 +10,7 @@ export function validateName(name) {
 	}
 
 	return true;
-}
+};
 
 export function validateSurname(surname) {
 	if (typeof surname !== "string" || !surname.trim()) {
@@ -18,12 +18,12 @@ export function validateSurname(surname) {
 	}
 
 	return true;
-}
+};
 
 export function validateEmail(email) {
 	const emailRegex = /^[a-zA-Z0-9](.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*.[a-zA-Z]{2,6}$/;
 	return emailRegex.test(email);
-}
+};
 
 export function validatePassword(password) {
 	const minLength = 8;
@@ -34,11 +34,11 @@ export function validatePassword(password) {
 
 	// Ensure password meets all conditions
 	return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
-}
+};
 
 export function validatePasswordMatch(password, confirmPassword) {
 	return password === confirmPassword;
-}
+};
 
 export async function createUserAccount(name, surname, email, password) {
 	// Basic input validation before proceeding
@@ -86,7 +86,7 @@ export async function createUserAccount(name, surname, email, password) {
 			return false;
 		}
 	}
-}
+};
 
 // Functions for logging in a user
 export async function checkIfUserExists(email) {
@@ -129,7 +129,7 @@ export async function checkIfUserExists(email) {
 			return false;
 		}
 	}
-}
+};
 
 export async function logInUser(email, password) {
 	// Basic input validation before proceeding
@@ -142,7 +142,7 @@ export async function logInUser(email, password) {
 		// Defining payload
 		const payload = {
 			email: email,
-			password: hashedPassword,
+			password: password,
 		};
 
 		// Send user details with the hashed password to the backend
@@ -172,7 +172,7 @@ export async function logInUser(email, password) {
 			return false;
 		}
 	}
-}
+};
 
 export async function logOutUser(setIsLoggedIn, setEmail, setRole) {
 	try {
@@ -186,4 +186,4 @@ export async function logOutUser(setIsLoggedIn, setEmail, setRole) {
 		console.error("Error logging out:", error);
 		return false;
 	}
-} 
+};

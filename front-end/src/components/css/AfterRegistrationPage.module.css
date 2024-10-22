@@ -1,0 +1,151 @@
+.afterRegistrationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-image: url('../../media/background.png');
+  background-size: cover;
+  background-position: center;
+  padding: 0 20px;
+  z-index: 0; 
+}
+
+.blurredBannerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  max-width: 1200px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  z-index: 1;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 10rem;
+  font-weight: bold;
+  text-align: center;
+  color: #000;
+  margin-bottom: 20px;
+  z-index: 1;
+  letter-spacing: -0.05em;
+}
+
+.description {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 40px;
+  z-index: 1;
+  font-weight: bold;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  z-index: 1;
+}
+
+.joinFamilySection, .createFamilySection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+}
+
+.textContainer {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  margin-bottom: 40px;
+  text-align: center;
+  z-index: 1;
+}
+
+.instructions {
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+  align-self: center;
+  width: 60%;
+}
+
+.inputField {
+  width: 60%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s ease;
+}
+
+.inputField:focus {
+  border-color: #000;
+  outline: none;
+}
+
+.familyField, .codeField {
+  width: 60%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.actionButton {
+  width: 40%;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 5px 0;
+}
+
+.actionButton:hover {
+  background-color: #333;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 5rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+  }
+
+  .formContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .joinFamilySection, .createFamilySection {
+    width: 100%;
+  }
+
+  .actionButton {
+    width: 60%;
+  }
+
+  .inputField {
+    width: 80%;
+  }
+}

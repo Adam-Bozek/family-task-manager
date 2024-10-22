@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import styles from "./css/AfterRegistrationPage.module.css"; // Import CSS module
 
 const AfterRegistration = () => {
-  const [familyName, setFamilyName] = useState('');
+  const [familyName, setFamilyName] = useState('');//Set family name
   const [familyCode, setFamilyCode] = useState('');
+  
+  const navigate = useNavigate(); 
 
   const handleFamilyCreation = () => {
     console.log('Rodina vytvorená:', familyName);
@@ -17,13 +20,15 @@ const AfterRegistration = () => {
 
   return (
     <div className={styles.afterRegistrationContainer}>
+    <div className={styles.blurredBannerContainer}>
       <h1 className={styles.title}>A je to!</h1>
       <p className={styles.description}>
         Ste prihlásený, ale prvým krokom je vytvorenie si rodiny alebo prihlásenie sa do už existujúcej
       </p>
-
+      
       <div className={styles.formContainer}>
         <div className={styles.joinFamilySection}>
+          <p className={styles.instructions}>Ak už máte kľúč na pridanie sa do rodiny tak ho zadajte sem.</p>
           <input
             type="text"
             placeholder="Kód"
@@ -35,8 +40,9 @@ const AfterRegistration = () => {
             Pridať sa k rodine
           </button>
         </div>
-
+  
         <div className={styles.createFamilySection}>
+          <p className={styles.instructions}>Ak nemáte ešte rodinu tak si ju vytvorte.</p>
           <input
             type="text"
             placeholder="Názov rodiny"
@@ -50,6 +56,8 @@ const AfterRegistration = () => {
         </div>
       </div>
     </div>
+  </div>
+  
   );
 };
 
