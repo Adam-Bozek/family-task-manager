@@ -18,6 +18,10 @@ const RegistrationPage = () => {
 
     const navigate = useNavigate();
 
+    const handle_redirect = (route) => {
+		navigate(route);
+	};
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -152,6 +156,12 @@ const RegistrationPage = () => {
 						</p>
 					</div>
 				</div>
+                <div className="text-end mx-3">
+						<i
+							className="bi bi-arrow-right-short" // Use className here
+							onClick={() => handle_redirect("/Home")} // Use an arrow function to pass the argument
+						></i>
+					</div>
 			</div>
 		</main>
 	);
