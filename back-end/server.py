@@ -74,7 +74,7 @@ def check_user_exist():
     if result:
         return jsonify({"message": "Používateľ existuje."}), 200 # OK
     elif result == []:
-        return jsonify({"message": "Používateľ neexistuje."}), 406 # Not Acceptable
+        return jsonify({"message": "Používateľ neexistuje."}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba!!!"}), 404 #Not Found
     
