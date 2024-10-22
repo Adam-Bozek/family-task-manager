@@ -100,9 +100,9 @@ def login():
         
         # Return Role
         if result1:
-            return jsonify({"message": f"Prihlásenie úspešné. {result1[3]}"}), 202 # Accepted
+            return jsonify({"message": "Prihlásenie úspešné.", "role": f"{result1[3]}"}), 202 # Accepted
         elif result1 == None:
-            return jsonify({"message": "Prihlásenie úspešné. AfterReg"}), 202 # Accepted
+            return jsonify({"message": "Prihlásenie úspešné", "role": "AfterReg"}), 202 # Accepted
         else:
             return jsonify({"error": "Nastala chyba pri Role!!!"}), 404 #Not Found
         
