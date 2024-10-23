@@ -6,6 +6,7 @@ export const AppContext = createContext();
 // Provider component that provides the context
 export const AppProvider = ({ children }) => {
   // Variables for user interaction
+  const [name, setStateName] = useState("");
 	const [email, setStateEmail] = useState("");
 	const [role, setStateRole] = useState(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,8 +31,17 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Setter function for name
+  const setName = (newName) => {
+    if (newName.length >= 2 && newName.length <= 50) {
+      setStateName(newName);
+    } else {
+      console.error('Invalid name format.');
+    }
+  };
+
 	return( 
-    <AppContext.Provider value={{ email, role, isLoggedIn, setEmail, setRole, setIsLoggedIn }}>
+    <AppContext.Provider value={{ name, email, role, isLoggedIn, setName, setEmail, setRole, setIsLoggedIn }}>
       {children}
     </AppContext.Provider>
   );
