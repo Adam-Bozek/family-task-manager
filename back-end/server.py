@@ -112,4 +112,4 @@ def login():
         return jsonify({"error": "Nastala chyba pri Login!!!"}), 404 #Not Found
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host = '147.232.205.117')
