@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import style from "./css/style-landing-page.module.css";
+import style from "./css/styleLandingPage.module.css";
 
 const LandingPage = () => {
 	const navigate = useNavigate();
@@ -11,7 +11,7 @@ const LandingPage = () => {
 	};
 
 	return (
-		<main>
+		<main className={style["landingPageMain"]}>
 			<div className={`container row ${style["blur-container"]}`}>
 				<h1 className={`text-start mx-5 mb-5 mt-4 ${style["welcome-header"]}`}> Vitajte! </h1>
 				<div className="row p-4 text-start">
@@ -24,7 +24,7 @@ const LandingPage = () => {
 						</p>
 						<a
 							href="/MoreInfo"
-							className="mx-5"
+							className={`mx-5 ${style["landingPageLink"]}`}
 							onClick={(e) => {
 								e.preventDefault();
 								handle_redirect("/MoreInfo");
@@ -33,10 +33,10 @@ const LandingPage = () => {
 						</a>
 					</div>
 					<div className="col-md-4 text-center m-3">
-						<button className="btn btn-primary btn-lg btn-dark my-2" onClick={() => handle_redirect("/Login")}>
+						<button className={`btn btn-primary btn-lg btn-dark my-2 ${style["landingPageButton"]}`} onClick={() => handle_redirect("/Login")}>
 							Prihlásiť sa
 						</button>
-						<button className="btn btn-primary btn-lg btn-dark my-2" onClick={() => handle_redirect("/Register")}>
+						<button className={`btn btn-primary btn-lg btn-dark my-2 ${style["landingPageButton"]}`} onClick={() => handle_redirect("/Register")}>
 							Registrovať sa
 						</button>
 					</div>
