@@ -1,1 +1,44 @@
-/*G*/
+/* TEMPLATE.module.css */
+.nav-font-weight {
+  font-weight: 655; /* Change 660 to a valid value */
+  font-size: 1.7rem;
+}
+
+.nav-button-weight {
+  font-weight: 400; /* Change 450 to a valid value */
+  font-size: 1.30rem;
+  padding: 10px;
+}
+
+
+.templateMain {
+  background-image: url('../../media/background.png'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+  display: flex;
+}
+
+.blur-container {
+  background-color: rgba(237, 234, 234, 0.59);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar-settings {
+  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+}
