@@ -151,7 +151,7 @@ export async function checkIfUserExists(email) {
 	}
 }
 
-export async function logInUser(email, password, setRole, setIsLoggedIn, setEmail, setRole) {
+export async function logInUser(email, password, setIsLoggedIn, setEmail, setRole) {
 	// Validate inputs
 	if (!validateEmail(email)) {
 		console.error("Invalid email. Please enter a valid email address.");
