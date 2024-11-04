@@ -5,27 +5,37 @@ const apiAddress = "http://147.232.205.117";
 
 // Functions for creating a user
 export function validateName(name) {
-	if (typeof name !== "string" || !name.trim()) {
+	// Check if name is a string, not empty, and contains only alphabetic characters and spaces
+	if (typeof name !== "string" || !name.trim() || !/^[a-zA-Z\s]+$/.test(name)) {
 		return false;
 	}
 
 	return true;
-};
+}
 
 export function validateSurname(surname) {
-	if (typeof surname !== "string" || !surname.trim()) {
+	// Check if surname is a string, not empty, and contains only alphabetic characters and spaces
+	if (typeof surname !== "string" || !surname.trim() || !/^[a-zA-Z\s]+$/.test(surname)) {
 		return false;
 	}
 
 	return true;
-};
+}
 
 export function validateEmail(email) {
-	const emailRegex = /^[a-zA-Z0-9](.[a-zA-Z0-9_-]+)*@[a-zA-Z0-9]+([.-][a-zA-Z0-9]+)*.[a-zA-Z]{2,6}$/;
-	return emailRegex.test(email);
-};
+	// Improved regex for email validation
+	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	if (typeof email !== "string" || !emailRegex.test(email.trim())) {
+		return false;
+	}
+	return true;
+}
 
 export function validatePassword(password) {
+	if (typeof password !== "string") {
+		return false;
+	}
+
 	const minLength = 8;
 	const hasUpperCase = /[A-Z]/.test(password);
 	const hasLowerCase = /[a-z]/.test(password);
@@ -34,16 +44,32 @@ export function validatePassword(password) {
 
 	// Ensure password meets all conditions
 	return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
-};
+}
 
 export function validatePasswordMatch(password, confirmPassword) {
+	// Ensure both passwords match
+	if (typeof password !== "string" || typeof confirmPassword !== "string") {
+		return false;
+	}
 	return password === confirmPassword;
-};
+}
 
 export async function createUserAccount(name, surname, email, password) {
-	// Basic input validation before proceeding
-	if (!name || !surname || !email || !password) {
-		console.error("Please fill out all fields.");
+	// Validate inputs
+	if (!validateName(name)) {
+		console.error("Invalid name. Please enter a valid name.");
+		return;
+	}
+	if (!validateSurname(surname)) {
+		console.error("Invalid surname. Please enter a valid surname.");
+		return;
+	}
+	if (!validateEmail(email)) {
+		console.error("Invalid email. Please enter a valid email address.");
+		return;
+	}
+	if (!validatePassword(password)) {
+		console.error("Invalid password. Password must be at least 8 characters, with uppercase, lowercase, number, and special character.");
 		return;
 	}
 
@@ -51,18 +77,19 @@ export async function createUserAccount(name, surname, email, password) {
 		// Hash the password with bcryptjs before sending it to the backend
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		// Defining payload
-		const payload = {
-			name: name,
-			surname: surname,
-			email: email,
-			password: hashedPassword,
-		};
+		// Using FormData to send form-urlencoded data as the backend expects request.form
+		const formData = new FormData();
+		formData.append("name", name);
+		formData.append("surname", surname);
+		formData.append("email", email);
+		formData.append("password", hashedPassword);
 
-		// Send user details with the hashed password to the backend
-		const response = await Axios.post(apiAddress, payload, {
+		const localApiAddress = apiAddress + "/Create_user";
+
+		// Send the form data to the backend endpoint for user creation
+		const response = await Axios.post(localApiAddress, formData, {
 			headers: {
-				"Content-Type": "application/json",
+				"Content-Type": "multipart/form-data",
 			},
 		});
 
@@ -71,110 +98,118 @@ export async function createUserAccount(name, surname, email, password) {
 		// Enhanced error handling
 		console.error("Error creating account:", err);
 
-		// Handle specific Axios errors (e.g., network issues, validation issues)
 		if (err.response) {
-			// Server responded with a status other than 2xx
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 			return false;
 		} else if (err.request) {
-			// Request was made but no response was received (network error)
 			alert("Network error. Please check your connection and try again.");
 			return false;
 		} else {
-			// Something else happened
 			alert("An unexpected error occurred. Please try again.");
 			return false;
 		}
 	}
-};
+}
 
 // Functions for logging in a user
 export async function checkIfUserExists(email) {
-	// Basic input validation before proceeding
-	if (!email) {
-		console.error("Please fill out all fields.");
+	// Validate email
+	if (!validateEmail(email)) {
+		console.error("Invalid email. Please enter a valid email address.");
 		return;
 	}
 
 	try {
-		// Defining payload
-		const payload = {
-			email: email,
-		};
+		// Using FormData to send form-urlencoded data as the backend expects request.form
+		const formData = new FormData();
+		formData.append("email", email);
 
-		// Send user details with the hashed password to the backend
-		const response = await Axios.post(apiAddress, payload, {
+		const localApiAddress = apiAddress + "/Check_user_exist";
+
+		// Send the form data to the backend endpoint to check if the user exists
+		const response = await Axios.post(localApiAddress, formData, {
 			headers: {
-				"Content-Type": "application/json",
+				"Content-Type": "multipart/form-data",
 			},
 		});
 
 		return true;
 	} catch (err) {
 		// Enhanced error handling
-		console.error("Error verifying user", err);
+		console.error("Error verifying user:", err);
 
-		// Handle specific Axios errors (e.g., network issues, validation issues)
 		if (err.response) {
-			// Server responded with a status other than 2xx
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 			return false;
 		} else if (err.request) {
-			// Request was made but no response was received (network error)
 			alert("Network error. Please check your connection and try again.");
 			return false;
 		} else {
-			// Something else happened
 			alert("An unexpected error occurred. Please try again.");
 			return false;
 		}
 	}
-};
+}
 
-export async function logInUser(email, password) {
-	// Basic input validation before proceeding
-	if (!email || !password) {
-		console.error("Please fill out all fields.");
+export async function logInUser(email, password, setIsLoggedIn, setEmail, setRole) {
+	// Validate inputs
+	if (!validateEmail(email)) {
+		console.error("Invalid email. Please enter a valid email address.");
+		return;
+	}
+	if (!validatePassword(password)) {
+		console.error("Invalid password. Password must be at least 8 characters, with uppercase, lowercase, number, and special character.");
 		return;
 	}
 
 	try {
-		// Defining payload
-		const payload = {
-			email: email,
-			password: password,
-		};
+		// Using FormData to send form-urlencoded data as the backend expects request.form
+		const formData = new FormData();
+		formData.append("email", email);
+		formData.append("password", password);
 
-		// Send user details with the hashed password to the backend
-		const response = await Axios.post(apiAddress, payload, {
+		const localApiAddress = apiAddress + "/Login";
+
+		// Send the form data to the backend endpoint for login
+		const response = await Axios.post(localApiAddress, formData, {
 			headers: {
-				"Content-Type": "application/json",
+				"Content-Type": "multipart/form-data",
 			},
 		});
 
-		return true;
+		// Extract role from the response
+		const { message, role } = response.data;
+
+		if (response.status === 202) {
+			console.log(message);
+			if (role) {
+				setEmail(email);
+				setRole(role);
+				setIsLoggedIn(true);
+			}
+			return true;
+		} else {
+			console.error("Unexpected status code:", response.status);
+			return false;
+		}
 	} catch (err) {
 		// Enhanced error handling
-		console.error("Error loginning in:", err);
+		console.error("Error logging in:", err);
 
-		// Handle specific Axios errors (e.g., network issues, validation issues)
 		if (err.response) {
-			// Server responded with a status other than 2xx
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 			return false;
 		} else if (err.request) {
-			// Request was made but no response was received (network error)
 			alert("Network error. Please check your connection and try again.");
 			return false;
 		} else {
-			// Something else happened
 			alert("An unexpected error occurred. Please try again.");
 			return false;
 		}
 	}
-};
+}
 
-export async function logOutUser(setIsLoggedIn, setEmail, setRole) {
+export function logOutUser(setIsLoggedIn, setEmail, setRole) {
 	try {
 		// Call the setter functions to reset login state in context
 		setIsLoggedIn(false);
@@ -186,4 +221,4 @@ export async function logOutUser(setIsLoggedIn, setEmail, setRole) {
 		console.error("Error logging out:", error);
 		return false;
 	}
-};
+}

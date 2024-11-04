@@ -1,5 +1,6 @@
-/* Creating background */
-main {
+/* Scoped Styles for MoreInfo Page */
+
+.moreInfoMain {
   background-image: url('../../media/background.png'); 
   background-size: cover; 
   background-position: center;
@@ -11,15 +12,14 @@ main {
   align-items: center;
 }
 
-a {
+.moreInfoLink {
   color: inherit;
   text-decoration: none;
-  font-weight: 650;
   position: relative;
   transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-a::after {
+.moreInfoLink::after {
   content: "";
   display: block; 
   height: 2px; 
@@ -32,12 +32,17 @@ a::after {
   transition: transform 0.3s ease;
 }
 
-a:hover::after {
+.moreInfoLink:hover::after {
   transform: scaleX(1);
 }
 
-button {
+.moreInfoButton {
   width: 60%;
+}
+
+.moreInfoIcon {
+  font-size: 3.5rem;
+  cursor: pointer;
 }
 
 .blur-container {
@@ -62,7 +67,7 @@ button {
   font-weight: 500;
 }
 
-/* Media queries for responsive text size */
+/* Media queries */
 @media (max-width: 1400px) {
   .welcome-header {
     font-size: 15rem;
@@ -72,7 +77,6 @@ button {
     font-size: 1.5rem; 
   }
 }
-
 
 @media (max-width: 1200px) {
   .welcome-header {

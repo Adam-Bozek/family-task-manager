@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./css/LoginPage.module.css"; 
 
 import { checkIfUserExists, logInUser } from "./utilities/Utils";
 
+import {AppContext} from "./utilities/AppContext";
+
 const LoginPage = () => {
-	const [email, setEmail] = useState(null);
+	const { setEmail, setRole, setIsLoggedIn } = useContext(AppContext);
+
+	const [email, setEmail1] = useState(null);
 	const [password, setPassword] = useState(null);
 
 	const navigate = useNavigate();
@@ -14,16 +18,24 @@ const LoginPage = () => {
 		navigate(route);
 	};
 
-	const const_handle_user_login = () => {
-		if (!checkIfUserExists(email)) {
-			alert("Neexistujuci používateľ!");
-		} else {
-			if (logInUser(email, password)) {
-				handle_redirect("/Dashboard");
-			} else {
-				alert("Email alebo heslo je zle.");
-			}
-		}
+	const const_handle_user_login = async () => {
+    if (!checkIfUserExists(email)) {
+      alert("Neexistujuci používateľ!"); // Alert: User does not exist
+    } else {
+      try {
+        // Use await in an async function
+        const loginSuccess = await logInUser(email, password, setEmail, setRole, setIsLoggedIn);
+        
+        if (loginSuccess) {
+          handle_redirect("/Dashboard");  // Redirect to Dashboard if login succeeds
+        } else {
+          alert("Email alebo heslo je zle."); // Alert: Email or password is wrong
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert("An error occurred during login.");
+      }
+    }
 	};
 
 	return (
@@ -46,7 +58,7 @@ const LoginPage = () => {
 							placeholder="Email"
 							className={styles.loginFormInput}
 							value={email}
-							onChange={(e) => setEmail(e.target.value)} 
+							onChange={(e) => setEmail1(e.target.value)} 
 						/>
 						<input
 							type="password"
