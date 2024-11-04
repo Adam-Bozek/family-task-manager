@@ -1,0 +1,220 @@
+.mainContainer {
+    background-image: url('../../media/background.png');
+    background-size: cover;
+    min-height: 100vh; /* Zabezpečí, že kontajner pokryje celú výšku stránky */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    
+
+}
+
+.blurContent {
+    background-color: rgba(237, 234, 234, 0.59);
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+   
+    }
+
+
+.blurContainer {
+    background-color: rgba(237, 234, 234, 0.59);
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+    padding: 20px;
+    width: 100%;
+    
+    }
+
+
+
+.content {
+    background-color: rgb(249, 247, 247);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px; /* Rovnaká maximálna šírka ako blurContainer pre konzistenciu */
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    height: 600px;
+    margin: 0 auto;
+    max-width: 1320px;
+}
+
+  
+.navbar {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+  
+.navbar button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    background-color: #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.navbar button.activeTab {
+    background-color: #000;
+    color: #fff;
+}
+
+
+
+.membersContainer {
+    display: flex;
+    gap: 20px; /* Space between sections */
+    justify-content: space-between;
+}
+
+.memberList, .removeMember {
+    flex: 1;
+    
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .leftText {
+    text-align: left;
+  }
+  
+  .rightText {
+    text-align: left;
+  }
+
+
+
+
+
+.rewardsContainer {
+    display: flex;
+    gap: 20px; /* Space between the two sections */
+    justify-content: space-between;
+   /* align-items: flex-end;  Align items at the top */
+
+    
+}
+
+.rewardList, .addReward {
+    flex: 1;
+}
+
+
+.infoText {
+    color: rgb(0, 0, 0);
+    font-size: 1.2em; /* Zvýšená veľkosť písma */
+    font-weight: bold; /* Tučné písmo */
+        margin-top: 130px; /* Medzera nad textom */
+      
+}
+
+
+.table {
+    width: 80%;
+    font-weight: bold; /* Tučné písmo */
+    border-collapse: collapse;
+}
+
+.table td {
+    white-space: nowrap; /* Prevent text from wrapping */
+    border: 1px solid #ccc;
+    padding: 8px; /* Adjust padding for smaller size */
+    text-align: middle;
+};
+
+.table th {
+    border: 1px solid #ccc;
+    padding: 8px; /* Consistent padding for headers */
+    text-align: middle;
+}
+
+.inputField {
+    width: 100%; /* Keep input field full width */
+    padding: 5px; /* Decrease padding for smaller fields */
+    
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem; /* Adjust font size if necessary */
+}
+
+.submitButton, .cancelButton {
+    background-color: #000;
+    color: #fff;
+    padding: 8px 12px; /* Adjust button padding */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submitButton {
+    background-color: #000;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submitButton:hover {
+    background-color: #333; /* Slightly lighter color on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+
+.cancelFamily {
+    text-align: center;
+}
+
+.cancelButton {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 12px 20px; /* Increase padding for a larger button */
+    font-size: 1.1rem; /* Adjust font size to make it larger */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Add smooth transition for hover effect */
+}
+
+.cancelButton:hover {
+    background-color: #c0392b; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+
+/* Add these styles to limit the width of the forms */
+form {
+    max-width: 300px; /* Set a maximum width for the forms */
+    margin: auto; /* Center the form within its container */
+}
+
+.removeMember, .addReward {
+    max-width: 300px; /* Set a max width for the individual sections */
+    margin: auto; /* Center the section within its container */
+}
+
+
+.nav-font-weight {
+    font-weight: 600; /* Set a valid value */
+    font-size: 1.7rem;
+  }
+  
+  .nav-button-weight {
+    font-weight: 400; /* Set a valid value */
+    font-size: 1.3rem;
+    padding: 10px;
+  }
