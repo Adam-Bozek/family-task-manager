@@ -7,7 +7,7 @@ import { checkIfUserExists, logInUser } from "./utilities/Utils";
 import {AppContext} from "./utilities/AppContext";
 
 const LoginPage = () => {
-	const { setEmail, setRole, setIsLoggedIn } = useContext(AppContext);
+	const { role, setEmail, setRole, setIsLoggedIn } = useContext(AppContext);
 
 	const [email, setEmail1] = useState(null);
 	const [password, setPassword] = useState(null);
@@ -24,10 +24,16 @@ const LoginPage = () => {
     } else {
       try {
         // Use await in an async function
-        const loginSuccess = await logInUser(email, password, setEmail, setRole, setIsLoggedIn);
+        const loginSuccess = await logInUser(email, password, setIsLoggedIn, setEmail, setRole);
         
-        if (loginSuccess) {
-          handle_redirect("/Dashboard");  // Redirect to Dashboard if login succeeds
+        if (loginSuccess && role === "after-reg" ) {
+          handle_redirect("/AfterRegistration");
+				}
+				else if (loginSuccess && role === "parent") {
+					handle_redirect("/ParentDashboard");
+				}
+				else if (loginSuccess && role === "kid"){
+          handle_redirect("/KidDashboard");
         } else {
           alert("Email alebo heslo je zle."); // Alert: Email or password is wrong
         }

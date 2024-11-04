@@ -86,7 +86,7 @@ export async function createUserAccount(name, surname, email, password) {
 		formData.append("password", hashedPassword);
 	
 		// Updated to use the correct endpoint URL
-		const localApiAddress = apiAddress + "/create_user";
+		const localApiAddress = apiAddress + "/Create_user";
 	
 		// Send the form data to the backend endpoint for user creation
 		const response = await Axios.post(localApiAddress, formData, {

@@ -23,7 +23,6 @@ export const AppProvider = ({ children }) => {
   // Setter function for email
   const setEmail = (newEmail) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     if (emailRegex.test(newEmail)) {
       setStateEmail(newEmail);
     } else {
