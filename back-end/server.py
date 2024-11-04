@@ -1,5 +1,7 @@
 import psycopg2
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+import bcrypt
 import string
 import random
 
@@ -37,8 +39,13 @@ def connectiondb(query, params=None):
             connection.close()
         print("Uz je konec!!!!")
 
+# Compare password with saved hash
+def check_password(plaintext_password, hashed_password):
+    return bcrypt.checkpw(plaintext_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
 # Initialize Flask application
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/Create_user', methods=['POST'])
 def create_user():
@@ -67,8 +74,6 @@ def check_user_exist():
     # SQL query
     syntax = "SELECT * FROM uzivatel WHERE email = %s;"
     result = connectiondb(syntax, (email,))
-    
-    print(result)
 
     # Return
     if result:
@@ -86,27 +91,30 @@ def login():
     password = request.form.get('password')
 
     # SQL query
-    syntax = "SELECT * FROM uzivatel WHERE email = %s AND heslo = %s;"
-    result = connectiondb(syntax, (email, password))
+    syntax = "SELECT * FROM uzivatel WHERE email = %s;"
+    result = connectiondb(syntax, (email,))
+
+    if check_password(password, result[0][4]):
+        compare = True
+    else:
+        compare = False
     
     # Return Login
-    if result:
+    if compare:
         # Get ID from result
         id = result[0]
         syntax1 = "SELECT rola FROM clen WHERE ID = %s;"
         result1 = connectiondb(syntax1, (id))
-
-        print(result1)
         
         # Return Role
         if result1:
             return jsonify({"message": "Prihlásenie úspešné.", "role": f"{result1[3]}"}), 202 # Accepted
         elif result1 == None:
-            return jsonify({"message": "Prihlásenie úspešné", "role": "AfterReg"}), 202 # Accepted
+            return jsonify({"message": "Prihlásenie úspešné", "role": "after-reg"}), 202 # Accepted
         else:
             return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
         
-    elif result == []:
+    elif compare == False:
         return jsonify({"message": "Prihlásenie neúspešné."}), 406 # Not Acceptable
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
@@ -249,4 +257,4 @@ def delete_family():
 #def kids_exchange():
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    app.run(host='147.232.205.117', port=5000)
