@@ -2,13 +2,13 @@
   background-image: url('../../media/background.png');
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  min-height: 100vh; /* Použi min-height, aby pozadie pokrylo obrazovku */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
+  overflow: hidden; /* Skryť pretekanie, ak je to potrebné */
 }
-
 .header {
   width: 80%;
   max-width: 1200px;
@@ -29,17 +29,18 @@
 
 .mainContainer {
   display: flex;
-  width: 80%;
-  max-width: 1200px;
+  width: 100%;
   background-color: rgba(248, 254, 255, 0.70);
   backdrop-filter: blur(20px);
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 50px auto; /* Center the container itself */
+  max-width: 1320px; /* Set a max width if necessary */    
 }
 
 .formContainer {
-  flex: 1;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -74,13 +75,16 @@
 }
 
 .userSection {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .taskList {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Povoliť úlohy na pretekanie */
   gap: 10px;
+  margin-left: 20px; /* Medzera medzi menom a úlohami */
 }
 
 .taskBox {
@@ -99,4 +103,110 @@
   border-radius: 20px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   justify-content: space-between; /* add this to space out the buttons */
+}
+
+/* TEMPLATE.module.css */
+.nav-font-weight {
+  font-weight: 655; /* Change 660 to a valid value */
+  font-size: 1.7rem;
+}
+
+.nav-button-weight {
+  font-weight: 400; /* Change 450 to a valid value */
+  font-size: 1.30rem;
+  padding: 10px;
+}
+
+
+.templateMain {
+  background-image: url('../../media/background.png'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+  display: flex;
+}
+
+.blur-container {
+  background-color: rgba(237, 234, 234, 0.59);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar-settings {
+  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+}
+
+.tooltip {
+  position: absolute; /* Fixed positioning to overlay on tasks */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 10; /* Make sure tooltip is on top */
+  transition: opacity 0.3s; /* Smooth transition for the tooltip */
+}
+
+.taskBox {
+  position: relative; /* Set to relative to position the tooltip */
+}
+
+.userSection {
+  margin-bottom: 20px; /* Pre vzdialenosť medzi jednotlivými sekciami */
+  padding-bottom: 10px; /* Pre viac priestoru pod menom */
+  border-bottom: 1px solid black; 
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .mainContainer {
+    flex-direction: column; /* Stack items on smaller screens */
+    width: 90%; /* Use more width on smaller screens */
+    margin: 20px auto; /* Adjust margins */
+  }
+
+  .header {
+    flex-direction: column; /* Stack header items on smaller screens */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .header .logoutButton {
+    margin-top: 10px; /* Add spacing between buttons */
+  }
+
+  .formContainer {
+    padding: 10px; /* Reduce padding */
+  }
+
+  .input {
+    margin-bottom: 10px; /* Adjust margin for inputs */
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    width: 95%; /* Use almost full width on very small screens */
+  }
+
+  .nav-font-weight {
+    font-size: 1.5rem; /* Reduce font size for nav links */
+  }
+
+  .nav-button-weight {
+    font-size: 1rem; /* Reduce button font size */
+  }
 }
