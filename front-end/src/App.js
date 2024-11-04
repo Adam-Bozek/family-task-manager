@@ -7,6 +7,7 @@ import MoreInfo from "./components/MoreInfo";
 import RegistrationPage from "./components/RegistrationPage";
 import AfterRegistration from "./components/AfterRegistration";
 import LoginPage from "./components/LoginPage";
+import ParentAddTask from "./components/ParentAddTask";
 
 import TEMPLATE from "./components/TEMPLATE"; // This is a placeholder for your template component. Replace it with your actual component.
 
@@ -21,6 +22,7 @@ const App = () => {
 			<Route path="/Register" element={<RegistrationPage />} />
 			<Route path="/LogIn" element={<LoginPage />} />
 			<Route path="/TEST" element={<TEMPLATE />} />
+			<Route path="/ParentAddTask" element={<ParentAddTask />} />
 
 			{/* Routes only accessible after registration */}
 			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} /> {/*Maybe hash this role or use soe string that seems hashed*/}
