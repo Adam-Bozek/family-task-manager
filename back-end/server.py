@@ -235,20 +235,20 @@ def delete_family():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
-@app.route('/Add_tasks', methods=['POST'])
-def add_tasks();
+#@app.route('/Add_tasks', methods=['POST'])
+#def add_tasks();
     
-@app.route('Parents_tasks' methods=['POST'])
-def parent_tasks():
+#@app.route('Parents_tasks' methods=['POST'])
+#def parent_tasks():
     
-@app.route('/Parents_rewards', methods=['POST'])
-def parents_rewards():
+#@app.route('/Parents_rewards', methods=['POST'])
+#def parents_rewards():
     
-@app.route('/Kids_dashboard', methods=['POST'])
-def kids_dashboard():
+#@app.route('/Kids_dashboard', methods=['POST'])
+#def kids_dashboard():
     
-@app.route('/Kids_exchange', methods=['POST'])
-def kids_exchange():
+#@app.route('/Kids_exchange', methods=['POST'])
+#def kids_exchange():
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000)
