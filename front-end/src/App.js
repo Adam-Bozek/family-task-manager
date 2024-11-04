@@ -23,6 +23,7 @@ const App = () => {
 			<Route path="/LogIn" element={<LoginPage />} />
 			<Route path="/TEST" element={<TEMPLATE />} />
 			<Route path="/ParentAddTask" element={<ParentAddTask />} />
+			
 
 			{/* Routes only accessible after registration */}
 			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} /> {/*Maybe hash this role or use soe string that seems hashed*/}
