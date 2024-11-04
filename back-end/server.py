@@ -53,10 +53,8 @@ def create_user():
     result = connectiondb(syntax, (name, surname, email, password))
 
     # Return
-    if result:
+    if not result:
         return jsonify({"message": "Používateľ vytvorený."}), 201 # Created
-    elif result == None:
-        return jsonify({"message": "Používateľ nevytvorený."}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
