@@ -77,13 +77,8 @@ const RegistrationPage = () => {
         // Vytvorenie používateľského účtu
         createUserAccount(formData.firstName, formData.lastName, formData.email, formData.password)
             .then(() => {
-                // FIXME: Nasledujúce riadky odstrániť pri hotovom backende
-                setEmail(formData.email);
-                setRole("after-reg");
-                setIsLoggedIn(true);
-
                 console.log("Registered:", formData);
-                navigate("/AfterRegistration");
+                navigate("/Login");
             })
             .catch((error) => {
                 console.error("Registration error:", error);

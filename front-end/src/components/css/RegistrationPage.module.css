@@ -95,53 +95,47 @@
   margin-left: -90px;
 }
 
-/* Media queries for responsive text size */
-@media (max-width: 1400px) {
-  .registrationWelcomeHeader {
-      font-size: 15rem;
-  }
-
-  .registrationInfoText {
-      font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 1200px) {
-  .registrationWelcomeHeader {
-      font-size: 10rem;
-  }
-
-  .registrationInfoText {
-      font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 992px) {
-  .registrationWelcomeHeader {
-      font-size: 8rem;
-  }
-
-  .registrationInfoText {
-      font-size: 1.2rem;
-  }
-}
-
+/* Pre obrazovky menšie ako 768px (mobilné zariadenia) */
 @media (max-width: 768px) {
+  .registrationContainer {
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+  }
+
   .registrationWelcomeHeader {
-      font-size: 5rem;
+    font-size: 3rem;
+    text-align: center;
   }
 
   .registrationInfoText {
-      font-size: 1rem;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .registrationLoginTitle {
+    font-size: 1.5rem;
+  }
+
+  .registrationFormInput,
+  .registrationButton {
+    width: 90%;
+    font-size: 0.9rem;
   }
 }
 
-@media (max-width: 576px) {
+/* Pre obrazovky menšie ako 480px (menšie mobilné zariadenia) */
+@media (max-width: 480px) {
   .registrationWelcomeHeader {
-      font-size: 3rem;
+    font-size: 2.5rem;
   }
 
   .registrationInfoText {
-      font-size: 0.9rem;
+    font-size: 0.9rem;
+  }
+
+  .registrationButton {
+    padding: 10px;
+    font-size: 0.8rem;
   }
 }

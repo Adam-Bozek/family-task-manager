@@ -1,12 +1,12 @@
 import bcrypt from "bcryptjs";
 import Axios from "axios";
 
-const apiAddress = "http://147.232.205.117";
+const apiAddress = "http://147.232.205.117:5000";
 
 // Functions for creating a user
 export function validateName(name) {
-	// Check if name is a string, not empty, and contains only alphabetic characters and spaces
-	if (typeof name !== "string" || !name.trim() || !/^[a-zA-Z\s]+$/.test(name)) {
+	// Check if name is a string, not empty, and contains only alphabetic characters (with diacritics) and spaces
+	if (typeof name !== "string" || !name.trim() || !/^[\p{L}\s]+$/u.test(name)) {
 		return false;
 	}
 
@@ -14,13 +14,14 @@ export function validateName(name) {
 }
 
 export function validateSurname(surname) {
-	// Check if surname is a string, not empty, and contains only alphabetic characters and spaces
-	if (typeof surname !== "string" || !surname.trim() || !/^[a-zA-Z\s]+$/.test(surname)) {
+	// Check if surname is a string, not empty, and contains only alphabetic characters (with diacritics) and spaces
+	if (typeof surname !== "string" || !surname.trim() || !/^[\p{L}\s]+$/u.test(surname)) {
 		return false;
 	}
 
 	return true;
 }
+
 
 export function validateEmail(email) {
 	// Improved regex for email validation
@@ -76,28 +77,36 @@ export async function createUserAccount(name, surname, email, password) {
 	try {
 		// Hash the password with bcryptjs before sending it to the backend
 		const hashedPassword = await bcrypt.hash(password, 10);
-
+	
 		// Using FormData to send form-urlencoded data as the backend expects request.form
 		const formData = new FormData();
 		formData.append("name", name);
 		formData.append("surname", surname);
 		formData.append("email", email);
 		formData.append("password", hashedPassword);
-
+	
+		// Updated to use the correct endpoint URL
 		const localApiAddress = apiAddress + "/Create_user";
-
+	
 		// Send the form data to the backend endpoint for user creation
 		const response = await Axios.post(localApiAddress, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
 		});
-
-		return true;
+	
+		// Check response status for success confirmation
+		if (response.status === 201) {
+			alert("User successfully created.");
+			return true;
+		} else {
+			alert("User creation was unsuccessful.");
+			return false;
+		}
 	} catch (err) {
 		// Enhanced error handling
 		console.error("Error creating account:", err);
-
+	
 		if (err.response) {
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 			return false;
@@ -109,6 +118,7 @@ export async function createUserAccount(name, surname, email, password) {
 			return false;
 		}
 	}
+	
 }
 
 // Functions for logging in a user
