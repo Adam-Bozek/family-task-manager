@@ -322,3 +322,23 @@
     gap: 5px;
   }
 }
+.buttonCustom {
+  padding: 15px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+}
+.buttonCustom2 {
+  padding: 15px;
+  background-color: grey;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+}
