@@ -1,4 +1,3 @@
-// App.js
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -38,7 +37,7 @@ const App = () => {
 			<Route path="/test_template" element={<TEMPLATE />} />
 
 			{/* Routes only accessible after registration */}
-			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} />{" "}
+			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} />
 			
 			{/* TODO: Implement this: Routes only for parents */}
 			<Route path="/MoreInfo" element={<ProtectedRoute element={<MoreInfo />} allowedRoles={["parent"]} />} />
