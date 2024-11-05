@@ -5,6 +5,8 @@ import bcrypt
 import string
 import random
 
+# TODO: Pridať podmienky napr. pri pridavani používateľa do DB že nemôžu byť vstupné údaje None (Null)
+
 def connectiondb(query, params=None):
     print("Start")
     connection = None  # Initialize connection variable
