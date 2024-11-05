@@ -32,6 +32,7 @@ const ParentAddTask = () => {
     }
   };
 
+
   const removeTask = (userName, taskIndex) => {
     setTasks((prevTasks) => {
       const userTasks = [...prevTasks[userName]];
