@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import styles from './css/ParentDashboardTasks.module.css';
 
 const ParentDashboardTasks = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: 'Adam', task: 'Upratať izbu' },
-    { id: 2, name: 'Eva', task: 'Vyvenčiť psa' },
-  ]);
+  const [tasks, setTasks] = useState({
+    Adam: ['Upratať izbu', 'Urobiť domáce úlohy', 'Napísať správu učiteľovi'], // Grouped tasks for Adam
+    Janko: ['Vyvenčiť psa'],
+    Marta: ['Urobiť domácu úlohu'],
+   
+    
+  });
+
+  const addTask = (name, newTask) => {
+    setTasks(prevTasks => ({
+      ...prevTasks,
+      [name]: [...prevTasks[name], newTask], // Append new task to the existing tasks of the child
+    }));
+  };
+
+  // Example: Adding a task for Adam (you can call this function with user input)
+  // addTask('Adam', 'Nová úloha pre Adama');
 
   return (
     <>
@@ -51,33 +64,34 @@ const ParentDashboardTasks = () => {
               </div>
             </nav>
           </header>
+          
           <div className={styles.mainContainer}>
             <div className={styles.formContainer}>
               <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Úlohy</button>
               <button className={`btn btn-secondary ${styles["nav-button-weight"]} rounded-4 my-1`}>Vybrané odmeny</button>
-              <h3>Úlohy na splnenie dnes</h3>
             </div>
-
-
-
-            <table className={styles.taskTable}>
-              <thead>
-                <tr>
-                  <th>Meno</th>
-                  <th>Úloha</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task) => (
-                  <tr key={task.id}>
-                    <td>{task.name}</td>
-                    <td>{task.task}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div className={styles.legendContainer}>
+            <h3>Úlohy na splnenie dnes</h3>
+            <div className={styles.tasksContainer}>
+              {Object.entries(tasks).map(([name, taskList]) => (
+                <div key={name} className={styles.userTaskGroup}>
+                  <div className={styles.userSection}>
+                    <span className={styles.userName}>{name}</span>
+                    <div className={styles.taskList}>
+                      {taskList.map((task, index) => (
+                        <span key={index} className={styles.taskItem}>{task}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+           
+            
+            {/* Pridaný legendContainer do mainContainer */}
+           
+       
+      
+        
+        <div className={styles.legendContainer}>
               <div className={styles.legend}>
                 <span className={styles.legendItem}><span className={styles.completed}></span> Splnené</span>
                 <span className={styles.legendItem}><span className={styles.notCompleted}></span> Nesplnené</span>
@@ -85,11 +99,10 @@ const ParentDashboardTasks = () => {
                 <span className={styles.legendItem}><span className={styles.notStarted}></span> Zatiaľ neurobené</span>
               </div>
             </div>
-          </div>
-        </div>
-
-      </div>
-
+            </div>
+            </div>
+            </div>
+            </div>
     </>
   );
 };

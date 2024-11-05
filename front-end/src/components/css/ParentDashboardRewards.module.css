@@ -1,116 +1,319 @@
 .pageContainer {
-    padding: 20px;
-  }
+  background-image: url('../../media/background.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh; /* Použi min-height, aby pozadie pokrylo obrazovku */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  overflow: hidden; /* Skryť pretekanie, ak je to potrebné */
+}
+.header {
+  width: 80%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logoutButton {
+  padding: 15px 30px;  /* Increase padding for a wider button */
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center; /* Center text within the button */
+  font-size: 16px;    /* Adjust font size if needed */
+}
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  width: 100%;
+  background-color: rgba(248, 254, 255, 0.70);
+  backdrop-filter: blur(20px);
+  padding: 20px; /* Znížený padding */
+  border-radius: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 0px auto; /* Znížený margin */
+  max-width: 1320px; /* Max width remains the same */
+  box-sizing: border-box; /* Zohľadňuje padding a border v šírke a výške */
   
-  .buttonFrame {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-bottom: 20px;
+}
+
+
+.formContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* Align buttons to the left */
+  gap: 10px; /* Space between buttons */
+  margin-bottom: 20px; /* Space below the button container */
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.confirmButton {
+  padding: 15px 30px;  /* Increase padding for a wider button */
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-align: center; /* Center text within the button */
+  font-size: 16px;    /* Adjust font size if needed */
+}
+
+.confirmButton:hover {
+  background-color: #292929;
+}
+
+/* For general button styling */
+.buttonFrame button {
+  padding: 15px 30px;  /* Increase padding for a wider button */
+  font-size: 16px;     /* Adjust font size for better readability */
+  text-align: center;  /* Center text within the button */
+}
+
+.tasksContainer {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Pridajte rolovanie pre vertikálny overflow */
+  max-height: 400px; /* Nastavte maximálnu výšku pre rolovanie */
+  gap: 15px; /* Medzera medzi každou používateľskou sekciou */
+  position: relative; /* Pre relatívne umiestnenie guľôčky */
+}
+
+
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.taskList {
+  display: flex;
+  flex-wrap: wrap; /* Povoliť úlohy na pretekanie */
+  gap: 10px;
+  margin-left: 20px; /* Medzera medzi menom a úlohami */
+}
+
+.taskBox {
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+
+.tabButtonActive,
+.tabButtonInactive {
+  margin-right: 10px; /* Space between buttons */
+}
+
+/* TEMPLATE.module.css */
+.nav-font-weight {
+  font-weight: 655; /* Change 660 to a valid value */
+  font-size: 1.7rem;
+}
+
+.nav-button-weight {
+  font-weight: 400; /* Change 450 to a valid value */
+  font-size: 1.30rem;
+  padding: 10px;
+}
+
+
+.templateMain {
+  background-image: url('../../media/background.png'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+  display: flex;
+}
+
+.blur-container {
+  background-color: rgba(237, 234, 234, 0.59);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar-settings {
+  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+}
+
+.tooltip {
+  position: absolute; /* Fixed positioning to overlay on tasks */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 10; /* Make sure tooltip is on top */
+  transition: opacity 0.3s; /* Smooth transition for the tooltip */
+}
+
+.taskBox {
+  position: relative; /* Set to relative to position the tooltip */
+}
+
+.userSection {
+  margin-bottom: 20px; /* Pre vzdialenosť medzi jednotlivými sekciami */
+  padding-bottom: 10px; /* Pre viac priestoru pod menom */
+  border-bottom: 1px solid black; 
+}
+
+.legendContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+ 
+  border-radius: 0 0 20px 20px;
+  max-width: 100%;
+}
+
+.legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: #333;
+}
+
+.completed,
+.notCompleted,
+.pending,
+.notStarted {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.completed {
+  background-color: #2e8b57; /* zelená */
+}
+
+
+.pending {
+  background-color: #ffc107; /* žltá */
+}
+
+
+.tasksContainer {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 16px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between each user section */
+}
+
+.userTaskGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 0;
+  /* border-bottom: 1px solid #ddd; */ /* Removed the line */
+}
+
+.userName {
+  font-weight: bold;
+  color: #333;
+  margin-right: 10px;
+  font-size: 20px; /* Increased font size */
+}
+
+.taskList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between tasks */
+  color: #555;
+}
+
+.taskItem {
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Optional hover effect for task items */
+.taskItem:hover {
+  background-color: #e1e1e1;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .header {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .backButton, .settingsButton, .taskButton, .logoutButton {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .backButton {
-    background-color: #fff;
-    color: #000;
-  }
-  
-  .settingsButton, .taskButton {
-    background-color: #f1f1f1;
-    color: #000;
-  }
-  
   .logoutButton {
-    background-color: #333;
-    color: #fff;
-  }
-  
-  .mainContainer {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .tabInactive {
-    background-color: #f1f1f1;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .tabActive {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .rewardTable {
-    margin-top: 20px;
-  }
-  
-  .userRow {
-    display: flex;
-    align-items: center;
+    width: 100%;
     padding: 10px 0;
-    border-bottom: 1px solid #ddd;
+    font-size: 14px;
   }
-  
-  .userName {
-    font-weight: bold;
-    flex: 1;
+  .mainContainer {
+    padding: 10px;
   }
-  
-  .rewardList {
-    display: flex;
+}
+
+@media (max-width: 480px) {
+  .nav-font-weight {
+    font-size: 1.2rem;
+  }
+  .nav-button-weight {
+    font-size: 1rem;
+    padding: 8px;
+  }
+  .legendContainer {
+    flex-direction: column;
     gap: 10px;
   }
-  
-  .rewardBox {
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: #ffffff;
-  }
-  
-  .legend {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  .legendItem {
-    display: flex;
-    align-items: center;
+}
+@media (max-width: 480px) {
+  .formContainer {
+    padding: 5px;
     gap: 5px;
   }
-  
-  .completed {
-    width: 15px;
-    height: 15px;
-    background-color: #4CAF50;
-    border-radius: 50%;
-  }
-  
-  .pending {
-    width: 15px;
-    height: 15px;
-    background-color: #FFC107;
-    border-radius: 50%;
-  }
-  
+}

@@ -1,46 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react'; 
 import styles from './css/ParentDashboardRewards.module.css';
 
-const ParentDashboardRewards = ({ rewards }) => {
+const ParentDashboardTasks = () => {
+  const [tasks, setTasks] = useState({
+    Adam: ['Sladkosť', '5€'], // Grouped tasks for Adam
+    Janko: ['20 minút PC'],
+    Marta: ['10€'],
+   
+    
+  });
+
+  const addTask = (name, newTask) => {
+    setTasks(prevTasks => ({
+      ...prevTasks,
+      [name]: [...prevTasks[name], newTask], // Append new task to the existing tasks of the child
+    }));
+  };
+
+  // Example: Adding a task for Adam (you can call this function with user input)
+  // addTask('Adam', 'Nová úloha pre Adama');
+
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.buttonFrame}>
-        <button className={styles.backButton}>Domov</button>
-        <button className={styles.settingsButton}>Nastavenia</button>
-        <button className={styles.taskButton}>Zadať úlohu</button>
-        <button className={styles.logoutButton}>Odhlásiť sa</button>
-      </div>
-      <div className={styles.mainContainer}>
-        <div className={styles.tabs}>
-          <button className={styles.tabInactive}>Úlohy</button>
-          <button className={styles.tabActive}>Vybrané odmeny</button>
-        </div>
-        <h3>Úlohy na splnenie dnes</h3>
-        <div className={styles.rewardTable}>
-          {rewards.map((user, index) => (
-            <div key={index} className={styles.userRow}>
-              <span className={styles.userName}>{user.name}</span>
-              <div className={styles.rewardList}>
-                {user.rewards.map((reward, rewardIndex) => (
-                  <span
-                    key={rewardIndex}
-                    className={styles.rewardBox}
-                    style={{ backgroundColor: reward.status === 'completed' ? '#4CAF50' : '#FFC107' }}
-                  >
-                    {reward.name}
-                  </span>
-                ))}
+    <>
+      <div className={styles["templateMain"]}>
+        <div className={styles["blur-container"]}>
+          <header className={`container my-3 ${styles["navbar-settings"]}`}>
+            <nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
+              <div className={`container-fluid`}>
+                <button
+                  className="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarsExample11"
+                  aria-controls="navbarsExample11"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span className="navbar-toggler-icon"></span>
+                </button>
+
+                <div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+                  <span className="navbar-brand col-lg-3 me-0" />
+                  <ul className="navbar-nav col-lg-6 justify-content-lg-center">
+                    <li className="nav-item ">
+                      <a className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" href="#">
+                        Domov
+                      </a>
+                    </li>
+                    <li className="nav-item mx-4">
+                      <a className={`nav-link ${styles["nav-font-weight"]}`} href="#">
+                        Nastavenia
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a className={`nav-link ${styles["nav-font-weight"]}`} aria-disabled="true">
+                        Zadať úlohu
+                      </a>
+                    </li>
+                  </ul>
+                  <div className="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Odhlásiť sa</button>
+                  </div>
+                </div>
+              </div>
+            </nav>
+          </header>
+          
+          <div className={styles.mainContainer}>
+            <div className={styles.formContainer}>
+              <button className={`btn btn-secondary ${styles["nav-button-weight"]} rounded-4 my-1`}>Úlohy</button>
+              <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Vybrané odmeny</button>
+            </div>
+            <h3>Úlohy na splnenie dnes</h3>
+            <div className={styles.tasksContainer}>
+              {Object.entries(tasks).map(([name, taskList]) => (
+                <div key={name} className={styles.userTaskGroup}>
+                  <div className={styles.userSection}>
+                    <span className={styles.userName}>{name}</span>
+                    <div className={styles.taskList}>
+                      {taskList.map((task, index) => (
+                        <span key={index} className={styles.taskItem}>{task}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+           
+            
+            {/* Pridaný legendContainer do mainContainer */}
+           
+       
+      
+        
+        <div className={styles.legendContainer}>
+              <div className={styles.legend}>
+                <span className={styles.legendItem}><span className={styles.completed}></span> Splnené</span>
+                <span className={styles.legendItem}><span className={styles.pending}></span> Čakajúce na splnenie</span>
+         
               </div>
             </div>
-          ))}
-        </div>
-        <div className={styles.legend}>
-          <span className={styles.legendItem}><span className={styles.completed}></span> Splnené</span>
-          <span className={styles.legendItem}><span className={styles.pending}></span> Čakajúce na splnenie</span>
-        </div>
-      </div>
-    </div>
+            </div>
+            </div>
+            </div>
+            </div>
+    </>
   );
 };
 
-export default ParentDashboardRewards;
+export default ParentDashboardTasks;
