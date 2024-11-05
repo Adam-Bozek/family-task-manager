@@ -1,104 +1,196 @@
-/* ParentDashboardTasks.module.css */
-
 .pageContainer {
-  font-family: Arial, sans-serif;
-  position: relative;
-  overflow: hidden;
-  padding: 20px;
-}
-
-.pageContainer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
   background-image: url('../../media/background.png');
   background-size: cover;
   background-position: center;
-  filter: blur(8px); /* Adjust blur level as needed */
-  z-index: -1;
-}
-
-/* Navbar */
-.navbar {
-  background-color: white;
-  border-radius: 8px;
-  padding: 10px 20px;
-}
-
-.nav-font-weight {
-  font-weight: 600;
-  color: black;
-}
-
-.nav-link.active {
-  color: #000;
-  font-weight: bold;
-}
-
-.navbar-nav .nav-item {
-  margin-right: 20px;
-}
-
-.nav-button-weight {
-  font-weight: 500;
-}
-
-/* Table Container */
-.tableContainer {
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
-}
-
-.tabs {
+  min-height: 100vh; /* Použi min-height, aby pozadie pokrylo obrazovku */
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  overflow: hidden; /* Skryť pretekanie, ak je to potrebné */
+}
+.header {
+  width: 80%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 }
 
-.tabActive {
-  background-color: black;
-  color: white;
+.logoutButton {
+  padding: 10px 20px;
+  background-color: #000;
+  color: #fff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-.tabInactive {
-  background-color: #e0e0e0;
-  color: black;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
+.mainContainer {
+  display: flex;
+  width: 100%;
+  background-color: rgba(248, 254, 255, 0.70);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 50px auto; /* Center the container itself */
+  max-width: 1320px; /* Set a max width if necessary */    
 }
 
-h3 {
-  font-size: 1.2rem;
+.formContainer {
+  flex: 0.5;
+  display: flex;
+  flex-direction: row;  /* Change to row for horizontal alignment */
+  padding: 20px;
+  gap: 10px;            /* Space between buttons */
+  align-items: center;  /* Align buttons vertically centered */
+}
+
+
+.input {
+  width: 100%;
+  padding: 10px;
   margin-bottom: 15px;
-  font-weight: 600;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-/* Legend */
+.confirmButton {
+  padding: 15px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirmButton:hover {
+  background-color: #292929;
+}
+
+.tasksContainer {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.taskList {
+  display: flex;
+  flex-wrap: wrap; /* Povoliť úlohy na pretekanie */
+  gap: 10px;
+  margin-left: 20px; /* Medzera medzi menom a úlohami */
+}
+
+.taskBox {
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.buttonFrame {
+  display: flex;
+  justify-content: flex-start; /* Align buttons to the left */
+  margin-bottom: 20px; /* Space below the buttons */
+}
+
+.tabButtonActive,
+.tabButtonInactive {
+  margin-right: 10px; /* Space between buttons */
+}
+
+/* TEMPLATE.module.css */
+.nav-font-weight {
+  font-weight: 655; /* Change 660 to a valid value */
+  font-size: 1.7rem;
+}
+
+.nav-button-weight {
+  font-weight: 400; /* Change 450 to a valid value */
+  font-size: 1.30rem;
+  padding: 10px;
+}
+
+
+.templateMain {
+  background-image: url('../../media/background.png'); 
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+  display: flex;
+}
+
+.blur-container {
+  background-color: rgba(237, 234, 234, 0.59);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+  padding: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar-settings {
+  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px); 
+  -webkit-backdrop-filter: blur(30px); 
+}
+
+.tooltip {
+  position: absolute; /* Fixed positioning to overlay on tasks */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 10; /* Make sure tooltip is on top */
+  transition: opacity 0.3s; /* Smooth transition for the tooltip */
+}
+
+.taskBox {
+  position: relative; /* Set to relative to position the tooltip */
+}
+
+.userSection {
+  margin-bottom: 20px; /* Pre vzdialenosť medzi jednotlivými sekciami */
+  padding-bottom: 10px; /* Pre viac priestoru pod menom */
+  border-bottom: 1px solid black; 
+}
+
+/* Legend styling */
 .legend {
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
+  justify-content: center; /* Center items horizontally */
+  gap: 15px;              /* Space between legend items */
+  margin-top: 200px;      /* Space above the legend */
+  flex-wrap: wrap;        /* Allow items to wrap to the next line if needed */
 }
+
 
 .legendItem {
   display: flex;
   align-items: center;
   font-weight: 500;
+}
+.legendContainer {
+  display: flex;               /* Use flexbox */
+  justify-content: center;     /* Center items horizontally */
+  margin-top: 20px;           /* Optional: space above the legend */
 }
 
 .completed, .notCompleted, .pending, .notStarted {
@@ -124,49 +216,34 @@ h3 {
 .notStarted {
   background-color: #00bcd4; /* Light blue for not started */
 }
-
-/* Task Row Styles */
-.taskRow {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+.taskTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 16px;
 }
 
-.taskRow span {
-  font-weight: bold;
-  margin-right: 20px;
+.taskTable th,
+.taskTable td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
 }
 
-.taskButton {
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: bold;
+.taskTable th {
+  background-color: #4CAF50;
   color: white;
-  cursor: pointer;
-  margin-right: 8px;
 }
 
-.greenButton {
-  background-color: #2e8b57; /* Green for completed */
+.taskTable tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.redButton {
-  background-color: #ff6b6b; /* Red for not completed */
+.taskTable tr:hover {
+  background-color: #f1f1f1;
 }
 
-.yellowButton {
-  background-color: #ffc107; /* Yellow for pending */
+.taskTable td {
+  color: #333;
 }
 
-.blueButton {
-  background-color: #00bcd4; /* Light blue for not started */
-}
-
-.taskButton:hover {
-  opacity: 0.9;
-}
-
-.taskButton:active {
-  opacity: 0.8;
-}
