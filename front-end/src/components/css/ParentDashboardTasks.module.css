@@ -322,7 +322,7 @@
     gap: 5px;
   }
 }
-.buttonCustom {
+.buttonTask {
   padding: 15px;
   background-color: #000000;
   color: #fff;
@@ -332,7 +332,7 @@
   font-size: 16px;
   text-align: center;
 }
-.buttonCustom2 {
+.buttonReward {
   padding: 15px;
   background-color: grey;
   color: #fff;

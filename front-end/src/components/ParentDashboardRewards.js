@@ -67,8 +67,8 @@ const ParentDashboardTasks = () => {
           
           <div className={styles.mainContainer}>
             <div className={styles.formContainer}>
-              <button className={`btn btn-secondary ${styles["nav-button-weight"]} rounded-4 my-1`}>Úlohy</button>
-              <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Vybrané odmeny</button>
+            <button className={` ${styles["buttonTask"]} my-1`}>Úlohy</button>
+            <button className={` ${styles["buttonReward"]} my-1`}>Vybrané odmeny</button>
             </div>
             <h3>Úlohy na splnenie dnes</h3>
             <div className={styles.tasksContainer}>
