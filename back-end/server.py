@@ -5,8 +5,6 @@ import bcrypt
 import string
 import random
 
-# TODO: Pridať podmienky napr. pri pridavani používateľa do DB že nemôžu byť vstupné údaje None (Null)
-
 def connectiondb(query, params=None):
     print("Start")
     connection = None  # Initialize connection variable
@@ -104,14 +102,14 @@ def login():
     # Return Login
     if compare:
         # Get ID from result
-        id = result[0]
-        syntax1 = "SELECT rola FROM clen WHERE ID = %s;"
-        result1 = connectiondb(syntax1, (id))
+        id = result[0][0]
+        syntax1 = "SELECT rola FROM clen WHERE id_uzivatel = %s;"
+        result1 = connectiondb(syntax1, (id,))
         
         # Return Role
         if result1:
-            return jsonify({"message": "Prihlásenie úspešné.", "role": f"{result1[3]}"}), 202 # Accepted
-        elif result1 == None:
+            return jsonify({"message": "Prihlásenie úspešné.", "role": f"{result1[0][0]}"}), 202 # Accepted
+        elif result1 == []:
             return jsonify({"message": "Prihlásenie úspešné", "role": "after-reg"}), 202 # Accepted
         else:
             return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
@@ -126,7 +124,7 @@ def login():
 def create_family():
     # Input
     name_family = request.form.get('family_name')
-    name = request.form.get('name')
+    email = request.form.get('email')
 
     # Generate 16-digit code
     N = 16
@@ -134,21 +132,24 @@ def create_family():
     code1 = ''.join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
 
     # SQL query
-    syntax = "INSERT INTO rodina (meno, jedinecny_kod_R, jedineecny_kod_D) VALUES (%s, %s, %s)"
-    result = connectiondb(syntax, (name_family, code, code1))
+    syntax = "INSERT INTO rodina (jedinecny_kod_R, jedinecny_kod_D, nazov_rodiny) VALUES (%s, %s, %s)"
+    result = connectiondb(syntax, (code, code1, name_family))
 
     # Return Create_family
-    if result:
+    if not result:
         # SQL query
-        syntax1 = "SELECT id FROM uzivatel WHERE meno = %s"
-        result1 = connectiondb(syntax1, (name))
+        syntax1 = "SELECT id FROM uzivatel WHERE email = %s"
+        result1 = connectiondb(syntax1, (email,))
 
-        syntax2 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
-        connectiondb(syntax2, (result[0], result1, "Rodič"))
+        syntax2 = "SELECT id FROM rodina WHERE jedinecny_kod_R = %s"
+        result2 = connectiondb(syntax2, (code,))
+
+        syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
+        connectiondb(syntax3, (result2[0][0], result1[0][0], "parent"))
 
         return jsonify({"message": "Rodina sa vytvorila"}), 202 # Accepted
-    elif result == None:
-        return jsonify({"message": "Rodina sa nevytvorila"}), 400 # Bad Request
+    #elif result == None:
+    #    return jsonify({"message": "Rodina sa nevytvorila"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
@@ -157,36 +158,36 @@ def create_family():
 def add_to_family():
     # Input
     string = request.form.get('string')
-    name = request.form.get('name')
+    email = request.form.get('email')
 
     # SQL query
     syntax = "SELECT id FROM rodina WHERE jedinecny_kod_R = %s"
-    result = connectiondb(syntax, (string))
+    result = connectiondb(syntax, (string,))
 
     # SQL query
     syntax1 = "SELECT id FROM rodina WHERE jedinecny_kod_D = %s"
-    result1 = connectiondb(syntax1, (string))
+    result1 = connectiondb(syntax1, (string,))
 
     # Return Add_to_family
     if result:
         # SQL query
-        syntax2 = "SELECT id FROM uzivatel WHERE meno = %s"
-        result2 = connectiondb(syntax2, (name))
+        syntax2 = "SELECT id FROM uzivatel WHERE email = %s"
+        result2 = connectiondb(syntax2, (email,))
 
-        syntax3 = "INSERT INTO clen (id_rodina, id_uzivatela, rola) VALUES (%s, %s, %s)"
-        connectiondb(syntax3, (result[0], result2, "Rodič"))
+        syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
+        connectiondb(syntax3, (result[0][0], result2, "parent"))
 
-        return jsonify({"message": "Clen bol pridany do rodiny ako Rodic"}), 202 # Accepted
+        return jsonify({"message": "Clen bol pridany do rodiny ako Rodic", "role": "parent"}), 202 # Accepted
     elif result1:
         # SQL query
-        syntax2 = "SELECT id FROM uzivatel WHERE meno = %s"
-        result2 = connectiondb(syntax2, (name))
+        syntax2 = "SELECT id FROM uzivatel WHERE email = %s"
+        result2 = connectiondb(syntax2, (email,))
 
-        syntax3 = "INSERT INTO clen (id_rodina, id_uzivatela, rola) VALUES (%s, %s, %s)"
-        connectiondb(syntax3, (result[0], result2, "DIeťa"))
+        syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
+        connectiondb(syntax3, (result1[0][0], result2, "kid"))
 
-        return jsonify({"message": "Clen bol pridany do rodiny ako Dieta"}), 202 # Accepted
-    elif result == None & result1 == None:
+        return jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}), 202 # Accepted
+    elif result == [] and result1 == []:
         return jsonify({"message": "Clen nebol pridany do ziadnej rodiny"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
@@ -213,8 +214,8 @@ def add_rewards():
         return jsonify({"message": "Uspesny zapis a vypis odmien"}, result2), 202 # Accepted
     elif result2:
         return jsonify({"message": "Uspesny vypis odmien"}, result2), 202 # Accepted
-    elif result2 == None or result1 == None:
-        return jsonify({"message": "Problem so zapisom alebo vypisom odmien"}), 400 # Bad Request
+    #elif result2 == None or result1 == None:
+    #    return jsonify({"message": "Problem so zapisom alebo vypisom odmien"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
@@ -238,8 +239,8 @@ def delete_family():
 
     if result2 & result3:
         return jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}), 202 # Accepted
-    elif result2 == None or result3 == None:
-        return jsonify({"message": "Problem s vymazanim rodiny alebo clenov rodiny"}), 400 # Bad Request
+    #elif result2 == None or result3 == None:
+    #    return jsonify({"message": "Problem s vymazanim rodiny alebo clenov rodiny"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
