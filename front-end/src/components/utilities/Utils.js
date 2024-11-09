@@ -191,7 +191,8 @@ export async function logInUser(email, password, setIsLoggedIn, setEmail, setRol
 		const { message, role } = response.data;
 
 		if (response.status === 202) {
-			console.log(message);
+			console.log(response);
+			
 			if (role) {
 				setEmail(email);
 				setRole(role);

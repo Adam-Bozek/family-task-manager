@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./css/LoginPage.module.css"; 
 
@@ -7,7 +7,7 @@ import { checkIfUserExists, logInUser } from "./utilities/Utils";
 import {AppContext} from "./utilities/AppContext";
 
 const LoginPage = () => {
-	const { role, setEmail, setRole, setIsLoggedIn } = useContext(AppContext);
+	const { role, setEmail, isLoggedIn, setRole, setIsLoggedIn } = useContext(AppContext);
 
 	const [email, setEmail1] = useState(null);
 	const [password, setPassword] = useState(null);
@@ -18,31 +18,36 @@ const LoginPage = () => {
 		navigate(route);
 	};
 
-	const const_handle_user_login = async () => {
+	const handleUserLogin = async () => {
     if (!checkIfUserExists(email)) {
       alert("Neexistujuci používateľ!"); // Alert: User does not exist
-    } else {
-      try {
-        // Use await in an async function
-        const loginSuccess = await logInUser(email, password, setIsLoggedIn, setEmail, setRole);
-        
-        if (loginSuccess && role === "after-reg" ) {
-          handle_redirect("/AfterRegistration");
-				}
-				else if (loginSuccess && role === "parent") {
-					handle_redirect("/ParentDashboard");
-				}
-				else if (loginSuccess && role === "kid"){
-          handle_redirect("/KidDashboard");
-        } else {
-          alert("Email alebo heslo je zle."); // Alert: Email or password is wrong
-        }
-      } catch (error) {
-        console.error("Login error:", error);
-        alert("An error occurred during login.");
+      return;
+    }
+
+    try {
+      const loginSuccess = await logInUser(email, password, setIsLoggedIn, setEmail, setRole);
+      console.log("Login Success:", loginSuccess);
+      if (!loginSuccess) {
+        alert("Email alebo heslo je zle."); // Alert: Email or password is wrong
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login.");
+    }
+  };
+
+  // useEffect for role-based redirection
+  useEffect(() => {
+    if (isLoggedIn) {
+      if (role === "after-reg") {
+        handle_redirect("/AfterRegistration");
+      } else if (role === "parent") {
+        handle_redirect("/ParentDashboard");
+      } else if (role === "kid") {
+        handle_redirect("/KidDashboard");
       }
     }
-	};
+  }, [role, isLoggedIn]);;
 
 	return (
 		<main className={styles.loginMain}>
@@ -76,7 +81,7 @@ const LoginPage = () => {
 						<button
 							type="button"
 							className={styles.loginButton}
-							onClick={const_handle_user_login} 
+							onClick={handleUserLogin} 
 						>
 							Prihlásiť sa
 						</button>

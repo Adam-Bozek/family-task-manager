@@ -30,17 +30,16 @@ const App = () => {
 			<Route path="/LogIn" element={<LoginPage />} />
 
 			{/* Testing routes */}
-			<Route path="/test_parent_dashboard_tasks" element={<ParentDashboardTasks />} />
-			<Route path="/test_parent_dashboard_rewards" element={<ParentDashboardRewards />} />
-			<Route path="/test_parent_settings" element={<ParentSettings />} />
-			<Route path="/test_parent_add_task" element={<ParentAddTask />} />
 			<Route path="/test_template" element={<TEMPLATE />} />
 
 			{/* Routes only accessible after registration */}
 			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} />
 			
-			{/* TODO: Implement this: Routes only for parents */}
-			<Route path="/MoreInfo" element={<ProtectedRoute element={<MoreInfo />} allowedRoles={["parent"]} />} />
+			{/* Routes only for parents */}
+			<Route path="/ParentDashboardTasks" element={<ProtectedRoute element={<ParentDashboardTasks />} allowedRoles={["parent"]} />} />
+			<Route path="/ParentDashboardRewards" element={<ProtectedRoute element={<ParentDashboardRewards />} allowedRoles={["parent"]} />} />
+			<Route path="/ParentSettings" element={<ProtectedRoute element={<ParentSettings />} allowedRoles={["parent"]} />} />
+			<Route path="/ParentTasks" element={<ProtectedRoute element={<ParentAddTask />} allowedRoles={["parent"]} />} />
 			
 			{/* TODO: Implement this: Routes only for kids */}
 			<Route path="/Login" element={<ProtectedRoute element={<LoginPage />} allowedRoles={["kid"]} />} />
