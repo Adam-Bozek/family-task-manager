@@ -22,7 +22,6 @@ export function validateSurname(surname) {
 	return true;
 }
 
-
 export function validateEmail(email) {
 	// Improved regex for email validation
 	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -77,24 +76,24 @@ export async function createUserAccount(name, surname, email, password) {
 	try {
 		// Hash the password with bcryptjs before sending it to the backend
 		const hashedPassword = await bcrypt.hash(password, 10);
-	
+
 		// Using FormData to send form-urlencoded data as the backend expects request.form
 		const formData = new FormData();
 		formData.append("name", name);
 		formData.append("surname", surname);
 		formData.append("email", email);
 		formData.append("password", hashedPassword);
-	
+
 		// Updated to use the correct endpoint URL
 		const localApiAddress = apiAddress + "/Create_user";
-	
+
 		// Send the form data to the backend endpoint for user creation
 		const response = await Axios.post(localApiAddress, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
 		});
-	
+
 		// Check response status for success confirmation
 		if (response.status === 201) {
 			alert("User successfully created.");
@@ -106,7 +105,7 @@ export async function createUserAccount(name, surname, email, password) {
 	} catch (err) {
 		// Enhanced error handling
 		console.error("Error creating account:", err);
-	
+
 		if (err.response) {
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 			return false;
@@ -118,7 +117,6 @@ export async function createUserAccount(name, surname, email, password) {
 			return false;
 		}
 	}
-	
 }
 
 // Functions for logging in a user
@@ -191,8 +189,6 @@ export async function logInUser(email, password, setIsLoggedIn, setEmail, setRol
 		const { message, role } = response.data;
 
 		if (response.status === 202) {
-			console.log(response);
-			
 			if (role) {
 				setEmail(email);
 				setRole(role);
@@ -231,5 +227,100 @@ export function logOutUser(setIsLoggedIn, setEmail, setRole) {
 	} catch (error) {
 		console.error("Error logging out:", error);
 		return false;
+	}
+}
+
+// Functions for after registration
+export async function familyCreation(family_name, email) {
+	if (!validateEmail(email)) {
+		console.error("Invalid email. Please enter a valid email address.");
+		return;
+	}
+
+	try {
+		const formData = new FormData();
+		formData.append("family_name", family_name);
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Create_family";
+
+		// Send the form data to the backend endpoint for login
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		const message = response.data;
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			console.error("Unexpected status code:", response.status);
+			return false;
+		}
+
+	} catch (err) {
+		// Enhanced error handling
+		console.error("Error logging in:", err);
+
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			return false;
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+			return false;
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+			return false;
+		}
+	}
+}
+
+export async function addToFamily(join_code, email) {
+	if (!validateEmail(email)) {
+		console.error("Invalid email. Please enter a valid email address.");
+		return { success: false };
+	}
+
+	try {
+		const formData = new FormData();
+		formData.append("string", join_code);
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Add_to_family";
+
+		// Send the form data to the backend endpoint
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		// Extract message and role from the response
+		const { message, role } = response.data;
+
+		if (response.status === 202) {
+			// Return success, message, and role
+			return { success: true, message, role };
+		} else {
+			console.error("Unexpected status code:", response.status);
+			return { success: false, message: "Unexpected status code." };
+		}
+
+	} catch (err) {
+		// Enhanced error handling
+		console.error("Error adding to family:", err);
+
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			return { success: false, message: err.response.data.message };
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+			return { success: false, message: "Network error. Please try again." };
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+			return { success: false, message: "Unexpected error occurred." };
+		}
 	}
 }

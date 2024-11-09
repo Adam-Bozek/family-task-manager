@@ -1,21 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom"; 
 import styles from "./css/AfterRegistrationPage.module.css"; // Import CSS module
+
+import { addToFamily, familyCreation } from "./utilities/Utils";
+import {AppContext} from "./utilities/AppContext";
 
 const AfterRegistration = () => {
   const [familyName, setFamilyName] = useState('');//Set family name
   const [familyCode, setFamilyCode] = useState('');
+
+  const { email , setRole, } = useContext(AppContext);
   
   const navigate = useNavigate(); 
 
   const handleFamilyCreation = () => {
-    console.log('Rodina vytvorená:', familyName);
-    // Add functionality for family creation
+
+    if (familyCreation(familyName, email)){
+      setRole("parent");
+      navigate("/ParentDashboardTasks");
+    }
   };
 
-  const handleJoinFamily = () => {
-    console.log('Prihlásenie do rodiny pomocou kódu:', familyCode);
-    // Add functionality for joining a family
+  const handleJoinFamily = async () => {
+    try {
+      // Call addToFamily and await its result
+      const result = await addToFamily(familyCode, email);
+  
+      // Check the success status from the result
+      if (result.success) {
+        if (result.role) {
+          // Set role and navigate based on the returned role
+          if (result.role === "parent") {
+            setRole("parent");
+            navigate("/ParentDashboardTasks");
+          } else if (result.role === "kid") {
+            setRole("kid");
+            navigate("/MoreInfo");
+          }
+        } else {
+          console.log("No role returned.");
+          // Handle case where role is undefined or null
+        }
+      } else {
+        console.log("Failed to add to family:", result.message);
+        // Handle failure case, e.g., show an error message to the user
+        alert(result.message || "Failed to join family. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error in handleJoinFamily:", error);
+      alert("An unexpected error occurred. Please try again.");
+    }
   };
 
   return (

@@ -42,7 +42,7 @@ const LoginPage = () => {
       if (role === "after-reg") {
         handle_redirect("/AfterRegistration");
       } else if (role === "parent") {
-        handle_redirect("/ParentDashboard");
+        handle_redirect("/ParentDashboardTasks");
       } else if (role === "kid") {
         handle_redirect("/KidDashboard");
       }
