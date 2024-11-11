@@ -61,7 +61,7 @@ def create_user():
 
     # Checking existing email
     if check_user_exist(email):
-        return jsonify({"message": "Používateľ vytvorený."}), 406 # Not Acceptable
+        return jsonify({"message": "Používateľ nevytvorený."}), 406 # Not Acceptable
 
     # Return
     if not result:
