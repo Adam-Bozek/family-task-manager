@@ -148,8 +148,6 @@ def create_family():
         connectiondb(syntax3, (result2[0][0], result1[0][0], "parent"))
 
         return jsonify({"message": "Rodina sa vytvorila"}), 202 # Accepted
-    #elif result == None:
-    #    return jsonify({"message": "Rodina sa nevytvorila"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
@@ -196,19 +194,19 @@ def add_to_family():
 @app.route('/Add_rewards', methods=["POST"])
 def add_rewards():
     # Input
-    name = request.form.get('name')
+    email = request.form.get('email')
     name_reward = request.form.get('name_reward')
     value = request.form.get('value')
 
     # SQL query
     syntax = "SELECT id FROM uzivatel WHERE meno = %s"
-    result = connectiondb(syntax, (name))
+    result = connectiondb(syntax, (email))
 
     syntax1 = "INSERT INTO odmena (nazov, cena) VALUES (%s, %s)"
     result1 = connectiondb(syntax1, (name_reward, value))
 
     syntax2 = "SELECT nazov, cena FROM ulohy where id_uzivatel = %s RIGHT JOIN odmena ON ulohy.id_odmena = odmena.id"
-    result2 = connectiondb(syntax2, (result))
+    result2 = connectiondb(syntax2, (result[0][0]))
 
     if result2 & result1:
         return jsonify({"message": "Uspesny zapis a vypis odmien"}, result2), 202 # Accepted
@@ -222,20 +220,20 @@ def add_rewards():
 @app.route('/Delete_family', methods=['POST'])
 def delete_family():
      # Input
-    name = request.form.get('name')
+    email = request.form.get('email')
 
     # SQL query
     syntax = "SELECT id FROM uzivatel WHERE name = %s"
-    result = connectiondb(syntax, (name))
+    result = connectiondb(syntax, (email))
 
     syntax1 = "SELECT id_rodina WHERE id_uzivatel = %s"
-    result1 = connectiondb(syntax1, (result))
+    result1 = connectiondb(syntax1, (result[0][0]))
 
-    syntax2 = "DELETE FROM rodina WHERE id = %s"
-    result2 = connectiondb(syntax2, (result1))
+    syntax2 = "DELETE FROM rodina WHERE id_rodina = %s"
+    result2 = connectiondb(syntax2, (result1[0][0]))
 
-    syntax3 = "DELETE FROM cle WHERE id_rodina = %s"
-    result3 = connectiondb(syntax3, (result1))
+    syntax3 = "DELETE FROM clen WHERE id_rodina = %s"
+    result3 = connectiondb(syntax3, (result1[0][0]))
 
     if result2 & result3:
         return jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}), 202 # Accepted
