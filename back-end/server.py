@@ -59,6 +59,10 @@ def create_user():
     syntax = "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
     result = connectiondb(syntax, (name, surname, email, password))
 
+    # Checking existing email
+    if check_user_exist(email):
+        return jsonify({"message": "Používateľ vytvorený."}), 406 # Not Acceptable
+
     # Return
     if not result:
         return jsonify({"message": "Používateľ vytvorený."}), 201 # Created
