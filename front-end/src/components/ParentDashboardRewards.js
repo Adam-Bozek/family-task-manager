@@ -2,28 +2,29 @@ import React, { useState } from 'react';
 import styles from './css/ParentDashboardRewards.module.css';
 
 const ParentDashboardTasks = () => {
+  // State to manage rewards for each child, with each child having their own list of rewards
   const [tasks, setTasks] = useState({
-    Adam: ['Sladkosť', '5€'], // Grouped tasks for Adam
-    Janko: ['20 minút PC'],
+    Adam: ['Candy', '5€'], 
+    Janko: ['20 minutes of PC time'], 
     Marta: ['10€'],
-   
-    
   });
 
+  // Function to add a new reward to a specific child's list
   const addTask = (name, newTask) => {
     setTasks(prevTasks => ({
       ...prevTasks,
-      [name]: [...prevTasks[name], newTask], // Append new task to the existing tasks of the child
+      [name]: [...prevTasks[name], newTask], // Append new reward to the existing list of the child
     }));
   };
 
-  // Example: Adding a task for Adam (you can call this function with user input)
-  // addTask('Adam', 'Nová úloha pre Adama');
+  // Example usage of addTask function (can be triggered with user input)
+  // addTask('Adam', 'New reward for Adam');
 
   return (
     <>
       <div className={styles["templateMain"]}>
         <div className={styles["blur-container"]}>
+          {/* Header with navigation */}
           <header className={`container my-3 ${styles["navbar-settings"]}`}>
             <nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
               <div className={`container-fluid`}>
@@ -38,40 +39,45 @@ const ParentDashboardTasks = () => {
                   <span className="navbar-toggler-icon"></span>
                 </button>
 
+                {/* Navbar items and links */}
                 <div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
                   <span className="navbar-brand col-lg-3 me-0" />
                   <ul className="navbar-nav col-lg-6 justify-content-lg-center">
                     <li className="nav-item ">
                       <a className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" href="#">
-                        Domov
+                        Home
                       </a>
                     </li>
                     <li className="nav-item mx-4">
                       <a className={`nav-link ${styles["nav-font-weight"]}`} href="#">
-                        Nastavenia
+                        Settings
                       </a>
                     </li>
                     <li className="nav-item">
                       <a className={`nav-link ${styles["nav-font-weight"]}`} aria-disabled="true">
-                        Zadať úlohu
+                        Assign Task
                       </a>
                     </li>
                   </ul>
                   <div className="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Odhlásiť sa</button>
+                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Logout</button>
                   </div>
                 </div>
               </div>
             </nav>
           </header>
           
+          {/* Main content area for displaying rewards */}
           <div className={styles.mainContainer}>
             <div className={styles.formContainer}>
-            <button className={` ${styles["buttonTask"]} my-1`}>Úlohy</button>
-            <button className={` ${styles["buttonReward"]} my-1`}>Vybrané odmeny</button>
+              {/* Buttons for navigating to tasks and rewards sections */}
+              <button className={` ${styles["buttonTask"]} my-1`}>Tasks</button>
+              <button className={` ${styles["buttonReward"]} my-1`}>Selected Rewards</button>
             </div>
-            <h3>Úlohy na splnenie dnes</h3>
+
+            <h3>Tasks to Complete Today</h3>
             <div className={styles.tasksContainer}>
+              {/* Display each child's name and list of rewards */}
               {Object.entries(tasks).map(([name, taskList]) => (
                 <div key={name} className={styles.userTaskGroup}>
                   <div className={styles.userSection}>
@@ -85,17 +91,11 @@ const ParentDashboardTasks = () => {
                 </div>
               ))}
            
-            
-            {/* Pridaný legendContainer do mainContainer */}
-           
-       
-      
-        
-        <div className={styles.legendContainer}>
+            {/* Legend to describe the status of rewards */}
+            <div className={styles.legendContainer}>
               <div className={styles.legend}>
-                <span className={styles.legendItem}><span className={styles.completed}></span> Splnené</span>
-                <span className={styles.legendItem}><span className={styles.pending}></span> Čakajúce na splnenie</span>
-         
+                <span className={styles.legendItem}><span className={styles.completed}></span> Completed</span>
+                <span className={styles.legendItem}><span className={styles.pending}></span> Pending Completion</span>
               </div>
             </div>
             </div>
