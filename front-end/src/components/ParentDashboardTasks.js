@@ -4,9 +4,9 @@ import styles from './css/ParentDashboardTasks.module.css';
 const ParentDashboardTasks = () => {
   // State to manage tasks, with each child having their own list of tasks
   const [tasks, setTasks] = useState({
-    Adam: ['Clean the room', 'Do homework', 'Write a message to the teacher'], // Grouped tasks for Adam
-    Janko: ['Walk the dog'], // Tasks for Janko
-    Marta: ['Complete homework'], // Tasks for Marta
+    Adam: ['Clean the room', 'Do homework', 'Write a message to the teacher'], 
+    Janko: ['Walk the dog'], 
+    Marta: ['Complete homework'],
   });
 
   // Function to add a new task for a specific child
