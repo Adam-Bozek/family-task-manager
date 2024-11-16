@@ -19,6 +19,7 @@ import ParentAddTask from "./components/ParentAddTask";
 
 // Template component
 import TEMPLATE from "./components/TEMPLATE";
+import KidDashboard from "./components/KidDashboard";
 
 const App = () => {
 	return (
@@ -28,6 +29,10 @@ const App = () => {
 			<Route path="/MoreInfo" element={<MoreInfo />} />
 			<Route path="/Register" element={<RegistrationPage />} />
 			<Route path="/LogIn" element={<LoginPage />} />
+			<Route path="/Kid" element={<KidDashboard />} /> {/* <-- Potom vymazať */}
+			
+
+
 
 			{/* Testing routes */}
 			<Route path="/test_template" element={<TEMPLATE />} />
