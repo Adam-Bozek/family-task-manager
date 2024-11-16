@@ -212,6 +212,7 @@ def add_rewards():
     syntax2 = "SELECT nazov, cena FROM ulohy where id_uzivatel = %s RIGHT JOIN odmena ON ulohy.id_odmena = odmena.id"
     result2 = connectiondb(syntax2, (result[0][0]))
 
+    # Return
     if result2 & result1:
         return jsonify({"message": "Uspesny zapis a vypis odmien"}, result2), 202 # Accepted
     elif result2:
@@ -239,6 +240,7 @@ def delete_family():
     syntax3 = "DELETE FROM clen WHERE id_rodina = %s"
     result3 = connectiondb(syntax3, (result1[0][0]))
 
+    # Return
     if result2 & result3:
         return jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}), 202 # Accepted
     #elif result2 == None or result3 == None:
@@ -246,20 +248,107 @@ def delete_family():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
-#@app.route('/Add_tasks', methods=['POST'])
-#def add_tasks();
+@app.route('/Add_tasks', methods=['POST'])
+def add_tasks():
+    # Input
+    name = request.form.get('name')
+    task = request.form.get('task')
+    date_from = request.form.get('date_from')
+    date_to = request.form.get('date_to')
+    reward = request.form.get('reward')
+
+    # SQL query
+    syntax = "SELECT id FROM uzivatel WHERE name = %s" #TODO: prehodnotit aj select pre vyber clenov a podla toho mozno pojde aj mail
+    result = connectiondb(syntax, (name,))
+
+    syntax1 = "SELECT id FROM odmena WHERE nazov = %s"
+    result1 = connectiondb(syntax1, (reward,))
+
+    syntax2 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
+    result2 = connectiondb(syntax2, (result[0][0], task, date_from, date_to, result1[0][0], "not done"))
+
+    # Return
+    if not result2:
+        return jsonify({"message": "Pridanie ulohy uspesne"}), 200 # OK
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
     
-#@app.route('Parents_tasks' methods=['POST'])
-#def parent_tasks():
+@app.route('Parents_tasks', methods=['POST'])
+def parent_tasks():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
     
-#@app.route('/Parents_rewards', methods=['POST'])
-#def parents_rewards():
+    syntax1 = "SELECT id_uzivatel FROM clen WHERE id_rodina = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
+
+    syntax2 = "SELECT * FROM ulohy WHERE id_uzivatel = %s"
+    for i in result1:
+        result2 = connectiondb(syntax2, (result1[0][i]))
+
+    # Return
+    if result2:
+        return jsonify({"message": "Vypis uloh uspesne", "return": f"{result2}"}), 202 # Accepted
+    elif result2 == []:
+        return jsonify({"message": "Vypis uloh neuspesne"}), 400 # Bad Request
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
     
-#@app.route('/Kids_dashboard', methods=['POST'])
-#def kids_dashboard():
+@app.route('/Parents_rewards', methods=['POST'])
+def parents_rewards():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
     
+    syntax1 = "SELECT id_uzivatel FROM clen WHERE id_rodina = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
+
+    syntax2 = "SELECT meno, nazov, datum FROM aktivovanie INNER JOIN uzivatel ON uzivatel.id = aktivovanie.id_uzivatela INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE id_uzivatel = %s"
+    for i in result1:
+        result2 = connectiondb(syntax2, (result1[0][i]))
+
+    # Return
+    if result2:
+        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result2}"}), 202 # Accepted
+    elif result2 == []:
+        return jsonify({"message": "Vypis odmien neuspesne"}), 400 # Bad Request
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+    
+@app.route('/Kids_dashboard', methods=['POST'])
+def kids_dashboard():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT * FROM ulohy RIGHT JOIN uzivatel ON uzivatel.id = ulohy.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "SELECT nazov, datum FROM uzivatel INNER JOIN aktivovanie ON aktivovanie.id_uzivatela = uzivatel.id INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE email = %s"
+    result1 = connectiondb(syntax1, (email,))
+
+    # Return
+    if result and result1:
+        return jsonify({"message": "Vypis uloh a odmien uspesne", "return": f"{result}", "return1": f"{result1}"}), 202 # Accepted
+    elif result == [] or result1 == []:
+        return jsonify({"message": "Vypis uloh a odmien neuspesne"}), 400 # Bad Request
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
 #@app.route('/Kids_exchange', methods=['POST'])
 #def kids_exchange():
+#    # Input
+#    name = request.form.get('name')
+#
+#    # SQL query
+#    syntax = ""
 
 if __name__ == '__main__':
     app.run(host='147.232.205.117', port=5000)
