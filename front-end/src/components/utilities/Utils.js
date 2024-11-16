@@ -98,6 +98,9 @@ export async function createUserAccount(name, surname, email, password) {
 		if (response.status === 201) {
 			alert("User successfully created.");
 			return true;
+		}
+		else if(response.status === 406) {
+		  alert("Email already exists. Please choose a different email address.");
 		} else {
 			alert("User creation was unsuccessful.");
 			return false;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'; 
 import styles from './css/ParentDashboardTasks.module.css';
+import { useNavigate } from "react-router-dom";
 
 const ParentDashboardTasks = () => {
   // State to manage tasks, with each child having their own list of tasks
@@ -19,6 +20,11 @@ const ParentDashboardTasks = () => {
 
   // Example usage of addTask function (can be triggered with user input)
   // addTask('Adam', 'New task for Adam');
+  const navigate = useNavigate();
+  
+  const handle_redirect = (route) => {
+		navigate(route);
+	};
 
   return (
     <>
@@ -44,19 +50,19 @@ const ParentDashboardTasks = () => {
                   <span className="navbar-brand col-lg-3 me-0" />
                   <ul className="navbar-nav col-lg-6 justify-content-lg-center">
                     <li className="nav-item ">
-                      <a className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" href="#">
+                      <button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={ () => handle_redirect("/ParentDashboardTasks")}>
                         Home
-                      </a>
+                      </button>
                     </li>
                     <li className="nav-item mx-4">
-                      <a className={`nav-link ${styles["nav-font-weight"]}`} href="#">
+                      <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={ () => handle_redirect("/ParentSettings")}>
                         Settings
-                      </a>
+                      </button>
                     </li>
                     <li className="nav-item">
-                      <a className={`nav-link ${styles["nav-font-weight"]}`} aria-disabled="true">
+                      <button className={`nav-link ${styles["nav-font-weight"]}`}  onClick={ () => handle_redirect("/ParentTasks")}>
                         Assign Task
-                      </a>
+                      </button>
                     </li>
                   </ul>
                   <div className="d-lg-flex col-lg-3 justify-content-lg-end">
@@ -71,8 +77,8 @@ const ParentDashboardTasks = () => {
           <div className={styles.mainContainer}>
             <div className={styles.formContainer}>
               {/* Buttons for navigating to different sections */}
-              <button className={` ${styles["buttonTask"]} my-1`}>Tasks</button>
-              <button className={` ${styles["buttonReward"]} my-1`}>Selected Rewards</button>
+              <button className={` ${styles["buttonTask"]} my-1`} onClick={ () => handle_redirect("/ParentDashboardTasks")}>Tasks</button>
+              <button className={` ${styles["buttonReward"]} my-1`} onClick={ () => handle_redirect("/ParentDashboardRewards")}>Selected Rewards</button>
             </div>
 
             <h3>Tasks to Complete Today</h3>

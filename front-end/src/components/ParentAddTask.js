@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './css/ParentAddTask.module.css';
+import { useNavigate } from "react-router-dom";
 
 const ParentAddTask = () => {
   const [tasks, setTasks] = useState({}); // Object for storing tasks by user
@@ -66,6 +67,13 @@ const ParentAddTask = () => {
     return colorPalette[Math.floor(Math.random() * colorPalette.length)];
   };
 
+  const navigate = useNavigate();
+  // Navigacia
+  const handle_redirect = (route) => {
+		navigate(route);
+	};
+
+
   return (
     <div className={styles["templateMain"]}>
       <div className={styles["blur-container"]}>
@@ -87,19 +95,19 @@ const ParentAddTask = () => {
                 <span className="navbar-brand col-lg-3 me-0" />
                 <ul className="navbar-nav col-lg-6 justify-content-lg-center">
                   <li className="nav-item ">
-                    <a className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" href="#">
+                    <button className={`nav-link ${styles["nav-font-weight"]} `} onClick={ () => handle_redirect("/ParentDashboardTasks")}>
                       Domov
-                    </a>
+                    </button>
                   </li>
                   <li className="nav-item mx-4">
-                    <a className={`nav-link ${styles["nav-font-weight"]}`} href="#">
+                    <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={ () => handle_redirect("/ParentSettings")}>
                       Nastavenia
-                    </a>
+                    </button>
                   </li>
                   <li className="nav-item">
-                    <a className={`nav-link ${styles["nav-font-weight"]}`} aria-disabled="true">
+                    <button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={ () => handle_redirect("/ParentTasks")}>
                       Zadať úlohu
-                    </a>
+                    </button>
                   </li>
                 </ul>
                 <div className="d-lg-flex col-lg-3 justify-content-lg-end">

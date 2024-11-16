@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./css/ParentSettings.module.css";
+import { useNavigate } from "react-router-dom";
 
 const ParentSettings = () => {
   const [activeTab, setActiveTab] = useState("members");
@@ -15,6 +16,11 @@ const ParentSettings = () => {
       setNewReward({ name: "", price: "" });
     }
   };
+
+  const navigate = useNavigate();
+  const handle_redirect = (route) => {
+		navigate(route);
+	};
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -143,20 +149,20 @@ const ParentSettings = () => {
                 <div className="collapse navbar-collapse d-lg-flex" id="navbarsExample12">
                   <span className="navbar-brand col-lg-3 me-0" />
                   <ul className="navbar-nav col-lg-6 justify-content-lg-center">
-                    <li className="nav-item">
-                      <a className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" href="#">
-                        Domov
-                      </a>
+                    <li className="nav-item ">
+                      <button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={ () => handle_redirect("/ParentDashboardTasks")}>
+                        Home
+                      </button>
                     </li>
                     <li className="nav-item mx-4">
-                      <a className={`nav-link ${styles["nav-font-weight"]}`} href="#">
-                        Nastavenia
-                      </a>
+                      <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={ () => handle_redirect("/ParentSettings")}>
+                        Settings
+                      </button>
                     </li>
                     <li className="nav-item">
-                      <a className={`nav-link ${styles["nav-font-weight"]}`} aria-disabled="true">
-                        Zadať úlohu
-                      </a>
+                      <button className={`nav-link ${styles["nav-font-weight"]}`}  onClick={ () => handle_redirect("/ParentTasks")}>
+                        Assign Task
+                      </button>
                     </li>
                   </ul>
                   <div className="d-lg-flex col-lg-3 justify-content-lg-end">
