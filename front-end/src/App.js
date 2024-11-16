@@ -29,10 +29,6 @@ const App = () => {
 			<Route path="/MoreInfo" element={<MoreInfo />} />
 			<Route path="/Register" element={<RegistrationPage />} />
 			<Route path="/LogIn" element={<LoginPage />} />
-			<Route path="/Kid" element={<KidDashboard />} /> {/* <-- Potom vymazať */}
-			
-
-
 
 			{/* Testing routes */}
 			<Route path="/test_template" element={<TEMPLATE />} />
@@ -47,7 +43,7 @@ const App = () => {
 			<Route path="/ParentTasks" element={<ProtectedRoute element={<ParentAddTask />} allowedRoles={["parent"]} />} />
 			
 			{/* TODO: Implement this: Routes only for kids */}
-			<Route path="/Login" element={<ProtectedRoute element={<LoginPage />} allowedRoles={["kid"]} />} />
+			<Route path="/KidDashboard" element={<ProtectedRoute element={<KidDashboard />} allowedRoles={["kid"]} />} />
 			
 			{/* Catch-all redirect */}
 			<Route path="*" element={<Navigate replace to="/Home" />} />
