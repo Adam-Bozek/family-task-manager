@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import styles from "./css/ParentAddTask.module.css";
 import { useNavigate } from "react-router-dom";
-import { getKidsNames } from "./parent/ParentUtils";
+
+import { logOutUser } from "./utilities/Utils";
 import { AppContext } from "./utilities/AppContext";
+import { getKidsNames, assignTask } from "./parent/ParentUtils";
+
+
+import styles from "./css/ParentAddTask.module.css";
 
 const ParentAddTask = () => {
-  const [tasks, setTasks] = useState({}); // Object for storing tasks by user
+  // State for tasks and task details
+  const [tasks, setTasks] = useState({});
   const [taskData, setTaskData] = useState({
     name: "",
     task: "",
@@ -13,83 +18,132 @@ const ParentAddTask = () => {
     endDate: "",
     reward: "",
   });
+
+  // State for kids' list and selected kid
   const [kids, setKids] = useState([]);
+  const [selectedKid, setSelectedKid] = useState("Vybrať dieťa");
+  const [selectedKidId, setSelectedKidId] = useState(null);
+
+  // State for tooltip
   const [tooltip, setTooltip] = useState({ visible: false, taskInfo: null });
 
-  const handleInputChange = (e) => {
-    setTaskData({ ...taskData, [e.target.name]: e.target.value });
+  // App context to fetch email
+  const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
+
+  // Navigation function
+  const navigate = useNavigate();
+  const handleRedirect = (route) => {
+    navigate(route);
   };
 
-  const { email } = useContext(AppContext);
-
+  // Fetch kids' names when the component mounts
   useEffect(() => {
     const fetchKidsData = async () => {
       try {
         const fetchedKids = await getKidsNames(email);
-        setKids(fetchedKids); // Store the data in state
+        setKids(fetchedKids); // Fetched data includes both `id` and `name`
+        console.log(fetchedKids);
       } catch (err) {
         console.error("Error fetching kids' names:", err);
       }
     };
-
     fetchKidsData();
   }, [email]);
 
-  const addTask = () => {
-    if (taskData.name && taskData.task) {
-      setTasks((prevTasks) => {
-        const userTasks = prevTasks[taskData.name] || [];
-        return {
-          ...prevTasks,
-          [taskData.name]: [
-            ...userTasks,
-            { ...taskData, color: getRandomColor() }, // Include all task data
-          ],
-        };
-      });
-      setTaskData({ name: "", task: "", startDate: "", endDate: "", reward: "" }); // Reset input fields
+  // Add a new task for the selected kid
+  const addTask = async () => { // Mark the function as async
+    if (selectedKid && taskData.task) {
+      // Make the async call to assign the task first
+      try {
+        const res = await assignTask(
+          selectedKidId,
+          taskData.task,
+          taskData.startDate,
+          taskData.endDate,
+          taskData.reward
+        );
+  
+        // If res is false (indicating an error or failure), skip adding the task
+        if (!res) {
+          console.error("Task assignment failed. Task will not be added.");
+          return; // Exit the function early if the task assignment failed
+        }
+  
+        // If task assignment succeeded, then add the task to the local state
+        setTasks((prevTasks) => {
+          const userTasks = prevTasks[selectedKid] || [];
+          return {
+            ...prevTasks,
+            [selectedKid]: [...userTasks, { ...taskData, color: getRandomColor() }],
+          };
+        });
+  
+        console.log("Task assigned successfully:", res);
+      } catch (error) {
+        console.error("Error assigning task:", error);
+      }
+  
+      // Clear task data after attempting to add
+      setTaskData({ name: "", task: "", startDate: "", endDate: "", reward: "" });
     }
   };
+  
+  
 
+  // Remove a specific task for a user
   const removeTask = (userName, taskIndex) => {
     setTasks((prevTasks) => {
       const userTasks = [...prevTasks[userName]];
-      userTasks.splice(taskIndex, 1); // Remove task at taskIndex
-      // If no tasks left for the user, remove the user from tasks
+      userTasks.splice(taskIndex, 1);
       if (userTasks.length === 0) {
-        const { [userName]: _, ...rest } = prevTasks; // Remove user from the object
+        const { [userName]: _, ...rest } = prevTasks;
         return rest;
       }
       return { ...prevTasks, [userName]: userTasks };
     });
-    setTooltip({ visible: false, taskInfo: null }); // Hide tooltip
+    setTooltip({ visible: false, taskInfo: null });
   };
 
+  // Show tooltip for a task
   const showTooltip = (task) => {
     setTooltip({ visible: true, taskInfo: task });
   };
 
+  // Hide tooltip
   const hideTooltip = () => {
     setTooltip({ visible: false, taskInfo: null });
   };
 
-  // Predefined color palette for better text visibility
-  const colorPalette = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F", "#8E44AD", "#E67E22", "#1ABC9C", "#D35400", "#2C3E50", "#C0392B"];
-
-  const getRandomColor = () => {
-    return colorPalette[Math.floor(Math.random() * colorPalette.length)];
+  // Handle input change in the form
+  const handleInputChange = (e) => {
+    setTaskData({ ...taskData, [e.target.name]: e.target.value });
   };
 
-  const navigate = useNavigate();
-  const handle_redirect = (route) => {
-    navigate(route);
+  // Generate a random color for task box
+  const getRandomColor = () => {
+    const colorPalette = [
+      "#FF5733",
+      "#33FF57",
+      "#3357FF",
+      "#F1C40F",
+      "#8E44AD",
+      "#E67E22",
+      "#1ABC9C",
+      "#D35400",
+      "#2C3E50",
+      "#C0392B",
+    ];
+    return colorPalette[Math.floor(Math.random() * colorPalette.length)];
   };
 
   return (
     <div className={styles["templateMain"]}>
       <div className={styles["blur-container"]}>
         <header className={`container my-3 ${styles["navbar-settings"]}`}>
-          <nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
+          <nav
+            className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`}
+            aria-label="Thirteenth navbar example"
+          >
             <div className={`container-fluid`}>
               <button
                 className="navbar-toggler"
@@ -98,123 +152,136 @@ const ParentAddTask = () => {
                 data-bs-target="#navbarsExample11"
                 aria-controls="navbarsExample11"
                 aria-expanded="false"
-                aria-label="Toggle navigation">
+                aria-label="Toggle navigation"
+              >
                 <span className="navbar-toggler-icon"></span>
               </button>
-
               <div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
                 <span className="navbar-brand col-lg-3 me-0" />
                 <ul className="navbar-nav col-lg-6 justify-content-lg-center">
-                  <li className="nav-item ">
-                    <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${styles["nav-font-weight"]}`}
+                      onClick={() => handleRedirect("/ParentDashboardTasks")}
+                    >
                       Domov
                     </button>
                   </li>
                   <li className="nav-item mx-4">
-                    <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
+                    <button
+                      className={`nav-link ${styles["nav-font-weight"]}`}
+                      onClick={() => handleRedirect("/ParentSettings")}
+                    >
                       Nastavenia
                     </button>
                   </li>
                   <li className="nav-item">
-                    <button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={() => handle_redirect("/ParentTasks")}>
+                    <button
+                      className={`nav-link ${styles["nav-font-weight"]} active`}
+                      aria-current="page"
+                      onClick={() => handleRedirect("/ParentTasks")}
+                    >
                       Zadať úlohu
                     </button>
                   </li>
                 </ul>
                 <div className="d-lg-flex col-lg-3 justify-content-lg-end">
-                  <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Odhlásiť sa</button>
+                  <button
+                    className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
+                    onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}
+                  >
+                    Odhlásiť sa
+                  </button>
                 </div>
               </div>
             </div>
           </nav>
         </header>
-
         <div className={styles.mainContainer}>
           <div className={styles.formContainer}>
             <h3>Zadanie Úloh</h3>
             <div className="dropdown m-3">
-              <button className={`btn btn-secondary dropdown-toggle ${styles.confirmButton}`} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Vyberte dieťa
+              <button
+                className={`btn btn-secondary dropdown-toggle ${styles.confirmButton}`}
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {selectedKid}
               </button>
               <ul className="dropdown-menu">
-                {kids.map((kidName, index) => (
-                  <li key={index}>
-                    <a className="dropdown-item" href="#" onClick={() => setTaskData({ ...taskData, name: kidName })}>
-                      {kidName}
+                {kids.map((kid) => (
+                  <li key={kid.id}>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => {
+                        setTaskData({ ...taskData, name: kid.name });
+                        setSelectedKid(kid.name);
+                        setSelectedKidId(kid.id);
+                      }}
+                    >
+                      {kid.name}
                     </a>
                   </li>
                 ))}
               </ul>
             </div>
-
-            <input
-              name="name"
-              placeholder="Meno"
-              value={taskData.name}
-              onChange={handleInputChange}
-              className={styles.input}
-              list="namesList" // Link input to datalist
-            />
-            <datalist id="namesList">
-              {Object.keys(tasks).map((userName, index) => (
-                <option key={index} value={userName} />
-              ))}
-            </datalist>
-            <input name="task" placeholder="Úloha" value={taskData.task} onChange={handleInputChange} className={styles.input} />
-            <input
-              name="startDate"
-              placeholder="Od (dd. mm. rrrr)"
-              value={taskData.startDate}
-              onChange={handleInputChange}
-              className={styles.input}
-              type="date"
-            />
-            <input
-              name="endDate"
-              placeholder="Do (dd. mm. rrrr)"
-              value={taskData.endDate}
-              onChange={handleInputChange}
-              className={styles.input}
-              type="date"
-            />
-            <input name="reward" placeholder="Odmena" value={taskData.reward} onChange={handleInputChange} className={styles.input} />
-            <button onClick={addTask} className={styles.confirmButton}>
-              Potvrdiť
-            </button>
-          </div>
-          <div className={styles.tasksContainer}>
-            {Object.keys(tasks).map((userName, index) => (
-              <div key={index} className={styles.userSection}>
-                <h4>{userName}</h4>
-                <div className={styles.taskList}>
-                  {tasks[userName].map((task, taskIndex) => (
-                    <span
-                      key={taskIndex}
-                      className={styles.taskBox}
-                      style={{ backgroundColor: task.color }}
-                      onMouseEnter={() => showTooltip(task)}
-                      onMouseLeave={hideTooltip}>
-                      {task.task}
-                      {tooltip.visible && tooltip.taskInfo === task && (
-                        <div className={styles.tooltip}>
-                          <p>Od: {task.startDate}</p>
-                          <p>Do: {task.endDate}</p>
-                          <p>Odmena: {task.reward}</p>
-                          <button onClick={() => removeTask(userName, taskIndex)} className={styles.removeButton}>
-                            Zrušiť
-                          </button>
-                        </div>
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+						<input name="task" placeholder="Úloha" value={taskData.task} onChange={handleInputChange} className={styles.input} />
+						<input
+							name="startDate"
+							placeholder="Od (dd. mm. rrrr)"
+							value={taskData.startDate}
+							onChange={handleInputChange}
+							className={styles.input}
+							type="date"
+						/>
+						<input
+							name="endDate"
+							placeholder="Do (dd. mm. rrrr)"
+							value={taskData.endDate}
+							onChange={handleInputChange}
+							className={styles.input}
+							type="date"
+						/>
+						<input name="reward" placeholder="Odmena" value={taskData.reward} onChange={handleInputChange} className={styles.input} />
+						<button onClick={() => addTask()} className={styles.confirmButton}>
+							Potvrdiť
+						</button>
+					</div>
+					<div className={styles.tasksContainer}>
+						{Object.keys(tasks).map((userName, index) => (
+							<div key={index} className={styles.userSection}>
+								<h4>{userName}</h4>
+								<div className={styles.taskList}>
+									{tasks[userName].map((task, taskIndex) => (
+										<span
+											key={taskIndex}
+											className={styles.taskBox}
+											style={{ backgroundColor: task.color }}
+											onMouseEnter={() => showTooltip(task)}
+											onMouseLeave={hideTooltip}>
+											{task.task}
+											{tooltip.visible && tooltip.taskInfo === task && (
+												<div className={styles.tooltip}>
+													<p>Od: {task.startDate}</p>
+													<p>Do: {task.endDate}</p>
+													<p>Odmena: {task.reward}</p>
+													<button onClick={() => removeTask(userName, taskIndex)} className={styles.removeButton}>
+														Zrušiť
+													</button>
+												</div>
+											)}
+										</span>
+									))}
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default ParentAddTask;

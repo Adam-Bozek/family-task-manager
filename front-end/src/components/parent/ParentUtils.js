@@ -17,7 +17,46 @@ export async function getKeyForKidToJoin() {};
 
 export async function getRewards() {};
 
-export async function assignTask() {};
+export async function assignTask(kids_id, task, date_from, date_to, reward) {
+  try {
+    const formData = new FormData();
+    formData.append("id", kids_id);
+    formData.append("task", task);
+    formData.append("date_from", date_from);
+    formData.append("date_to", date_to);
+    formData.append("reward", reward);
+
+
+    const localApiAddress = apiAddress + "/Add_tasks";
+
+    const response = await Axios.post(localApiAddress, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status === 200) {
+      
+      return true;
+    } else if (response.status === 406) {
+      alert("Email already exists. Please choose a different email address.");
+      return false;
+    } else {
+      alert("User creation was unsuccessful.");
+      return false;
+    }
+  } catch (err) {
+    console.error("Error fetching kids' names:", err);
+    if (err.response) {
+      alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+    } else if (err.request) {
+      alert("Network error. Please check your connection and try again.");
+    } else {
+      alert("An unexpected error occurred. Please try again.");
+    }
+    return false;
+  }
+};
 
 export async function addReward() {};
 
@@ -52,13 +91,17 @@ export async function getKidsNames(email) {
         .replace(/\)/g, ']')   // Replace ')' with ']'
         .replace(/'/g, '"');   // Replace single quotes with double quotes for valid JSON
 
-      // Now we can safely parse the string into a JavaScript array
+      // Parse the cleaned string into an array
       const kidsData = JSON.parse(cleanedString);
 
-      // Extract only the names from the parsed data
-      return kidsData.map(kid => kid[1]); // Assuming the name is the second element in each tuple
+      // Map the parsed data into an array of objects with id and name
+      return kidsData.map(kid => ({
+        id: kid[0],  // Assuming the ID is the first element in the tuple
+        name: kid[1] // Assuming the name is the second element in the tuple
+      }));
     } else if (response.status === 406) {
       alert("Email already exists. Please choose a different email address.");
+      return [];
     } else {
       alert("User creation was unsuccessful.");
       return [];
@@ -75,4 +118,5 @@ export async function getKidsNames(email) {
     return [];
   }
 }
+
 

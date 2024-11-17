@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./css/KidDashboard.module.css";
+
+import {logOutUser} from "./utilities/Utils";
+import { AppContext } from "./utilities/AppContext";
 
 const KidDashboard = () => {
   // Stav úloh
@@ -9,6 +12,8 @@ const KidDashboard = () => {
     { id: 3, name: "Umyť podlahu", status: "notDone" }, // Nesplnené
     { id: 4, name: "Povysávať", status: "pending" }, // Zatiaľ neurobené
   ]);
+
+  const { setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
   // Stav pre modálne okno (otvorené/zatvorené)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,6 +99,7 @@ const KidDashboard = () => {
                 <div className="d-lg-flex col-lg-3 justify-content-lg-end">
                   <button
                     className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
+                    onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}
                   >
                     Odhlásiť sa
                   </button>

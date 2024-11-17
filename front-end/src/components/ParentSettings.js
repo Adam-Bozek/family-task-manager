@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./css/ParentSettings.module.css";
 import { useNavigate } from "react-router-dom";
+
+import { logOutUser } from "./utilities/Utils";
+import { AppContext } from "./utilities/AppContext";
 
 const ParentSettings = () => {
   const [activeTab, setActiveTab] = useState("members");
@@ -21,6 +24,8 @@ const ParentSettings = () => {
   const handle_redirect = (route) => {
 		navigate(route);
 	};
+
+  const { setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -166,7 +171,7 @@ const ParentSettings = () => {
                     </li>
                   </ul>
                   <div className="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Odhlásiť sa</button>
+                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`} onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>Odhlásiť sa</button>
                   </div>
                 </div>
               </div>

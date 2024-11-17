@@ -1,6 +1,9 @@
-import React, { useState } from 'react'; 
+import React, { useState, useContext } from 'react'; 
 import styles from './css/ParentDashboardTasks.module.css';
 import { useNavigate } from "react-router-dom";
+
+import { logOutUser } from "./utilities/Utils";
+import { AppContext } from "./utilities/AppContext";
 
 const ParentDashboardTasks = () => {
   // State to manage tasks, with each child having their own list of tasks
@@ -21,6 +24,8 @@ const ParentDashboardTasks = () => {
   // Example usage of addTask function (can be triggered with user input)
   // addTask('Adam', 'New task for Adam');
   const navigate = useNavigate();
+
+  const { setName, setIsLoggedIn, setEmail } = useContext(AppContext);
   
   const handle_redirect = (route) => {
 		navigate(route);
@@ -66,7 +71,7 @@ const ParentDashboardTasks = () => {
                     </li>
                   </ul>
                   <div className="d-lg-flex col-lg-3 justify-content-lg-end">
-                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}>Logout</button>
+                    <button className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`} onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>Logout</button>
                   </div>
                 </div>
               </div>
