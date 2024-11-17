@@ -61,15 +61,21 @@ def create_user():
     email = request.form.get("email")
     password = request.form.get("password")
 
+    # Checking existing email
+    result1 = check_user_exist()
+    if result1[1] == 200:
+        return jsonify({"message": "Používateľ nevytvorený."}), 406 # Not Acceptable
+
+    # Checking existing email
+    result1 = check_user_exist()
+    if result1[1] == 200:
+        return jsonify({"message": "Používateľ nevytvorený."}), 406 # Not Acceptable
+
     # SQL query
     syntax = (
         "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
     )
     result = connectiondb(syntax, (name, surname, email, password))
-
-    # Checking existing email
-    if check_user_exist(email):
-        return jsonify({"message": "Používateľ nevytvorený."}), 406  # Not Acceptable
 
     # Return
     if not result:
@@ -208,7 +214,7 @@ def add_to_family():
         result2 = connectiondb(syntax2, (email,))
 
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
-        connectiondb(syntax3, (result[0][0], result2, "parent"))
+        connectiondb(syntax3, (result[0][0], result2[0][0], "parent"))
 
         return (
             jsonify(
@@ -222,7 +228,7 @@ def add_to_family():
         result2 = connectiondb(syntax2, (email,))
 
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
-        connectiondb(syntax3, (result1[0][0], result2, "kid"))
+        connectiondb(syntax3, (result1[0][0], result2[0][0], "kid"))
 
         return (
             jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}),
@@ -280,26 +286,21 @@ def delete_family():
     email = request.form.get("email")
 
     # SQL query
-    syntax = "SELECT id FROM uzivatel WHERE name = %s"
-    result = connectiondb(syntax, (email))
+    syntax = "SELECT id FROM uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT id_rodina WHERE id_uzivatel = %s"
-    result1 = connectiondb(syntax1, (result[0][0]))
+    syntax1 = "SELECT id_rodina FROM clen WHERE id_uzivatel = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
 
-    syntax2 = "DELETE FROM rodina WHERE id_rodina = %s"
-    result2 = connectiondb(syntax2, (result1[0][0]))
+    syntax2 = "DELETE FROM rodina WHERE id = %s"
+    result2 = connectiondb(syntax2, (result1[0][0],))
 
     syntax3 = "DELETE FROM clen WHERE id_rodina = %s"
-    result3 = connectiondb(syntax3, (result1[0][0]))
+    result3 = connectiondb(syntax3, (result1[0][0],))
 
     # Return
-    if result2 & result3:
-        return (
-            jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}),
-            202,
-        )  # Accepted
-    # elif result2 == None or result3 == None:
-    #    return jsonify({"message": "Problem s vymazanim rodiny alebo clenov rodiny"}), 400 # Bad Request
+    if not result2 and not result3:
+        return jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}), 202 # Accepted
     else:
         return (
             jsonify({"error": "Nastala chyba na servery!!!"}),
@@ -310,35 +311,30 @@ def delete_family():
 @app.route("/Add_tasks", methods=["POST"])
 def add_tasks():
     # Input
-    name = request.form.get("name")
-    task = request.form.get("task")
-    date_from = request.form.get("date_from")
-    date_to = request.form.get("date_to")
-    reward = request.form.get("reward")
+    id = request.form.get('id')
+    task = request.form.get('task')
+    date_from = request.form.get('date_from')
+    date_to = request.form.get('date_to')
+    reward = request.form.get('reward')
 
     # SQL query
-    syntax = "SELECT id FROM uzivatel WHERE name = %s"  # TODO: prehodnotit aj select pre vyber clenov a podla toho mozno pojde aj mail
-    result = connectiondb(syntax, (name,))
+    syntax = "SELECT id FROM odmena WHERE nazov = %s"
+    result = connectiondb(syntax, (reward,))
 
-    syntax1 = "SELECT id FROM odmena WHERE nazov = %s"
-    result1 = connectiondb(syntax1, (reward,))
-
-    syntax2 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
-    result2 = connectiondb(
-        syntax2, (result[0][0], task, date_from, date_to, result1[0][0], "not done")
-    )
+    syntax1 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
+    result1 = connectiondb(syntax1, (id, task, date_from, date_to, "100", "not done")) #TODO: potom prepisat "100" na result[0][0]
 
     # Return
-    if not result2:
-        return jsonify({"message": "Pridanie ulohy uspesne"}), 200  # OK
+    if not result1:
+        return jsonify({"message": "Pridanie ulohy uspesne"}), 200 # OK
     else:
         return (
             jsonify({"error": "Nastala chyba na servery!!!"}),
             500,
         )  # Internal Server Error
 
-
-@app.route("Parents_tasks", methods=["POST"])
+    
+@app.route('/Parents_tasks', methods=['POST'])
 def parent_tasks():
     # Input
     email = request.form.get("email")
@@ -441,5 +437,25 @@ def kids_dashboard():
 #    # SQL query
 #    syntax = ""
 
-if __name__ == "__main__":
-    app.run(host="147.232.205.117", port=5000)
+@app.route('/Select', methods=['POST'])
+def select():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "SELECT uzivatel.id, meno FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE id_rodina = %s AND rola = 'kid'"
+    result1 = connectiondb(syntax1, (result[0][0],))
+
+    # Return
+    if result1:
+        return jsonify({"return": f"{result1}"}), 202 # Accepted
+    elif result1 == []:
+        return jsonify({"message": "Bezdetny"}), 204 # No Content
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+if __name__ == '__main__':
+    app.run(host='147.232.205.117', port=5000)
