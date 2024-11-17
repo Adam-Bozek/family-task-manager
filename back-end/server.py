@@ -5,18 +5,19 @@ import bcrypt
 import string
 import random
 
+
 def connectiondb(query, params=None):
     print("Start")
     connection = None  # Initialize connection variable
-    cursor = None      # Initialize cursor variable
+    cursor = None  # Initialize cursor variable
     try:
         # Establish the database connection
         connection = psycopg2.connect(
-            dbname='ftm',
-            user='admin',
-            password='password',
-            host='147.232.205.117',
-            port='5432'
+            dbname="ftm",
+            user="admin",
+            password="password",
+            host="147.232.205.117",
+            port="5432",
         )
         cursor = connection.cursor()  # Now it is safe to create the cursor
 
@@ -37,62 +38,75 @@ def connectiondb(query, params=None):
             cursor.close()
         if connection is not None:
             connection.close()
-        print("Uz je konec!!!!")
+        print("Uz je koniec!!!!")
+
 
 # Compare password with saved hash
 def check_password(plaintext_password, hashed_password):
-    return bcrypt.checkpw(plaintext_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    return bcrypt.checkpw(
+        plaintext_password.encode("utf-8"), hashed_password.encode("utf-8")
+    )
+
 
 # Initialize Flask application
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/Create_user', methods=['POST'])
+
+@app.route("/Create_user", methods=["POST"])
 def create_user():
     # Input
-    name = request.form.get('name')
-    surname = request.form.get('surname')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    name = request.form.get("name")
+    surname = request.form.get("surname")
+    email = request.form.get("email")
+    password = request.form.get("password")
 
     # SQL query
-    syntax = "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
+    syntax = (
+        "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
+    )
     result = connectiondb(syntax, (name, surname, email, password))
 
     # Checking existing email
     if check_user_exist(email):
-        return jsonify({"message": "Používateľ nevytvorený."}), 406 # Not Acceptable
+        return jsonify({"message": "Používateľ nevytvorený."}), 406  # Not Acceptable
 
     # Return
     if not result:
-        return jsonify({"message": "Používateľ vytvorený."}), 201 # Created
+        return jsonify({"message": "Používateľ vytvorený."}), 201  # Created
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
-@app.route('/Check_user_exist', methods=['POST'])
+
+@app.route("/Check_user_exist", methods=["POST"])
 def check_user_exist():
     # Input
-    email = request.form.get('email')
-    
+    email = request.form.get("email")
+
     # SQL query
     syntax = "SELECT * FROM uzivatel WHERE email = %s;"
     result = connectiondb(syntax, (email,))
 
     # Return
     if result:
-        return jsonify({"message": "Používateľ existuje."}), 200 # OK
+        return jsonify({"message": "Používateľ existuje."}), 200  # OK
     elif result == []:
-        return jsonify({"message": "Používateľ neexistuje."}), 400 # Bad Request
+        return jsonify({"message": "Používateľ neexistuje."}), 400  # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
-@app.route('/Login', methods=['POST'])
+
+@app.route("/Login", methods=["POST"])
 def login():
     # Input
-    email = request.form.get('email')
-    password = request.form.get('password')
+    email = request.form.get("email")
+    password = request.form.get("password")
 
     # SQL query
     syntax = "SELECT * FROM uzivatel WHERE email = %s;"
@@ -102,38 +116,52 @@ def login():
         compare = True
     else:
         compare = False
-    
+
     # Return Login
     if compare:
         # Get ID from result
         id = result[0][0]
         syntax1 = "SELECT rola FROM clen WHERE id_uzivatel = %s;"
         result1 = connectiondb(syntax1, (id,))
-        
+
         # Return Role
         if result1:
-            return jsonify({"message": "Prihlásenie úspešné.", "role": f"{result1[0][0]}"}), 202 # Accepted
+            return (
+                jsonify(
+                    {"message": "Prihlásenie úspešné.", "role": f"{result1[0][0]}"}
+                ),
+                202,
+            )  # Accepted
         elif result1 == []:
-            return jsonify({"message": "Prihlásenie úspešné", "role": "after-reg"}), 202 # Accepted
+            return (
+                jsonify({"message": "Prihlásenie úspešné", "role": "after-reg"}),
+                202,
+            )  # Accepted
         else:
-            return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-        
+            return (
+                jsonify({"error": "Nastala chyba na servery!!!"}),
+                500,
+            )  # Internal Server Error
+
     elif compare == False:
-        return jsonify({"message": "Prihlásenie neúspešné."}), 406 # Not Acceptable
+        return jsonify({"message": "Prihlásenie neúspešné."}), 406  # Not Acceptable
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
 
-@app.route('/Create_family', methods=['POST'])
+@app.route("/Create_family", methods=["POST"])
 def create_family():
     # Input
-    name_family = request.form.get('family_name')
-    email = request.form.get('email')
+    name_family = request.form.get("family_name")
+    email = request.form.get("email")
 
     # Generate 16-digit code
     N = 16
-    code = ''.join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
-    code1 = ''.join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
+    code = "".join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
+    code1 = "".join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
 
     # SQL query
     syntax = "INSERT INTO rodina (jedinecny_kod_R, jedinecny_kod_D, nazov_rodiny) VALUES (%s, %s, %s)"
@@ -151,16 +179,19 @@ def create_family():
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
         connectiondb(syntax3, (result2[0][0], result1[0][0], "parent"))
 
-        return jsonify({"message": "Rodina sa vytvorila"}), 202 # Accepted
+        return jsonify({"message": "Rodina sa vytvorila"}), 202  # Accepted
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
-@app.route('/Add_to_family', methods=["POST"])
+
+@app.route("/Add_to_family", methods=["POST"])
 def add_to_family():
     # Input
-    string = request.form.get('string')
-    email = request.form.get('email')
+    string = request.form.get("string")
+    email = request.form.get("email")
 
     # SQL query
     syntax = "SELECT id FROM rodina WHERE jedinecny_kod_R = %s"
@@ -179,7 +210,12 @@ def add_to_family():
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
         connectiondb(syntax3, (result[0][0], result2, "parent"))
 
-        return jsonify({"message": "Clen bol pridany do rodiny ako Rodic", "role": "parent"}), 202 # Accepted
+        return (
+            jsonify(
+                {"message": "Clen bol pridany do rodiny ako Rodic", "role": "parent"}
+            ),
+            202,
+        )  # Accepted
     elif result1:
         # SQL query
         syntax2 = "SELECT id FROM uzivatel WHERE email = %s"
@@ -188,19 +224,28 @@ def add_to_family():
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
         connectiondb(syntax3, (result1[0][0], result2, "kid"))
 
-        return jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}), 202 # Accepted
+        return (
+            jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}),
+            202,
+        )  # Accepted
     elif result == [] and result1 == []:
-        return jsonify({"message": "Clen nebol pridany do ziadnej rodiny"}), 400 # Bad Request
+        return (
+            jsonify({"message": "Clen nebol pridany do ziadnej rodiny"}),
+            400,
+        )  # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
-@app.route('/Add_rewards', methods=["POST"])
+
+@app.route("/Add_rewards", methods=["POST"])
 def add_rewards():
     # Input
-    email = request.form.get('email')
-    name_reward = request.form.get('name_reward')
-    value = request.form.get('value')
+    email = request.form.get("email")
+    name_reward = request.form.get("name_reward")
+    value = request.form.get("value")
 
     # SQL query
     syntax = "SELECT id FROM uzivatel WHERE meno = %s"
@@ -214,18 +259,25 @@ def add_rewards():
 
     # Return
     if result2 & result1:
-        return jsonify({"message": "Uspesny zapis a vypis odmien"}, result2), 202 # Accepted
+        return (
+            jsonify({"message": "Uspesny zapis a vypis odmien"}, result2),
+            202,
+        )  # Accepted
     elif result2:
-        return jsonify({"message": "Uspesny vypis odmien"}, result2), 202 # Accepted
-    #elif result2 == None or result1 == None:
+        return jsonify({"message": "Uspesny vypis odmien"}, result2), 202  # Accepted
+    # elif result2 == None or result1 == None:
     #    return jsonify({"message": "Problem so zapisom alebo vypisom odmien"}), 400 # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
-@app.route('/Delete_family', methods=['POST'])
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
+
+
+@app.route("/Delete_family", methods=["POST"])
 def delete_family():
-     # Input
-    email = request.form.get('email')
+    # Input
+    email = request.form.get("email")
 
     # SQL query
     syntax = "SELECT id FROM uzivatel WHERE name = %s"
@@ -242,47 +294,59 @@ def delete_family():
 
     # Return
     if result2 & result3:
-        return jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}), 202 # Accepted
-    #elif result2 == None or result3 == None:
+        return (
+            jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}),
+            202,
+        )  # Accepted
+    # elif result2 == None or result3 == None:
     #    return jsonify({"message": "Problem s vymazanim rodiny alebo clenov rodiny"}), 400 # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
-@app.route('/Add_tasks', methods=['POST'])
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
+
+
+@app.route("/Add_tasks", methods=["POST"])
 def add_tasks():
     # Input
-    name = request.form.get('name')
-    task = request.form.get('task')
-    date_from = request.form.get('date_from')
-    date_to = request.form.get('date_to')
-    reward = request.form.get('reward')
+    name = request.form.get("name")
+    task = request.form.get("task")
+    date_from = request.form.get("date_from")
+    date_to = request.form.get("date_to")
+    reward = request.form.get("reward")
 
     # SQL query
-    syntax = "SELECT id FROM uzivatel WHERE name = %s" #TODO: prehodnotit aj select pre vyber clenov a podla toho mozno pojde aj mail
+    syntax = "SELECT id FROM uzivatel WHERE name = %s"  # TODO: prehodnotit aj select pre vyber clenov a podla toho mozno pojde aj mail
     result = connectiondb(syntax, (name,))
 
     syntax1 = "SELECT id FROM odmena WHERE nazov = %s"
     result1 = connectiondb(syntax1, (reward,))
 
     syntax2 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
-    result2 = connectiondb(syntax2, (result[0][0], task, date_from, date_to, result1[0][0], "not done"))
+    result2 = connectiondb(
+        syntax2, (result[0][0], task, date_from, date_to, result1[0][0], "not done")
+    )
 
     # Return
     if not result2:
-        return jsonify({"message": "Pridanie ulohy uspesne"}), 200 # OK
+        return jsonify({"message": "Pridanie ulohy uspesne"}), 200  # OK
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
-    
-@app.route('Parents_tasks', methods=['POST'])
+
+@app.route("Parents_tasks", methods=["POST"])
 def parent_tasks():
     # Input
-    email = request.form.get('email')
+    email = request.form.get("email")
 
     # SQL query
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
-    
+
     syntax1 = "SELECT id_uzivatel FROM clen WHERE id_rodina = %s"
     result1 = connectiondb(syntax1, (result[0][0],))
 
@@ -292,21 +356,28 @@ def parent_tasks():
 
     # Return
     if result2:
-        return jsonify({"message": "Vypis uloh uspesne", "return": f"{result2}"}), 202 # Accepted
+        return (
+            jsonify({"message": "Vypis uloh uspesne", "return": f"{result2}"}),
+            202,
+        )  # Accepted
     elif result2 == []:
-        return jsonify({"message": "Vypis uloh neuspesne"}), 400 # Bad Request
+        return jsonify({"message": "Vypis uloh neuspesne"}), 400  # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
-@app.route('/Parents_rewards', methods=['POST'])
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
+
+
+@app.route("/Parents_rewards", methods=["POST"])
 def parents_rewards():
     # Input
-    email = request.form.get('email')
+    email = request.form.get("email")
 
     # SQL query
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
-    
+
     syntax1 = "SELECT id_uzivatel FROM clen WHERE id_rodina = %s"
     result1 = connectiondb(syntax1, (result[0][0],))
 
@@ -316,16 +387,23 @@ def parents_rewards():
 
     # Return
     if result2:
-        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result2}"}), 202 # Accepted
+        return (
+            jsonify({"message": "Vypis odmien uspesne", "return": f"{result2}"}),
+            202,
+        )  # Accepted
     elif result2 == []:
-        return jsonify({"message": "Vypis odmien neuspesne"}), 400 # Bad Request
+        return jsonify({"message": "Vypis odmien neuspesne"}), 400  # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
-    
-@app.route('/Kids_dashboard', methods=['POST'])
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
+
+
+@app.route("/Kids_dashboard", methods=["POST"])
 def kids_dashboard():
     # Input
-    email = request.form.get('email')
+    email = request.form.get("email")
 
     # SQL query
     syntax = "SELECT * FROM ulohy RIGHT JOIN uzivatel ON uzivatel.id = ulohy.id_uzivatel WHERE email = %s"
@@ -336,19 +414,32 @@ def kids_dashboard():
 
     # Return
     if result and result1:
-        return jsonify({"message": "Vypis uloh a odmien uspesne", "return": f"{result}", "return1": f"{result1}"}), 202 # Accepted
+        return (
+            jsonify(
+                {
+                    "message": "Vypis uloh a odmien uspesne",
+                    "return": f"{result}",
+                    "return1": f"{result1}",
+                }
+            ),
+            202,
+        )  # Accepted
     elif result == [] or result1 == []:
-        return jsonify({"message": "Vypis uloh a odmien neuspesne"}), 400 # Bad Request
+        return jsonify({"message": "Vypis uloh a odmien neuspesne"}), 400  # Bad Request
     else:
-        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+        return (
+            jsonify({"error": "Nastala chyba na servery!!!"}),
+            500,
+        )  # Internal Server Error
 
-#@app.route('/Kids_exchange', methods=['POST'])
-#def kids_exchange():
+
+# @app.route('/Kids_exchange', methods=['POST'])
+# def kids_exchange():
 #    # Input
 #    name = request.form.get('name')
 #
 #    # SQL query
 #    syntax = ""
 
-if __name__ == '__main__':
-    app.run(host='147.232.205.117', port=5000)
+if __name__ == "__main__":
+    app.run(host="147.232.205.117", port=5000)

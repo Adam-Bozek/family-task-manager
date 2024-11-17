@@ -13,7 +13,7 @@ export const AppProvider = ({ children }) => {
 
   // Setter function for role
 	const setRole = (role) => {
-		if (role === "parent" || role === "kid" || role === "after-reg") {
+		if (role === "parent" || role === "kid" || role === "after-reg" || role === null) {
 			setStateRole(role);
 		} else {
 			console.error('Invalid role.');
@@ -23,7 +23,7 @@ export const AppProvider = ({ children }) => {
   // Setter function for email
   const setEmail = (newEmail) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(newEmail)) {
+    if (emailRegex.test(newEmail) || newEmail === null) {
       setStateEmail(newEmail);
     } else {
       console.error('Invalid email format.');
@@ -32,7 +32,7 @@ export const AppProvider = ({ children }) => {
 
   // Setter function for name
   const setName = (newName) => {
-    if (newName.length >= 2 && newName.length <= 50) {
+    if (newName.length >= 2 && newName.length <= 50 || newName == null) {
       setStateName(newName);
     } else {
       console.error('Invalid name format.');
