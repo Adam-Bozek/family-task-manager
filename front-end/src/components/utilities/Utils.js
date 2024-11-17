@@ -98,9 +98,8 @@ export async function createUserAccount(name, surname, email, password) {
 		if (response.status === 201) {
 			alert("User successfully created.");
 			return true;
-		}
-		else if(response.status === 406) {
-		  alert("Email already exists. Please choose a different email address.");
+		} else if (response.status === 406) {
+			alert("Email already exists. Please choose a different email address.");
 		} else {
 			alert("User creation was unsuccessful.");
 			return false;
@@ -262,7 +261,6 @@ export async function familyCreation(family_name, email) {
 			console.error("Unexpected status code:", response.status);
 			return false;
 		}
-
 	} catch (err) {
 		// Enhanced error handling
 		console.error("Error logging in:", err);
@@ -310,7 +308,6 @@ export async function addToFamily(join_code, email) {
 			console.error("Unexpected status code:", response.status);
 			return { success: false, message: "Unexpected status code." };
 		}
-
 	} catch (err) {
 		// Enhanced error handling
 		console.error("Error adding to family:", err);

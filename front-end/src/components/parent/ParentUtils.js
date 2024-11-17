@@ -59,7 +59,7 @@ export async function addReward() {}
 export async function removeReward() {}
 
 export async function deleteFamily(email) {
-  try {
+	try {
 		const formData = new FormData();
 		formData.append("email", email);
 
@@ -127,9 +127,10 @@ export async function getKidsNames(email) {
 				id: kid[0], // Assuming the ID is the first element in the tuple
 				name: kid[1], // Assuming the name is the second element in the tuple
 			}));
+		} else if (response.status === 204) {
+			return null;
 		} else if (response.status === 406) {
 			alert("Email already exists. Please choose a different email address.");
-			return [];
 		} else {
 			alert("User creation was unsuccessful.");
 			return [];
