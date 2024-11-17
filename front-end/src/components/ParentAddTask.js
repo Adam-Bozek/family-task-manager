@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
-import styles from './css/ParentAddTask.module.css';
+import React, { useState, useEffect, useContext } from "react";
+import styles from "./css/ParentAddTask.module.css";
 import { useNavigate } from "react-router-dom";
+import { getKidsNames } from "./parent/ParentUtils";
+import { AppContext } from "./utilities/AppContext";
 
 const ParentAddTask = () => {
   const [tasks, setTasks] = useState({}); // Object for storing tasks by user
   const [taskData, setTaskData] = useState({
-    name: '',
-    task: '',
-    startDate: '',
-    endDate: '',
-    reward: ''
+    name: "",
+    task: "",
+    startDate: "",
+    endDate: "",
+    reward: "",
   });
+  const [kids, setKids] = useState([]);
   const [tooltip, setTooltip] = useState({ visible: false, taskInfo: null });
 
   const handleInputChange = (e) => {
     setTaskData({ ...taskData, [e.target.name]: e.target.value });
   };
+
+  const { email } = useContext(AppContext);
+
+  useEffect(() => {
+    const fetchKidsData = async () => {
+      try {
+        const fetchedKids = await getKidsNames(email);
+        setKids(fetchedKids); // Store the data in state
+      } catch (err) {
+        console.error("Error fetching kids' names:", err);
+      }
+    };
+
+    fetchKidsData();
+  }, [email]);
 
   const addTask = () => {
     if (taskData.name && taskData.task) {
@@ -25,14 +43,13 @@ const ParentAddTask = () => {
           ...prevTasks,
           [taskData.name]: [
             ...userTasks,
-            { ...taskData, color: getRandomColor() } // Include all task data
-          ]
+            { ...taskData, color: getRandomColor() }, // Include all task data
+          ],
         };
       });
-      setTaskData({ name: '', task: '', startDate: '', endDate: '', reward: '' }); // Reset input fields
+      setTaskData({ name: "", task: "", startDate: "", endDate: "", reward: "" }); // Reset input fields
     }
   };
-
 
   const removeTask = (userName, taskIndex) => {
     setTasks((prevTasks) => {
@@ -57,22 +74,16 @@ const ParentAddTask = () => {
   };
 
   // Predefined color palette for better text visibility
-  const colorPalette = [
-    '#FF5733', '#33FF57', '#3357FF', '#F1C40F',
-    '#8E44AD', '#E67E22', '#1ABC9C', '#D35400',
-    '#2C3E50', '#C0392B'
-  ];
+  const colorPalette = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F", "#8E44AD", "#E67E22", "#1ABC9C", "#D35400", "#2C3E50", "#C0392B"];
 
   const getRandomColor = () => {
     return colorPalette[Math.floor(Math.random() * colorPalette.length)];
   };
 
   const navigate = useNavigate();
-  // Navigacia
   const handle_redirect = (route) => {
-		navigate(route);
-	};
-
+    navigate(route);
+  };
 
   return (
     <div className={styles["templateMain"]}>
@@ -95,17 +106,17 @@ const ParentAddTask = () => {
                 <span className="navbar-brand col-lg-3 me-0" />
                 <ul className="navbar-nav col-lg-6 justify-content-lg-center">
                   <li className="nav-item ">
-                    <button className={`nav-link ${styles["nav-font-weight"]} `} onClick={ () => handle_redirect("/ParentDashboardTasks")}>
+                    <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
                       Domov
                     </button>
                   </li>
                   <li className="nav-item mx-4">
-                    <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={ () => handle_redirect("/ParentSettings")}>
+                    <button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
                       Nastavenia
                     </button>
                   </li>
                   <li className="nav-item">
-                    <button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={ () => handle_redirect("/ParentTasks")}>
+                    <button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={() => handle_redirect("/ParentTasks")}>
                       Zadať úlohu
                     </button>
                   </li>
@@ -121,6 +132,21 @@ const ParentAddTask = () => {
         <div className={styles.mainContainer}>
           <div className={styles.formContainer}>
             <h3>Zadanie Úloh</h3>
+            <div className="dropdown m-3">
+              <button className={`btn btn-secondary dropdown-toggle ${styles.confirmButton}`} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Vyberte dieťa
+              </button>
+              <ul className="dropdown-menu">
+                {kids.map((kidName, index) => (
+                  <li key={index}>
+                    <a className="dropdown-item" href="#" onClick={() => setTaskData({ ...taskData, name: kidName })}>
+                      {kidName}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <input
               name="name"
               placeholder="Meno"
@@ -134,13 +160,7 @@ const ParentAddTask = () => {
                 <option key={index} value={userName} />
               ))}
             </datalist>
-            <input
-              name="task"
-              placeholder="Úloha"
-              value={taskData.task}
-              onChange={handleInputChange}
-              className={styles.input}
-            />
+            <input name="task" placeholder="Úloha" value={taskData.task} onChange={handleInputChange} className={styles.input} />
             <input
               name="startDate"
               placeholder="Od (dd. mm. rrrr)"
@@ -157,14 +177,10 @@ const ParentAddTask = () => {
               className={styles.input}
               type="date"
             />
-            <input
-              name="reward"
-              placeholder="Odmena"
-              value={taskData.reward}
-              onChange={handleInputChange}
-              className={styles.input}
-            />
-            <button onClick={addTask} className={styles.confirmButton}>Potvrdiť</button>
+            <input name="reward" placeholder="Odmena" value={taskData.reward} onChange={handleInputChange} className={styles.input} />
+            <button onClick={addTask} className={styles.confirmButton}>
+              Potvrdiť
+            </button>
           </div>
           <div className={styles.tasksContainer}>
             {Object.keys(tasks).map((userName, index) => (
@@ -177,15 +193,16 @@ const ParentAddTask = () => {
                       className={styles.taskBox}
                       style={{ backgroundColor: task.color }}
                       onMouseEnter={() => showTooltip(task)}
-                      onMouseLeave={hideTooltip}
-                    >
+                      onMouseLeave={hideTooltip}>
                       {task.task}
                       {tooltip.visible && tooltip.taskInfo === task && (
                         <div className={styles.tooltip}>
                           <p>Od: {task.startDate}</p>
                           <p>Do: {task.endDate}</p>
                           <p>Odmena: {task.reward}</p>
-                          <button onClick={() => removeTask(userName, taskIndex)} className={styles.removeButton}>Zrušiť</button>
+                          <button onClick={() => removeTask(userName, taskIndex)} className={styles.removeButton}>
+                            Zrušiť
+                          </button>
                         </div>
                       )}
                     </span>
