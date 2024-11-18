@@ -1,0 +1,229 @@
+/* Hlavný kontajner stránky */
+.pageContainer {
+    background-image: url('../../media/background.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    overflow: hidden;
+}
+
+.blur-container {
+    background-color: rgba(237, 234, 234, 0.59);
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+  }
+
+/* Horný panel s kreditmi a tlačidlom odhlásenia */
+.header {
+    width: 80%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header .credits {
+    font-size: 16px;
+    color: #333;
+}
+
+.header a {
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
+}
+
+.header a:hover {
+    background-color: #555;
+}
+
+.logoutButton {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hlavný kontajner pre obsah */
+.mainContainer {
+    display: flex;
+    width: 100%;
+    background-color: rgba(248, 254, 255, 0.70);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    margin: 50px auto;
+    max-width: 1320px;
+}
+
+/* Formulárový kontajner */
+.formContainer {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.confirmButton {
+    padding: 15px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirmButton:hover {
+    background-color: #292929;
+}
+
+.templateMain {
+    background-image: url('../../media/background.png'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    height: 100vh; 
+    width: 100%; 
+    display: flex;
+  }
+  
+  .blur-container {
+    background-color: rgba(237, 234, 234, 0.59);
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .navbar-settings {
+    box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    border-radius: 15px;
+    padding: 0;
+  }
+  
+  .background {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(30px); 
+    -webkit-backdrop-filter: blur(30px); 
+  }
+
+/* Úlohy kontajner */
+.tasksContainer {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.userSection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+}
+
+.taskList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.taskBox {
+    padding: 10px;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.buttonFrame {
+    display: flex;
+    width: 80%;
+    max-width: 600px;
+    background-color: rgba(248, 254, 255, 0.70);
+    backdrop-filter: blur(20px);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    justify-content: space-between;
+}
+
+/* Tooltip */
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+    transition: opacity 0.3s;
+}
+
+.taskBox {
+    position: relative;
+}
+
+/* Reakčný dizajn */
+@media (max-width: 768px) {
+    .mainContainer {
+        flex-direction: column;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header .logoutButton {
+        margin-top: 10px;
+    }
+
+    .formContainer {
+        padding: 10px;
+    }
+
+    .input {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        width: 95%;
+    }
+
+    .nav-font-weight {
+        font-size: 1.5rem;
+    }
+
+    .nav-button-weight {
+        font-size: 1rem;
+    }
+}
