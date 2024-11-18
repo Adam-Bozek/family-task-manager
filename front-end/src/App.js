@@ -36,14 +36,14 @@ const App = () => {
 
 			{/* Routes only accessible after registration */}
 			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} />
-			
+
 			{/* Routes only for parents */}
 			<Route path="/ParentDashboardTasks" element={<ProtectedRoute element={<ParentDashboardTasks />} allowedRoles={["parent"]} />} />
 			<Route path="/ParentDashboardRewards" element={<ProtectedRoute element={<ParentDashboardRewards />} allowedRoles={["parent"]} />} />
 			<Route path="/ParentSettings" element={<ProtectedRoute element={<ParentSettings />} allowedRoles={["parent"]} />} />
 			<Route path="/ParentTasks" element={<ProtectedRoute element={<ParentAddTask />} allowedRoles={["parent"]} />} />
-			
-			{/* TODO: Implement this: Routes only for kids */}
+
+			{/* Routes only for kids */}
 			<Route path="/KidRewardExchange" element={<ProtectedRoute element={<KidRewardExchange />} allowedRoles={["kid"]} />} />
 			<Route path="/KidDashboard" element={<ProtectedRoute element={<KidDashboard />} allowedRoles={["kid"]} />} />
 
