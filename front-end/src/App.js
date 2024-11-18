@@ -20,6 +20,7 @@ import KidRewardExchange from "./components/KidRewardExchange";
 
 // Template component
 import TEMPLATE from "./components/TEMPLATE";
+import KidDashboard from "./components/KidDashboard";
 
 const App = () => {
 	return (
@@ -46,6 +47,7 @@ const App = () => {
 			{/* TODO: Implement this: Routes only for kids */}
 			<Route path="/Login" element={<ProtectedRoute element={<LoginPage />} allowedRoles={["kid"]} />} />
 			<Route path="/KidRewardExchange" element={<ProtectedRoute element={<KidRewardExchange />} allowedRoles={["kid"]} />} />
+			<Route path="/KidDashboard" element={<ProtectedRoute element={<KidDashboard />} allowedRoles={["kid"]} />} />
 
 			{/* Catch-all redirect */}
 			<Route path="*" element={<Navigate replace to="/Home" />} />
