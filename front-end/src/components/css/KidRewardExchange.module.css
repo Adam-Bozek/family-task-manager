@@ -20,43 +20,67 @@
     text-align: center;
   }
 
-/* Horný panel s kreditmi a tlačidlom odhlásenia */
-.header {
-    width: 80%;
-    max-width: 1200px;
+  /* Header  */
+  
+  .navbar-settings {
+    position: fixed; /* Udržuje header vždy na vrchu stránky */
+    top: 0; /* Posunie header na vrch */
+    left: 50%; /* Posunie ľavý okraj na stred stránky */
+    transform: translateX(-50%); /* Zarovná header na stred */
+    width: 100%; /* Môžeš nastaviť konkrétnu šírku, napr. 80% */
+    max-width: 1200px; /* Ak chceš obmedziť šírku headera */
+    z-index: 1000; /* Uisti sa, že je nad ostatnými prvkami */
+
+}
+.nav-font-weight {
+    font-weight: 600; /* Set a valid value */
+    font-size: 1.7rem;
+  }
+  
+  .nav-button-weight {
+    font-weight: 400; /* Set a valid value */
+    font-size: 1.3rem;
+    padding: 10px;
+  }
+  .navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 15px;
     margin-bottom: 20px;
 }
-
-.header .credits {
-    font-size: 16px;
-    color: #333;
-}
-
-.header a {
-    font-size: 16px;
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    background-color: #333;
-    color: #fff;
-}
-
-.header a:hover {
-    background-color: #555;
-}
-
-.logoutButton {
+  
+.navbar button {
     padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    background-color: #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.navbar button.activeTab {
+    background-color: #000;
+    color: #fff;
+}
+  
+  .credits {
+    font-weight: bold;
+  }
+  
+  .navLink {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #000;
+  }
+  
+  .logoutButton {
     background-color: #000;
     color: #fff;
     border: none;
     border-radius: 5px;
+    padding: 10px 20px;
     cursor: pointer;
-}
+  }
 
 /* Hlavný kontajner pre obsah */
 .mainContainer {
@@ -67,8 +91,8 @@
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    margin: 50px auto;
-    max-width: 1325px; /* Väčšia šírka pre lepšie zobrazenie */
+    margin: 120px auto;
+    max-width: 1210px; /* Väčšia šírka pre lepšie zobrazenie */
   }
 
 /* Formulárový kontajner */
