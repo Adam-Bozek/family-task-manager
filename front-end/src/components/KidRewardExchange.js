@@ -63,37 +63,38 @@ const KidRewardExchange = ({ userName }) => {
         </header>
 
       {/* Welcome and Rewards Table */}
-      <div className={styles.mainContainer}>
-        <h2>Ahoj {userName}!</h2>
-        <p>Tu si môžeš nazbierané kredity vymeniť za odmenu!</p>
-        <table className={styles.rewardsTable}>
-          <thead>
-            <tr>
-              <th>Odmena</th>
-              <th>Cena Odmeny</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {rewards.map((reward, index) => (
-              <tr key={index}>
-                <td>{reward.name}</td>
-                <td>{reward.cost} kreditov</td>
-                <td>
-                  <button
-                    className={styles.redeemButton}
-                    onClick={() => handleRedeem(reward.cost)}
-                    disabled={credits < reward.cost}
-                  >
-                    Vymeniť
-                  </button>
-                </td>
+      <div className={styles["mainContainer"]}>
+          <h2 className={styles["welcomeText"]}>Ahoj {userName}!</h2>
+          <p className={styles["instructions"]}>
+            Tu si môžeš nazbierané kredity vymeniť za odmenu!
+          </p>
+          <table className={styles.rewardsTable}>
+            <thead>
+              <tr>
+                <th>Odmena</th>
+                <th>Cena Odmeny</th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rewards.map((reward, index) => (
+                <tr key={index} className={styles.rewardRow}>
+                  <td>{reward.name}</td>
+                  <td>{reward.cost} kreditov</td>
+                  <td>
+                    <button
+                      className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4`}
+                      onClick={() => handleRedeem(reward.cost)}
+                      disabled={credits < reward.cost}>
+                      Vymeniť
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

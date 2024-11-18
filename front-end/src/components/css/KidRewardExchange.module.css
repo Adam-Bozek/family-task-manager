@@ -61,15 +61,15 @@
 /* Hlavný kontajner pre obsah */
 .mainContainer {
     display: flex;
-    width: 100%;
+    flex-direction: column;
     background-color: rgba(248, 254, 255, 0.70);
     backdrop-filter: blur(20px);
-    padding: 20px;
+    padding: 30px;
     border-radius: 20px;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
     margin: 50px auto;
-    max-width: 1320px;
-}
+    max-width: 1325px; /* Väčšia šírka pre lepšie zobrazenie */
+  }
 
 /* Formulárový kontajner */
 .formContainer {
@@ -188,42 +188,105 @@
     position: relative;
 }
 
+/* Zväčšenie textu na celej stránke */
+body, h1, h2, h3, p, table {
+    font-size: 1.2rem; /* Zväčšíme text na stránke */
+    font-weight: 600;
+  }
+  
+  /* Podčiarknutie odmien a cien */
+  .rewardsTable {
+    width: 100%;
+    max-width: 900px; /* Prispôsobené pre väčšie obrazovky */
+    margin-left: 0;
+    border-collapse: collapse;
+    font-size: 1.1rem; /* Zväčšenie písma v tabuľke */
+    text-align: left;
+  }
+
+  /* Podčiarknutie odmien a cien */
+.rewardsTable td {
+    border-bottom: 1px solid #ccc; /* Tenká sivá čiara pod každou odmenou a cenou */
+    padding: 12px 10px; /* Väčšie medzery pre lepšiu čitateľnosť */
+  }
+
+  .rewardsTable th {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc; /* Tenká sivá čiara pod hlavičkou */
+    font-size: 1.3rem; /* Zvýšená veľkosť písma pre hlavičky */
+  }
+  
+  .welcomeText, .instructions {
+    margin-bottom: 20px; /* Pridáme medzeru medzi textom a tabuľkou */
+    text-align: left;
+  }
+  
+ /* Upravíme nadpis a text, aby bol väčší a čitateľnejší */
+.welcomeText {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .instructions {
+    font-size: 1.6rem;
+    font-weight: normal;
+    margin-bottom: 30px;
+  }
+
+  strong, b {
+    font-weight: bold; /* Nastaví extra hrubý text pre tagy <strong> a <b> */
+  }
+
 /* Reakčný dizajn */
+/* Responzívne prispôsobenie pre rôzne obrazovky */
 @media (max-width: 768px) {
+    .templateMain {
+      padding-top: 10px; /* Menšie okraje na mobilných zariadeniach */
+    }
+  
+    .navbar-settings {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    /* Zmena rozloženia hlavnej tabulky */
     .mainContainer {
-        flex-direction: column;
-        width: 90%;
-        margin: 20px auto;
+      padding: 10px;
+      width: 100%;
     }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
+  
+    /* Zmenšíme text na mobiloch */
+    h2, p {
+      font-size: 1.2rem; /* Menší text pre mobilné zariadenia */
     }
-
-    .header .logoutButton {
-        margin-top: 10px;
+  
+    /* Tlačidlá v tabuľke sú väčšie a prispôsobené */
+    .rewardsTable button {
+      padding: 10px 16px;
+      font-size: 1rem;
     }
-
-    .formContainer {
-        padding: 10px;
+  }
+  
+  @media (max-width: 480px) {
+    /* Pre veľmi malé obrazovky (mobilné zariadenia) */
+    .mainContainer {
+      padding: 10px;
+      flex-direction: column;
     }
-
-    .input {
-        margin-bottom: 10px;
+  
+    /* Text bude ešte menší, aby sa zmestil na obrazovku */
+    h2, p {
+      font-size: 1rem;
     }
-}
-
-@media (max-width: 480px) {
-    .header {
-        width: 95%;
+  
+    /* Zníženie veľkosti tlačidiel */
+    .rewardsTable button {
+      font-size: 0.9rem;
     }
-
-    .nav-font-weight {
-        font-size: 1.5rem;
+  
+    .navbar-settings {
+      text-align: center;
+      margin-top: 10px;
     }
-
-    .nav-button-weight {
-        font-size: 1rem;
-    }
-}
+  }
