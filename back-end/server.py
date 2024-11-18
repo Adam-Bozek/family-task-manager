@@ -43,9 +43,7 @@ def connectiondb(query, params=None):
 
 # Compare password with saved hash
 def check_password(plaintext_password, hashed_password):
-    return bcrypt.checkpw(
-        plaintext_password.encode("utf-8"), hashed_password.encode("utf-8")
-    )
+    return bcrypt.checkpw(plaintext_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 
 # Initialize Flask application
@@ -72,19 +70,14 @@ def create_user():
         return jsonify({"message": "Používateľ nevytvorený."}), 406 # Not Acceptable
 
     # SQL query
-    syntax = (
-        "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
-    )
+    syntax = "INSERT INTO uzivatel (meno, priezvisko, email, heslo) VALUES (%s, %s, %s, %s);"
     result = connectiondb(syntax, (name, surname, email, password))
 
     # Return
     if not result:
         return jsonify({"message": "Používateľ vytvorený."}), 201  # Created
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
 
 
 @app.route("/Check_user_exist", methods=["POST"])
@@ -102,10 +95,7 @@ def check_user_exist():
     elif result == []:
         return jsonify({"message": "Používateľ neexistuje."}), 400  # Bad Request
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
 
 
 @app.route("/Login", methods=["POST"])
@@ -132,30 +122,16 @@ def login():
 
         # Return Role
         if result1:
-            return (
-                jsonify(
-                    {"message": "Prihlásenie úspešné.", "role": f"{result1[0][0]}"}
-                ),
-                202,
-            )  # Accepted
+            return jsonify({"message": "Prihlásenie úspešné.", "role": f"{result1[0][0]}"}), 202 # Accepted
         elif result1 == []:
-            return (
-                jsonify({"message": "Prihlásenie úspešné", "role": "after-reg"}),
-                202,
-            )  # Accepted
+            return jsonify({"message": "Prihlásenie úspešné", "role": "after-reg"}), 202 # Accepted
         else:
-            return (
-                jsonify({"error": "Nastala chyba na servery!!!"}),
-                500,
-            )  # Internal Server Error
+            return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
     elif compare == False:
         return jsonify({"message": "Prihlásenie neúspešné."}), 406  # Not Acceptable
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 @app.route("/Create_family", methods=["POST"])
@@ -187,10 +163,7 @@ def create_family():
 
         return jsonify({"message": "Rodina sa vytvorila"}), 202  # Accepted
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 @app.route("/Add_to_family", methods=["POST"])
@@ -216,12 +189,7 @@ def add_to_family():
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
         connectiondb(syntax3, (result[0][0], result2[0][0], "parent"))
 
-        return (
-            jsonify(
-                {"message": "Clen bol pridany do rodiny ako Rodic", "role": "parent"}
-            ),
-            202,
-        )  # Accepted
+        return jsonify({"message": "Clen bol pridany do rodiny ako Rodic", "role": "parent"}), 202 # Accepted
     elif result1:
         # SQL query
         syntax2 = "SELECT id FROM uzivatel WHERE email = %s"
@@ -230,20 +198,11 @@ def add_to_family():
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
         connectiondb(syntax3, (result1[0][0], result2[0][0], "kid"))
 
-        return (
-            jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}),
-            202,
-        )  # Accepted
+        return jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}), 202 # Accepted
     elif result == [] and result1 == []:
-        return (
-            jsonify({"message": "Clen nebol pridany do ziadnej rodiny"}),
-            400,
-        )  # Bad Request
+        return jsonify({"message": "Clen nebol pridany do ziadnej rodiny"}), 400 # Bad Request
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 @app.route("/Add_rewards", methods=["POST"])
@@ -265,19 +224,13 @@ def add_rewards():
 
     # Return
     if result2 & result1:
-        return (
-            jsonify({"message": "Uspesny zapis a vypis odmien"}, result2),
-            202,
-        )  # Accepted
+        return jsonify({"message": "Uspesny zapis a vypis odmien", "return": f"{result2}"}), 202 # Accepted
     elif result2:
-        return jsonify({"message": "Uspesny vypis odmien"}, result2), 202  # Accepted
-    # elif result2 == None or result1 == None:
-    #    return jsonify({"message": "Problem so zapisom alebo vypisom odmien"}), 400 # Bad Request
+        return jsonify({"message": "Uspesny vypis odmien", "return": f"{result2}"}), 202  # Accepted
+    elif result2 == []:
+        return jsonify({"message": "Problem s vypisom odmien"}), 400 # Bad Request
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 @app.route("/Delete_family", methods=["POST"])
@@ -302,10 +255,7 @@ def delete_family():
     if not result2 and not result3:
         return jsonify({"message": "Vymazanie rodiny aj clenov uspesne"}), 202 # Accepted
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 @app.route("/Add_tasks", methods=["POST"])
@@ -322,16 +272,14 @@ def add_tasks():
     result = connectiondb(syntax, (reward,))
 
     syntax1 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
-    result1 = connectiondb(syntax1, (id, task, date_from, date_to, "100", "not done")) #TODO: potom prepisat "100" na result[0][0]
+    result1 = connectiondb(syntax1, (id, task, date_from, date_to, "100", "not done"))
+    #TODO: potom prepisat "100" na result[0][0]
 
     # Return
     if not result1:
         return jsonify({"message": "Pridanie ulohy uspesne"}), 200 # OK
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
     
 @app.route('/Parents_tasks', methods=['POST'])
@@ -352,17 +300,11 @@ def parent_tasks():
 
     # Return
     if result2:
-        return (
-            jsonify({"message": "Vypis uloh uspesne", "return": f"{result2}"}),
-            202,
-        )  # Accepted
+        return jsonify({"message": "Vypis uloh uspesne", "return": f"{result2}"}), 202 # Accepted
     elif result2 == []:
         return jsonify({"message": "Vypis uloh neuspesne"}), 400  # Bad Request
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 @app.route("/Parents_rewards", methods=["POST"])
@@ -383,17 +325,11 @@ def parents_rewards():
 
     # Return
     if result2:
-        return (
-            jsonify({"message": "Vypis odmien uspesne", "return": f"{result2}"}),
-            202,
-        )  # Accepted
+        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result2}"}), 202 # Accepted
     elif result2 == []:
         return jsonify({"message": "Vypis odmien neuspesne"}), 400  # Bad Request
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
 
 
 @app.route("/Kids_dashboard", methods=["POST"])
@@ -410,23 +346,11 @@ def kids_dashboard():
 
     # Return
     if result and result1:
-        return (
-            jsonify(
-                {
-                    "message": "Vypis uloh a odmien uspesne",
-                    "return": f"{result}",
-                    "return1": f"{result1}",
-                }
-            ),
-            202,
-        )  # Accepted
+        return jsonify({"message": "Vypis uloh a odmien uspesne", "return": f"{result}", "return1": f"{result1}",}), 202 # Accepted
     elif result == [] or result1 == []:
         return jsonify({"message": "Vypis uloh a odmien neuspesne"}), 400  # Bad Request
     else:
-        return (
-            jsonify({"error": "Nastala chyba na servery!!!"}),
-            500,
-        )  # Internal Server Error
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
 # @app.route('/Kids_exchange', methods=['POST'])
