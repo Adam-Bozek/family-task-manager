@@ -30,7 +30,6 @@ const App = () => {
 			<Route path="/MoreInfo" element={<MoreInfo />} />
 			<Route path="/Register" element={<RegistrationPage />} />
 			<Route path="/LogIn" element={<LoginPage />} />
-			<Route path="/KidRewardExchange" element={<KidRewardExchange />} />
 
 			{/* Testing routes */}
 			<Route path="/test_template" element={<TEMPLATE />} />
@@ -45,7 +44,6 @@ const App = () => {
 			<Route path="/ParentTasks" element={<ProtectedRoute element={<ParentAddTask />} allowedRoles={["parent"]} />} />
 			
 			{/* TODO: Implement this: Routes only for kids */}
-			<Route path="/Login" element={<ProtectedRoute element={<LoginPage />} allowedRoles={["kid"]} />} />
 			<Route path="/KidRewardExchange" element={<ProtectedRoute element={<KidRewardExchange />} allowedRoles={["kid"]} />} />
 			<Route path="/KidDashboard" element={<ProtectedRoute element={<KidDashboard />} allowedRoles={["kid"]} />} />
 
