@@ -23,6 +23,12 @@ const ParentAddTask = () => {
 	const [selectedKid, setSelectedKid] = useState("Vybrať dieťa");
 	const [selectedKidId, setSelectedKidId] = useState(null);
 
+	// State for rewards and selected reward	
+	const [selectedReward, setSelectedReward] = useState("Vybrať odmenu");
+	const rewardsList = ["Hodina na Xboxe", "Extra dezert", "Výlet do kina", "Nová hračka", "Peniaze"];
+
+
+
 	// State for tooltip
 	const [tooltip, setTooltip] = useState({ visible: false, taskInfo: null });
 
@@ -214,8 +220,30 @@ const ParentAddTask = () => {
 							className={styles.input}
 							type="date"
 						/>
-						<input name="reward" placeholder="Odmena" value={taskData.reward} onChange={handleInputChange} className={styles.input} />
-						<button onClick={() => addTask()} className={styles.confirmButton}>
+	<div className="dropdown m-3">
+		<button
+			className={`btn btn-secondary dropdown-toggle ${styles.confirmButton}`}
+			type="button"
+			data-bs-toggle="dropdown"
+			aria-expanded="false">
+			{selectedReward}
+		</button>
+		<ul className="dropdown-menu">
+			{rewardsList.map((reward, index) => (
+				<li key={index}>
+					<a
+						className="dropdown-item"
+						href="#"
+						onClick={() => {
+							setTaskData({ ...taskData, reward });
+							setSelectedReward(reward);
+						}}>
+						{reward}
+					</a>
+				</li>
+			))}
+		</ul>
+</div>						<button onClick={() => addTask()} className={styles.confirmButton}>
 							Potvrdiť
 						</button>
 					</div>

@@ -17,9 +17,11 @@ import ParentDashboardRewards from "./components/ParentDashboardRewards";
 import ParentSettings from "./components/ParentSettings";
 import ParentAddTask from "./components/ParentAddTask";
 
+import KidRewardExchange from "./components/KidRewardExchange";
+import KidDashboard from "./components/KidDashboard";
+
 // Template component
 import TEMPLATE from "./components/TEMPLATE";
-import KidDashboard from "./components/KidDashboard";
 
 const App = () => {
 	return (
@@ -35,16 +37,18 @@ const App = () => {
 
 			{/* Routes only accessible after registration */}
 			<Route path="/AfterRegistration" element={<ProtectedRoute element={<AfterRegistration />} allowedRoles={["after-reg"]} />} />
-			
+
 			{/* Routes only for parents */}
 			<Route path="/ParentDashboardTasks" element={<ProtectedRoute element={<ParentDashboardTasks />} allowedRoles={["parent"]} />} />
 			<Route path="/ParentDashboardRewards" element={<ProtectedRoute element={<ParentDashboardRewards />} allowedRoles={["parent"]} />} />
 			<Route path="/ParentSettings" element={<ProtectedRoute element={<ParentSettings />} allowedRoles={["parent"]} />} />
 			<Route path="/ParentTasks" element={<ProtectedRoute element={<ParentAddTask />} allowedRoles={["parent"]} />} />
-			
-			{/* TODO: Implement this: Routes only for kids */}
+
+			{/* Routes only for kids */}
+
+			<Route path="/KidRewardExchange" element={<ProtectedRoute element={<KidRewardExchange />} allowedRoles={["kid"]} />} />
 			<Route path="/KidDashboard" element={<ProtectedRoute element={<KidDashboard />} allowedRoles={["kid"]} />} />
-			
+
 			{/* Catch-all redirect */}
 			<Route path="*" element={<Navigate replace to="/Home" />} />
 		</Routes>
