@@ -8,8 +8,8 @@ import { AppContext } from "./utilities/AppContext";
 const ParentDashboardTasks = () => {
 	// State to manage rewards for each child, with each child having their own list of rewards
 	const [tasks, setTasks] = useState({
-		Adam: ["Candy", "5€"],
-		Janko: ["20 minutes of PC time"],
+		Adam: ["Sladkosť", "5€"],
+		Janko: ["20 minút na PC"],
 		Marta: ["10€"],
 	});
 
@@ -59,17 +59,17 @@ const ParentDashboardTasks = () => {
 												className={`nav-link ${styles["nav-font-weight"]} active`}
 												aria-current="page"
 												onClick={() => handle_redirect("/ParentDashboardTasks")}>
-												Home
+												Domov
 											</button>
 										</li>
 										<li className="nav-item mx-4">
 											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
-												Settings
+												Nastavenia
 											</button>
 										</li>
 										<li className="nav-item">
 											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-												Assign Task
+												Zadať úlohu
 											</button>
 										</li>
 									</ul>
@@ -77,7 +77,7 @@ const ParentDashboardTasks = () => {
 										<button
 											className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
 											onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-											Logout
+											Odhlásiť sa
 										</button>
 									</div>
 								</div>
@@ -90,10 +90,10 @@ const ParentDashboardTasks = () => {
 						<div className={styles.formContainer}>
 							{/* Buttons for navigating to tasks and rewards sections */}
 							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Tasks
+								Úlohy
 							</button>
 							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Selected Rewards
+								Vybrané odmeny
 							</button>
 						</div>
 
