@@ -16,11 +16,12 @@ import ParentDashboardTasks from "./components/ParentDashboardTasks";
 import ParentDashboardRewards from "./components/ParentDashboardRewards";
 import ParentSettings from "./components/ParentSettings";
 import ParentAddTask from "./components/ParentAddTask";
+
 import KidRewardExchange from "./components/KidRewardExchange";
+import KidDashboard from "./components/KidDashboard";
 
 // Template component
 import TEMPLATE from "./components/TEMPLATE";
-import KidDashboard from "./components/KidDashboard";
 
 const App = () => {
 	return (
