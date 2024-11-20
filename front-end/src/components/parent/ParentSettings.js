@@ -20,28 +20,28 @@ const ParentSettings = () => {
 	useEffect(() => {
 		const familyData = async () => {
 			try {
-				const familyData = await getFamilyData(email);
+				const { keys, members } = await getFamilyData(email);
 
-				// Assuming `familyData` is the array returned by keyData.map
-				if (familyData && familyData.length > 0) {
+				if (keys && keys.length > 0) {
 					// Assuming you only need the first parentKey and kidKey pair
-					const { parentKey, kidKey, familyMembers } = familyData[0];
+					const { parentKey, kidKey } = keys[0];
 					setParentJoinKey(parentKey);
 					setKidJoinKey(kidKey);
-					setFamilyMembers(familyMembers);
 				} else {
 					console.warn("No keys found in fetched data");
 				}
+
+				if (members && members.length > 0) {
+					setFamilyMembers(members);
+				} else {
+					console.warn("No family members found in fetched data");
+				}
 			} catch (err) {
-				console.error("Error fetching kids' names:", err);
+				console.error("Error fetching family data:", err);
 			}
 		};
 
 		familyData();
-
-		console.log("Parent Key: " + parentJoinKey);
-		console.log("Kid Key: " + kidJoinKey);
-		console.log("Family Members: " + familyMembers);
 	}, [email]);
 
 	const handleAddReward = (event) => {
@@ -54,6 +54,9 @@ const ParentSettings = () => {
 
 	const navigate = useNavigate();
 	const handle_redirect = (route) => {
+		console.log("Parent Key: " + parentJoinKey);
+		console.log("Kid Key: " + kidJoinKey);
+		console.log("Family Members: " + familyMembers);
 		navigate(route);
 	};
 
@@ -98,22 +101,28 @@ const ParentSettings = () => {
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>Janko</td>
-											<td>janko@gmail.com</td>
-											<td>Dieťa</td>
-										</tr>
+										{familyMembers.map((member, index) => (
+											<tr key={index}>
+												<td>{member.name}</td>
+												<td>{member.email}</td>
+												<td>{member.role === "kid" ? "Dieťa" : member.role === "parent" ? "Rodič" : member.role}</td>
+											</tr>
+										))}
 									</tbody>
 								</table>
 							</div>
-							<p className={`${styles.infoText} ${styles.leftText}`}>Kód na pridanie rodiča:</p>
+							<p className={`${styles.infoText} ${styles.leftText}`}>Kód na pridanie rodiča: {parentJoinKey}</p>
 						</div>
 						<div className={styles.column}>
 							<div className={styles.removeMember}>
 								<h3>Odobrať člena</h3>
 								<form>
 									<select className={styles.inputField}>
-										<option>Meno</option>
+										{familyMembers.map((member, index) => (
+											<option key={index} value={member.email}>
+												{member.name}
+											</option>
+										))}
 									</select>
 									<input type="email" placeholder="Email" className={styles.inputField} />
 									<input type="text" placeholder="Rola" className={styles.inputField} />
@@ -122,7 +131,7 @@ const ParentSettings = () => {
 									</button>
 								</form>
 							</div>
-							<p className={`${styles.infoText} ${styles.rightText}`}>Kód na pridanie dieťaťa:</p>
+							<p className={`${styles.infoText} ${styles.rightText}`}>Kód na pridanie dieťaťa: {kidJoinKey}</p>
 						</div>
 					</div>
 				);

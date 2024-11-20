@@ -21,31 +21,51 @@ export async function getFamilyData(email) {
 		});
 
 		if (response.status === 202) {
-			// Parse the response data (clean up the string into a valid JSON format)
-			const kidsDataString = response.data.return;
-			// Clean the string to resemble a valid JSON array format
-			const cleanedString = kidsDataString
+			// Parse the response data
+			const { return: keysString, return1: membersString } = response.data;
+
+			// Clean and parse `keysString`
+			const cleanedKeysString = keysString
 				.replace(/\(/g, "[") // Replace '(' with '['
 				.replace(/\)/g, "]") // Replace ')' with ']'
 				.replace(/'/g, '"'); // Replace single quotes with double quotes for valid JSON
 
-			// Parse the cleaned string into an array
-			const keyData = JSON.parse(cleanedString);
+			const keysArray = JSON.parse(cleanedKeysString);
 
-			// Map the parsed data into an array of objects with id and name
-			return keyData.map((data) => ({
+			// Map `keysArray` to an array of objects
+			const keyData = keysArray.map((data) => ({
 				parentKey: data[0],
 				kidKey: data[1],
-				familyMembers: data[2],
 			}));
+
+			// Clean and parse `membersString`
+			const cleanedMembersString = membersString
+				.replace(/\(/g, "[") // Replace '(' with '['
+				.replace(/\)/g, "]") // Replace ')' with ']'
+				.replace(/'/g, '"'); // Replace single quotes with double quotes for valid JSON
+
+			const membersArray = JSON.parse(cleanedMembersString);
+
+			// Map `membersArray` to an array of objects
+			const familyMembers = membersArray.map((member) => ({
+				name: member[0],
+				email: member[1],
+				role: member[2],
+			}));
+
+			// Combine and return both data sets
+			return {
+				keys: keyData,
+				members: familyMembers,
+			};
 		} else if (response.status === 406) {
 			alert("Email already exists. Please choose a different email address.");
 		} else {
 			alert("User creation was unsuccessful.");
-			return [];
+			return { keys: [], members: [] };
 		}
 	} catch (err) {
-		console.error("Error fetching kids' names:", err);
+		console.error("Error fetching family data:", err);
 		if (err.response) {
 			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
@@ -53,7 +73,7 @@ export async function getFamilyData(email) {
 		} else {
 			alert("An unexpected error occurred. Please try again.");
 		}
-		return [];
+		return { keys: [], members: [] };
 	}
 }
 
