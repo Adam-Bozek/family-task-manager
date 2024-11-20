@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import styles from "./css/KidDashboard.module.css";
+import { useNavigate } from "react-router-dom";
 
 import { logOutUser } from "./utilities/Utils";
 import { AppContext } from "./utilities/AppContext";
@@ -41,6 +42,11 @@ const KidDashboard = () => {
 		handleCloseModal(); // Zavrie modálne okno
 	};
 
+	const navigate = useNavigate();
+	const handle_redirect = (route) => {
+		navigate(route);
+	};
+
 	return (
 		<div className={styles.mainContainer}>
 			{/* Pozadie a hlavička */}
@@ -68,14 +74,17 @@ const KidDashboard = () => {
 								{/* Navigačné odkazy */}
 								<ul className="navbar-nav col-lg-6 justify-content-lg-center">
 									<li className="nav-item">
-										<a className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" href="#">
+										<button
+											className={`nav-link ${styles["nav-font-weight"]} active`}
+											aria-current="page"
+											onClick={() => handle_redirect("/KidDashboard")}>
 											Domov
-										</a>
+										</button>
 									</li>
 									<li className="nav-item mx-4">
-										<a className={`nav-link ${styles["nav-font-weight"]}`} href="#">
+										<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/KidRewardExchange")}>
 											Obchod
-										</a>
+										</button>
 									</li>
 								</ul>
 
