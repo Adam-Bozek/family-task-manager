@@ -1,16 +1,48 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styles from "../css/ParentSettings.module.css";
 import { useNavigate } from "react-router-dom";
 
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
 
-import { deleteFamily } from "./ParentUtils";
+import { getFamilyData, deleteFamily } from "./ParentUtils";
 
 const ParentSettings = () => {
 	const [activeTab, setActiveTab] = useState("members");
 	const [rewards, setRewards] = useState([{ name: "PC - 30 minút", price: 20 }]);
 	const [newReward, setNewReward] = useState({ name: "", price: "" });
+	const [kidJoinKey, setKidJoinKey] = useState("");
+	const [parentJoinKey, setParentJoinKey] = useState("");
+	const [familyMembers, setFamilyMembers] = useState([]);
+
+	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
+
+	useEffect(() => {
+		const familyData = async () => {
+			try {
+				const familyData = await getFamilyData(email);
+
+				// Assuming `familyData` is the array returned by keyData.map
+				if (familyData && familyData.length > 0) {
+					// Assuming you only need the first parentKey and kidKey pair
+					const { parentKey, kidKey, familyMembers } = familyData[0];
+					setParentJoinKey(parentKey);
+					setKidJoinKey(kidKey);
+					setFamilyMembers(familyMembers);
+				} else {
+					console.warn("No keys found in fetched data");
+				}
+			} catch (err) {
+				console.error("Error fetching kids' names:", err);
+			}
+		};
+
+		familyData();
+
+		console.log("Parent Key: " + parentJoinKey);
+		console.log("Kid Key: " + kidJoinKey);
+		console.log("Family Members: " + familyMembers);
+	}, [email]);
 
 	const handleAddReward = (event) => {
 		event.preventDefault();
@@ -42,8 +74,6 @@ const ParentSettings = () => {
 			console.error("Failed to delete family:", e);
 		}
 	};
-
-	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
 	const renderTabContent = () => {
 		switch (activeTab) {
@@ -187,21 +217,21 @@ const ParentSettings = () => {
 								<span className="navbar-brand col-lg-3 me-0" />
 								<ul className="navbar-nav col-lg-6 justify-content-lg-center">
 									<li className="nav-item ">
-										<button
-											className={`nav-link ${styles["nav-font-weight"]} active`}
-											aria-current="page"
-											onClick={() => handle_redirect("/ParentDashboardTasks")}>
-											Home
+										<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
+											Domov
 										</button>
 									</li>
 									<li className="nav-item mx-4">
-										<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
-											Settings
+										<button
+											className={`nav-link ${styles["nav-font-weight"]} active`}
+											onClick={() => handle_redirect("/ParentSettings")}
+											aria-current="page">
+											Nastavenia
 										</button>
 									</li>
 									<li className="nav-item">
 										<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-											Assign Task
+											Pridať úlohu
 										</button>
 									</li>
 								</ul>

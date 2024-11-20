@@ -7,13 +7,55 @@ export async function getKidsAndTasks() {}
 
 export async function getKidsRewards() {}
 
-export async function getFamilyMember() {}
+export async function getFamilyData(email) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
 
-export async function getKeyForParentToJoin() {}
+		const localApiAddress = apiAddress + "/Hash";
 
-export async function getKeyForKidToJoin() {}
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
 
-export async function getRewards() {}
+		if (response.status === 202) {
+			// Parse the response data (clean up the string into a valid JSON format)
+			const kidsDataString = response.data.return;
+			// Clean the string to resemble a valid JSON array format
+			const cleanedString = kidsDataString
+				.replace(/\(/g, "[") // Replace '(' with '['
+				.replace(/\)/g, "]") // Replace ')' with ']'
+				.replace(/'/g, '"'); // Replace single quotes with double quotes for valid JSON
+
+			// Parse the cleaned string into an array
+			const keyData = JSON.parse(cleanedString);
+
+			// Map the parsed data into an array of objects with id and name
+			return keyData.map((data) => ({
+				parentKey: data[0],
+				kidKey: data[1],
+				familyMembers: data[2],
+			}));
+		} else if (response.status === 406) {
+			alert("Email already exists. Please choose a different email address.");
+		} else {
+			alert("User creation was unsuccessful.");
+			return [];
+		}
+	} catch (err) {
+		console.error("Error fetching kids' names:", err);
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+		}
+		return [];
+	}
+}
 
 export async function assignTask(kids_id, task, date_from, date_to, reward) {
 	try {

@@ -59,17 +59,17 @@ const ParentDashboardTasks = () => {
 												className={`nav-link ${styles["nav-font-weight"]} active`}
 												aria-current="page"
 												onClick={() => handle_redirect("/ParentDashboardTasks")}>
-												Home
+												Domov
 											</button>
 										</li>
 										<li className="nav-item mx-4">
 											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
-												Settings
+												Nastavenia
 											</button>
 										</li>
 										<li className="nav-item">
 											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-												Assign Task
+												Pridať úlohu
 											</button>
 										</li>
 									</ul>
