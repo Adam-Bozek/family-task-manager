@@ -213,22 +213,15 @@ def add_rewards():
     value = request.form.get("value")
 
     # SQL query
-    syntax = "SELECT id FROM uzivatel WHERE meno = %s"
+    syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email))
 
-    syntax1 = "INSERT INTO odmena (nazov, cena) VALUES (%s, %s)"
-    result1 = connectiondb(syntax1, (name_reward, value))
-
-    syntax2 = "SELECT nazov, cena FROM ulohy where id_uzivatel = %s RIGHT JOIN odmena ON ulohy.id_odmena = odmena.id"
-    result2 = connectiondb(syntax2, (result[0][0]))
+    syntax1 = "INSERT INTO odmena (nazov, cena, id_rodina) VALUES (%s, %s, %s)"
+    result1 = connectiondb(syntax1, (name_reward, value, result[0][0]))
 
     # Return
-    if result2 & result1:
-        return jsonify({"message": "Uspesny zapis a vypis odmien", "return": f"{result2}"}), 202 # Accepted
-    elif result2:
-        return jsonify({"message": "Uspesny vypis odmien", "return": f"{result2}"}), 202  # Accepted
-    elif result2 == []:
-        return jsonify({"message": "Problem s vypisom odmien"}), 400 # Bad Request
+    if not result1:
+        return jsonify({"message": "Uspesny zapis odmien"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
@@ -268,16 +261,12 @@ def add_tasks():
     reward = request.form.get('reward')
 
     # SQL query
-    syntax = "SELECT id FROM odmena WHERE nazov = %s"
-    result = connectiondb(syntax, (reward,))
-
-    syntax1 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
-    result1 = connectiondb(syntax1, (id, task, date_from, date_to, "100", "not done"))
-    #TODO: potom prepisat "100" na result[0][0]
+    syntax = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
+    result = connectiondb(syntax, (id, task, date_from, date_to, reward, "not done"))
 
     # Return
-    if not result1:
-        return jsonify({"message": "Pridanie ulohy uspesne"}), 200 # OK
+    if not result:
+        return jsonify({"message": "Pridanie ulohy uspesne"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
@@ -291,18 +280,14 @@ def parent_tasks():
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT id_uzivatel FROM clen WHERE id_rodina = %s"
-    result1 = connectiondb(syntax1, (result[0][0],))
-
-    syntax2 = "SELECT * FROM ulohy WHERE id_uzivatel = %s"
-    for i in result1:
-        result2 = connectiondb(syntax2, (result1[0][i]))
+    syntax1 = "SELECT * FROM ulohy WHERE id_rodina = %s"
+    result1 = connectiondb(syntax1, (result[0][0]))
 
     # Return
-    if result2:
-        return jsonify({"message": "Vypis uloh uspesne", "return": f"{result2}"}), 202 # Accepted
-    elif result2 == []:
-        return jsonify({"message": "Vypis uloh neuspesne"}), 400  # Bad Request
+    if result1:
+        return jsonify({"message": "Vypis uloh uspesne", "return": f"{result1}"}), 202 # Accepted
+    elif result1 == []:
+        return jsonify({"message": "Vypis uloh neuspesne"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
@@ -316,17 +301,13 @@ def parents_rewards():
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT id_uzivatel FROM clen WHERE id_rodina = %s"
-    result1 = connectiondb(syntax1, (result[0][0],))
-
-    syntax2 = "SELECT meno, nazov, datum FROM aktivovanie INNER JOIN uzivatel ON uzivatel.id = aktivovanie.id_uzivatela INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE id_uzivatel = %s"
-    for i in result1:
-        result2 = connectiondb(syntax2, (result1[0][i]))
+    syntax1 = "SELECT uzivatel.meno, odmena.nazov, aktivovanie.stav FROM aktivovanie INNER JOIN uzivatel ON uzivatel.id = aktivovanie.id_uzivatela INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE id_rodina = %s"
+    result1 = connectiondb(syntax1, (result[0][0]))
 
     # Return
-    if result2:
-        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result2}"}), 202 # Accepted
-    elif result2 == []:
+    if result1:
+        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result1}"}), 202 # Accepted
+    elif result1 == []:
         return jsonify({"message": "Vypis odmien neuspesne"}), 400  # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
@@ -341,25 +322,39 @@ def kids_dashboard():
     syntax = "SELECT * FROM ulohy RIGHT JOIN uzivatel ON uzivatel.id = ulohy.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT nazov, datum FROM uzivatel INNER JOIN aktivovanie ON aktivovanie.id_uzivatela = uzivatel.id INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE email = %s"
+    syntax1 = "SELECT odmena.nazov, aktivovanie.stav FROM uzivatel INNER JOIN aktivovanie ON aktivovanie.id_uzivatela = uzivatel.id INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE email = %s"
     result1 = connectiondb(syntax1, (email,))
 
+    syntax2 = "SELECT zostatok FROM penazenka RIGHT JOIN uzivatel ON uzivatel.id = penazenak.id_uzivatel WHERE email = %s"
+    result2 = connectiondb(syntax2, (email,))
+
     # Return
-    if result and result1:
-        return jsonify({"message": "Vypis uloh a odmien uspesne", "return": f"{result}", "return1": f"{result1}",}), 202 # Accepted
-    elif result == [] or result1 == []:
-        return jsonify({"message": "Vypis uloh a odmien neuspesne"}), 400  # Bad Request
+    if result and result1 and result2:
+        return jsonify({"message": "Vypis uloh, odmien a penazenky uspesne", "return": f"{result}", "return1": f"{result1}", "return2": f"{result2}"}), 202 # Accepted
+    elif result == [] or result1 == [] or result2 == []:
+        return jsonify({"message": "Vypis uloh, odmien alebo penazenky neuspesne"}), 400  # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
-# @app.route('/Kids_exchange', methods=['POST'])
-# def kids_exchange():
-#    # Input
-#    name = request.form.get('name')
-#
-#    # SQL query
-#    syntax = ""
+@app.route('/Kids_exchange', methods=['POST'])
+def kids_exchange():
+    # Input
+    id = request.form.get('id')
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id FROM uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "INSERT INTO aktivovanie (id_uzivatela, id_odmena, stav) VALUES (%s, %s, %s)"
+    result1 = connectiondb(syntax1, (id, result[0][0], "false"))
+
+    if not result1:
+        return jsonify({"message": "Uspesne pridanie zaznamu"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
 
 @app.route('/Select', methods=['POST'])
 def select():
@@ -370,7 +365,7 @@ def select():
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT uzivatel.id, meno FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE id_rodina = %s AND rola = 'kid'"
+    syntax1 = "SELECT uzivatel.id, uzivatel.meno FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE id_rodina = %s AND rola = 'kid'"
     result1 = connectiondb(syntax1, (result[0][0],))
 
     # Return
@@ -380,6 +375,110 @@ def select():
         return jsonify({"message": "Bezdetny"}), 204 # No Content
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+@app.route('/Wallet', methods=['POST'])
+def wallet():
+    # Input
+    email = request.form.get('wallet')
+
+    # SQL query
+    syntax = "SELECT zostatok FROM uzivatel RIGHT JOIN penazenka ON uzivatel.id = penazenka.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
+    result1 = connectiondb(syntax1, (email,))
+
+    syntax2 = "SELECT id, nazov, cena FROM odmena WHERE id_rodina = %s"
+    result2 = connectiondb(syntax2, (result1[0][0],))
+
+    # Return
+    if result and result2:
+        return jsonify({"return": f"{result}", "return1": f"{result2}"}), 202 # Accepted
+    elif result == [] or result2 == []:
+        return jsonify({"message": "Bez penazi alebo odmien"}), 204 # No Content
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+@app.route('/Hash', methods=['POST'])
+def hash():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "SELECT jedinecny_kod_R, jedinecny_kod_D FROM rodina WHERE id = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
+
+    syntax2 = "SELECT meno, email, rola FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE id_rodina = %s"
+    result2 = connectiondb(syntax2, (result[0][0],))
+
+    # Return
+    if result1 and result2:
+        return jsonify({"return": f"{result1}", "return2": f"{result2}"}), 202 # Accepted
+    elif result1 == [] or result2 == []:
+        return jsonify({"message": "Nie je rodina alebo problem s db"}), 204 # No Content
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+@app.route('/Delete_member', methods=['POST'])
+def delete_member():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id FROM uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "DELETE FROM clen WHERE id_uzivatel = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
+
+    if not result1:
+        return jsonify({"message": "Vymazanie clena uspesne"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+@app.route('/Select_rewards', methods=['POST'])
+def select_rewards():
+    # Input
+    email = request.form.get('email')
+
+    # SQL query
+    syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
+    result = connectiondb(syntax, (email,))
+
+    syntax1 = "SELECT id, nazov, cena FROM odmena WHERE id_rodina = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
+
+    # Return
+    if result1:
+        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result1}"}), 202 # Accepted
+    elif result1 == []:
+        return jsonify({"message": "Vypis odmien neuspesne"}), 400  # Bad Request
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+@app.route('/Delete_reward', methods=['POST'])
+def delete_reward():
+    # Input
+    id = request.form.get('id')
+
+    # SQL query
+    syntax = "DELETE FROM odmena WHERE id = %s"
+    result = connectiondb(syntax, (id,))
+
+    # Return
+    if not result:
+        return jsonify({"message": "Vymazanie clena uspesne"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
 
 if __name__ == '__main__':
     app.run(host='147.232.205.117', port=5000)
