@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
-import styles from "./css/ParentSettings.module.css";
+import styles from "../css/ParentSettings.module.css";
 import { useNavigate } from "react-router-dom";
 
-import { logOutUser } from "./utilities/Utils";
-import { AppContext } from "./utilities/AppContext";
+import { logOutUser } from "../utilities/Utils";
+import { AppContext } from "../utilities/AppContext";
 
-import { deleteFamily } from "./parent/ParentUtils";
+import { deleteFamily } from "./ParentUtils";
 
 const ParentSettings = () => {
 	const [activeTab, setActiveTab] = useState("members");

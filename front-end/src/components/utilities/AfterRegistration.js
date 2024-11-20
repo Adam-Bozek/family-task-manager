@@ -1,10 +1,10 @@
 // Import necessary modules from React and other libraries
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./css/AfterRegistrationPage.module.css"; // Import CSS module for styling
+import styles from "../css/AfterRegistrationPage.module.css"; // Import CSS module for styling
 
-import { addToFamily, familyCreation } from "./utilities/Utils"; // Import utility functions
-import { AppContext } from "./utilities/AppContext"; // Import application context
+import { addToFamily, familyCreation } from "./Utils"; // Import utility functions
+import { AppContext } from "./AppContext"; // Import application context
 
 // Component for the page after registration
 const AfterRegistration = () => {

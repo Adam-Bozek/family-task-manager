@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { logOutUser } from "./utilities/Utils";
-import { AppContext } from "./utilities/AppContext";
-import { getKidsNames, assignTask } from "./parent/ParentUtils";
+import { logOutUser } from "../utilities/Utils";
+import { AppContext } from "../utilities/AppContext";
+import { getKidsNames, assignTask } from "./ParentUtils";
 
-import styles from "./css/ParentAddTask.module.css";
+import styles from "../css/ParentAddTask.module.css";
 
 const ParentAddTask = () => {
 	// State for tasks and task details

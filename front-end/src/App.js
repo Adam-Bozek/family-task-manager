@@ -10,15 +10,15 @@ import LoginPage from "./components/LoginPage";
 import RegistrationPage from "./components/RegistrationPage";
 
 // Protected routes (only accessible after login)
-import AfterRegistration from "./components/AfterRegistration";
+import AfterRegistration from "./components/utilities/AfterRegistration";
 
-import ParentDashboardTasks from "./components/ParentDashboardTasks";
-import ParentDashboardRewards from "./components/ParentDashboardRewards";
-import ParentSettings from "./components/ParentSettings";
-import ParentAddTask from "./components/ParentAddTask";
+import ParentDashboardTasks from "./components/parent/ParentDashboardTasks";
+import ParentDashboardRewards from "./components/parent/ParentDashboardRewards";
+import ParentSettings from "./components/parent/ParentSettings";
+import ParentAddTask from "./components/parent/ParentAddTask";
 
-import KidRewardExchange from "./components/KidRewardExchange";
-import KidDashboard from "./components/KidDashboard";
+import KidRewardExchange from "./components/kid/KidRewardExchange";
+import KidDashboard from "./components/kid/KidDashboard";
 
 // Template component
 import TEMPLATE from "./components/TEMPLATE";
