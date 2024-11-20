@@ -155,7 +155,36 @@ export async function deleteFamily(email) {
 	}
 }
 
-export async function removeFamilyMember() {}
+export async function removeFamilyMember(email) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Delete_member";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			return false;
+		}
+	} catch (err) {
+		console.error("Error fetching family data:", err);
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+		}
+		return { keys: [], members: [] };
+	}
+}
 
 export async function markKidRewardCompleted() {}
 

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
 
-import { getFamilyData, deleteFamily } from "./ParentUtils";
+import { getFamilyData, deleteFamily, removeFamilyMember } from "./ParentUtils";
 
 const ParentSettings = () => {
 	const [activeTab, setActiveTab] = useState("members");
@@ -14,6 +14,9 @@ const ParentSettings = () => {
 	const [kidJoinKey, setKidJoinKey] = useState("");
 	const [parentJoinKey, setParentJoinKey] = useState("");
 	const [familyMembers, setFamilyMembers] = useState([]);
+	const [removedEmail, setRemovedEmail] = useState("");
+	const [removedRole, setRemovedRole] = useState("");
+	const [selectedMemberEmail, setSelectedMemberEmail] = useState(""); // Track selected member
 
 	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
@@ -78,6 +81,49 @@ const ParentSettings = () => {
 		}
 	};
 
+	const handle_member_removal = async () => {
+		if (!selectedMemberEmail) {
+			alert("Vyberte člena na odstránenie.");
+			return;
+		}
+
+		if (!removedEmail || !removedRole) {
+			alert("Zadajte email a rolu člena.");
+			return;
+		}
+
+		const selectedMember = familyMembers.find((member) => member.email === selectedMemberEmail);
+
+		if (!selectedMember) {
+			alert("Vybraný člen neexistuje.");
+			return;
+		}
+
+		// Validate input against the selected member's data
+		if (selectedMember.email !== removedEmail || selectedMember.role !== removedRole) {
+			alert("Zadané údaje (email alebo rola) sa nezhodujú so zvoleným členom.");
+			return;
+		}
+
+		// If validation passes, call the async function
+		try {
+			const res = await removeFamilyMember(selectedMemberEmail);
+
+			if (res === true) {
+				alert("Člen bol úspešne odstránený.");
+				setFamilyMembers((prev) => prev.filter((m) => m.email !== selectedMemberEmail));
+				setRemovedEmail("");
+				setRemovedRole("");
+				setSelectedMemberEmail("");
+			} else {
+				alert("Odstránenie člena zlyhalo.");
+			}
+		} catch (e) {
+			console.error("Error removing member:", e);
+			alert("Odstránenie člena zlyhalo.");
+		}
+	};
+
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case "members":
@@ -116,17 +162,38 @@ const ParentSettings = () => {
 						<div className={styles.column}>
 							<div className={styles.removeMember}>
 								<h3>Odobrať člena</h3>
-								<form>
-									<select className={styles.inputField}>
+								<form onSubmit={(e) => e.preventDefault()}>
+									<select
+										className={styles.inputField}
+										onChange={(e) => {
+											setRemovedEmail(""); // Reset inputs to prevent accidental matches
+											setRemovedRole("");
+											setSelectedMemberEmail(e.target.value); // Track selected member
+										}}>
+										<option value="" disabled selected>
+											Vyberte člena
+										</option>
 										{familyMembers.map((member, index) => (
 											<option key={index} value={member.email}>
 												{member.name}
 											</option>
 										))}
 									</select>
-									<input type="email" placeholder="Email" className={styles.inputField} />
-									<input type="text" placeholder="Rola" className={styles.inputField} />
-									<button type="submit" className={styles.submitButton}>
+									<input
+										type="email"
+										placeholder="Email"
+										className={styles.inputField}
+										value={removedEmail}
+										onChange={(e) => setRemovedEmail(e.target.value)}
+									/>
+									<input
+										type="text"
+										placeholder="Rola (napr. kid alebo parent)"
+										className={styles.inputField}
+										value={removedRole}
+										onChange={(e) => setRemovedRole(e.target.value)}
+									/>
+									<button type="submit" className={styles.submitButton} onClick={() => handle_member_removal()}>
 										Potvrdiť
 									</button>
 								</form>
