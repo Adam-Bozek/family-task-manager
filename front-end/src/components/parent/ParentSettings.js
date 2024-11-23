@@ -7,7 +7,9 @@ import { AppContext } from "../utilities/AppContext";
 
 import { getFamilyData, deleteFamily, removeFamilyMember } from "./ParentUtils";
 
+// Main component for Parent Settings
 const ParentSettings = () => {
+	// React state hooks for managing various aspects of the component
 	const [activeTab, setActiveTab] = useState("members");
 	const [rewards, setRewards] = useState([{ name: "PC - 30 minút", price: 20 }]);
 	const [newReward, setNewReward] = useState({ name: "", price: "" });
@@ -16,18 +18,19 @@ const ParentSettings = () => {
 	const [familyMembers, setFamilyMembers] = useState([]);
 	const [removedEmail, setRemovedEmail] = useState("");
 	const [removedRole, setRemovedRole] = useState("");
-	const [selectedMemberEmail, setSelectedMemberEmail] = useState(""); // Track selected member
+	const [selectedMemberEmail, setSelectedMemberEmail] = useState("");
 
-	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
+	// Context hooks for shared app-wide state
+	const { email, setName, setIsLoggedIn, setEmail, setRole } = useContext(AppContext);
 
+	// Fetch family data when the component is mounted or when the email changes
 	useEffect(() => {
 		const familyData = async () => {
 			try {
 				const { keys, members } = await getFamilyData(email);
 
 				if (keys && keys.length > 0) {
-					// Assuming you only need the first parentKey and kidKey pair
-					const { parentKey, kidKey } = keys[0];
+					const { parentKey, kidKey } = keys[0]; // Assume first pair of keys
 					setParentJoinKey(parentKey);
 					setKidJoinKey(kidKey);
 				} else {
@@ -47,6 +50,15 @@ const ParentSettings = () => {
 		familyData();
 	}, [email]);
 
+	// Navigation hook to handle route redirection
+	const navigate = useNavigate();
+
+	// Handles navigation to a given route
+	const handle_redirect = (route) => {
+		navigate(route);
+	};
+
+	// Handles adding a new reward
 	const handleAddReward = (event) => {
 		event.preventDefault();
 		if (newReward.name && newReward.price) {
@@ -55,23 +67,13 @@ const ParentSettings = () => {
 		}
 	};
 
-	const navigate = useNavigate();
-	const handle_redirect = (route) => {
-		console.log("Parent Key: " + parentJoinKey);
-		console.log("Kid Key: " + kidJoinKey);
-		console.log("Family Members: " + familyMembers);
-		navigate(route);
-	};
-
+	// Handles deleting the entire family
 	const handleDeleteFamily = async (email) => {
 		try {
 			const res = await deleteFamily(email);
 
 			if (res === true) {
-				logOutUser();
-				setIsLoggedIn(false);
-				setEmail(null);
-				setName(null);
+				logOutUser(setIsLoggedIn, setEmail, setRole);
 				handle_redirect("/");
 			} else {
 				console.error("Failed to delete family:", res.message);
@@ -81,6 +83,7 @@ const ParentSettings = () => {
 		}
 	};
 
+	// Handles removing a selected family member
 	const handle_member_removal = async () => {
 		if (!selectedMemberEmail) {
 			alert("Vyberte člena na odstránenie.");
@@ -99,13 +102,11 @@ const ParentSettings = () => {
 			return;
 		}
 
-		// Validate input against the selected member's data
 		if (selectedMember.email !== removedEmail || selectedMember.role !== removedRole) {
 			alert("Zadané údaje (email alebo rola) sa nezhodujú so zvoleným členom.");
 			return;
 		}
 
-		// If validation passes, call the async function
 		try {
 			const res = await removeFamilyMember(selectedMemberEmail);
 
@@ -124,6 +125,7 @@ const ParentSettings = () => {
 		}
 	};
 
+	// Renders the content of the selected tab
 	const renderTabContent = () => {
 		switch (activeTab) {
 			case "members":
