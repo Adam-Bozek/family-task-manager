@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
 
-import { getFamilyData, deleteFamily, removeFamilyMember } from "./ParentUtils";
+import { getFamilyData, deleteFamily, removeFamilyMember, createReward, getRewards, removeReward } from "./ParentUtils";
 
 // Main component for Parent Settings
 const ParentSettings = () => {
 	// React state hooks for managing various aspects of the component
 	const [activeTab, setActiveTab] = useState("members");
-	const [rewards, setRewards] = useState([{ name: "PC - 30 minút", price: 20 }]);
+	const [rewards, setRewards] = useState([]);
 	const [newReward, setNewReward] = useState({ name: "", price: "" });
 	const [kidJoinKey, setKidJoinKey] = useState("");
 	const [parentJoinKey, setParentJoinKey] = useState("");
@@ -20,12 +20,29 @@ const ParentSettings = () => {
 	const [removedRole, setRemovedRole] = useState("");
 	const [selectedMemberEmail, setSelectedMemberEmail] = useState("");
 
+	const [rewardName, setRewardName] = useState("");
+	const [rewardPrice, setRewardPrice] = useState();
+
 	// Context hooks for shared app-wide state
 	const { email, setName, setIsLoggedIn, setEmail, setRole } = useContext(AppContext);
 
 	// Fetch family data when the component is mounted or when the email changes
 	useEffect(() => {
-		const familyData = async () => {
+		const fetchRewards = async () => {
+			try {
+				const resRewards = await getRewards(email);
+
+				if (resRewards && resRewards.length > 0) {
+					setRewards(resRewards); // Update rewards state with data from backend
+				} else {
+					console.warn("No rewards found in fetched data");
+				}
+			} catch (err) {
+				console.error("Error fetching rewards:", err);
+			}
+		};
+
+		const fetchFamilyData = async () => {
 			try {
 				const { keys, members } = await getFamilyData(email);
 
@@ -47,7 +64,8 @@ const ParentSettings = () => {
 			}
 		};
 
-		familyData();
+		fetchFamilyData();
+		fetchRewards();
 	}, [email]);
 
 	// Navigation hook to handle route redirection
@@ -122,6 +140,52 @@ const ParentSettings = () => {
 		} catch (e) {
 			console.error("Error removing member:", e);
 			alert("Odstránenie člena zlyhalo.");
+		}
+	};
+
+	// Handles adding a reward via server
+	const handleServerAddReward = async (event) => {
+		event.preventDefault();
+
+		if (!newReward.name || !newReward.price) {
+			alert("Zadajte názov a cenu odmeny.");
+			return;
+		}
+
+		try {
+			const res = await createReward(email, newReward.name, parseInt(newReward.price));
+
+			if (res === true) {
+				alert("Odmena bola úspešne pridaná.");
+
+				// Optionally, refetch rewards from the backend to ensure consistency
+				const updatedRewards = await getRewards(email);
+				setRewards(updatedRewards);
+
+				// Reset form fields
+				setNewReward({ name: "", price: "" });
+			} else {
+				alert("Pridanie odmeny zlyhalo.");
+			}
+		} catch (err) {
+			console.error("Error adding reward:", err);
+			alert("Pridanie odmeny zlyhalo.");
+		}
+	};
+
+	// Function to delete a reward
+	const handleDeleteReward = async (reward_id) => {
+		try {
+			const res = await removeReward(reward_id); // Call the back-end function
+			if (res === true) {
+				alert("Odmena bola úspešne odstránená.");
+				setRewards((prevRewards) => prevRewards.filter((reward) => reward.id !== reward_id)); // Update local state
+			} else {
+				alert("Odstránenie odmeny zlyhalo.");
+			}
+		} catch (err) {
+			console.error("Error deleting reward:", err);
+			alert("Odstránenie odmeny zlyhalo.");
 		}
 	};
 
@@ -220,6 +284,9 @@ const ParentSettings = () => {
 											<th>
 												<h4>Cena Odmeny</h4>
 											</th>
+											<th>
+												<h4>Odstrániť odmenu</h4>
+											</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -227,6 +294,11 @@ const ParentSettings = () => {
 											<tr key={index}>
 												<td>{reward.name}</td>
 												<td>{reward.price} kreditov</td>
+												<td>
+													<button className={styles.deleteButton} onClick={() => handleDeleteReward(reward.id)}>
+														Odstrániť
+													</button>
+												</td>
 											</tr>
 										))}
 									</tbody>
@@ -236,7 +308,7 @@ const ParentSettings = () => {
 						<div className={styles.column}>
 							<div className={styles.addReward}>
 								<h3>Pridať odmenu</h3>
-								<form onSubmit={handleAddReward}>
+								<form onSubmit={handleServerAddReward}>
 									<input
 										type="text"
 										placeholder="Odmena"
@@ -252,7 +324,7 @@ const ParentSettings = () => {
 										onChange={(e) => setNewReward({ ...newReward, price: e.target.value })}
 									/>
 									<button type="submit" className={styles.submitButton}>
-										Pridať odmenu
+										Potvrdiť
 									</button>
 								</form>
 							</div>

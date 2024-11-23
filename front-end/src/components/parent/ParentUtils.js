@@ -79,6 +79,8 @@ export async function getFamilyData(email) {
 
 export async function assignTask(kids_id, task, date_from, date_to, reward) {
 	try {
+		console.log("Reward: " + reward);
+
 		const formData = new FormData();
 		formData.append("id", kids_id);
 		formData.append("task", task);
@@ -94,7 +96,8 @@ export async function assignTask(kids_id, task, date_from, date_to, reward) {
 			},
 		});
 
-		if (response.status === 200) {
+
+		if (response.status === 202) {
 			return true;
 		} else if (response.status === 406) {
 			alert("Email already exists. Please choose a different email address.");
@@ -116,9 +119,116 @@ export async function assignTask(kids_id, task, date_from, date_to, reward) {
 	}
 }
 
-export async function addReward() {}
+export async function createReward(email, name, price) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
+		formData.append("name", name);
+		formData.append("value", price);
 
-export async function removeReward() {}
+		const localApiAddress = apiAddress + "/Add_rewards";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			alert("User creation was unsuccessful.");
+			return false;
+		}
+	} catch (err) {
+		console.error("Error creating reward:", err);
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+		}
+		return false;
+	}
+}
+
+export async function getRewards(email) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Select_rewards";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			// Extract rewards directly from the response
+			const rewardsArray = response.data.return;
+
+			// Map the rewards into objects with `name` and `price`
+			const rewardsData = rewardsArray.map(([id, name, price]) => ({
+				id,
+				name,
+				price,
+			}));
+
+			return rewardsData; // Return the processed rewards
+		} else if (response.status === 406) {
+			alert("Email already exists. Please choose a different email address.");
+			return [];
+		} else {
+			alert("Failed to fetch rewards.");
+			return [];
+		}
+	} catch (err) {
+		console.error("Error fetching rewards:", err);
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+		}
+		return [];
+	}
+}
+
+export async function removeReward(reward_id) {
+	try {
+		const formData = new FormData();
+		formData.append("id", reward_id);
+
+		const localApiAddress = apiAddress + "/Delete_reward";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			alert("User creation was unsuccessful.");
+			return false;
+		}
+	} catch (err) {
+		console.error("Error fetching kids' names:", err);
+		if (err.response) {
+			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			alert("Network error. Please check your connection and try again.");
+		} else {
+			alert("An unexpected error occurred. Please try again.");
+		}
+		return false;
+	}
+}
 
 export async function deleteFamily(email) {
 	try {

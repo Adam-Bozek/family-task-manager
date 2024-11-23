@@ -15,7 +15,7 @@ const ParentAddTask = () => {
 		task: "",
 		startDate: "",
 		endDate: "",
-		reward: "",
+		price: null,
 	});
 
 	// State for kids' list and selected kid
@@ -25,8 +25,6 @@ const ParentAddTask = () => {
 
 	// State for rewards and selected reward
 	const [selectedReward, setSelectedReward] = useState("Vybrať odmenu");
-	const rewardsList = ["Hodina na Xboxe", "Extra dezert", "Výlet do kina", "Nová hračka", "Peniaze"];
-
 	// State for tooltip
 	const [tooltip, setTooltip] = useState({ visible: false, taskInfo: null });
 
@@ -59,7 +57,7 @@ const ParentAddTask = () => {
 		if (selectedKid && taskData.task) {
 			// Make the async call to assign the task first
 			try {
-				const res = await assignTask(selectedKidId, taskData.task, taskData.startDate, taskData.endDate, taskData.reward);
+				const res = await assignTask(selectedKidId, taskData.task, taskData.startDate, taskData.endDate, taskData.price);
 
 				// If res is false (indicating an error or failure), skip adding the task
 				if (!res) {
@@ -82,7 +80,7 @@ const ParentAddTask = () => {
 			}
 
 			// Clear task data after attempting to add
-			setTaskData({ name: "", task: "", startDate: "", endDate: "", reward: "" });
+			setTaskData({ name: "", task: "", startDate: "", endDate: "", price: "" });
 		}
 	};
 
@@ -112,7 +110,11 @@ const ParentAddTask = () => {
 
 	// Handle input change in the form
 	const handleInputChange = (e) => {
-		setTaskData({ ...taskData, [e.target.name]: e.target.value });
+		const { name, value } = e.target;
+		setTaskData({
+			...taskData,
+			[name]: name === "price" ? parseFloat(value) || "" : value, // Parse `price` to a number
+		});
 	};
 
 	// Generate a random color for task box
@@ -218,30 +220,15 @@ const ParentAddTask = () => {
 							className={styles.input}
 							type="date"
 						/>
-						<div className="dropdown m-3">
-							<button
-								className={`btn btn-secondary dropdown-toggle ${styles.confirmButton}`}
-								type="button"
-								data-bs-toggle="dropdown"
-								aria-expanded="false">
-								{selectedReward}
-							</button>
-							<ul className="dropdown-menu">
-								{rewardsList.map((reward, index) => (
-									<li key={index}>
-										<a
-											className="dropdown-item"
-											href="#"
-											onClick={() => {
-												setTaskData({ ...taskData, reward });
-												setSelectedReward(reward);
-											}}>
-											{reward}
-										</a>
-									</li>
-								))}
-							</ul>
-						</div>{" "}
+						<input
+							name="price"
+							type="number"
+							placeholder="Cena"
+							className={styles.input}
+							value={taskData.price || ""} // Ensure a valid fallback value
+							onChange={handleInputChange}
+						/>
+
 						<button onClick={() => addTask()} className={styles.confirmButton}>
 							Potvrdiť
 						</button>
