@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import Axios from "axios";
 
-const apiAddress = "http://147.232.205.117:5000";
+const apiAddress = "http://147.232.205.117:5000/api";
 
 // Functions for creating a user
 export function validateName(name) {

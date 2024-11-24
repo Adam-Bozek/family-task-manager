@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import styles from "./css/KidRewardExchange.module.css";
+import styles from "../css/KidRewardExchange.module.css";
 import { useNavigate } from "react-router-dom";
 
-import { logOutUser } from "./utilities/Utils";
-import { AppContext } from "./utilities/AppContext";
+import { logOutUser } from "../utilities/Utils";
+import { AppContext } from "../utilities/AppContext";
 
 const KidRewardExchange = ({ userName }) => {
 	// State to track user's total credits and rewards available for exchange

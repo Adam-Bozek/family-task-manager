@@ -8,7 +8,6 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 
 	// Check if the user is logged in and their role is one of the allowed roles
 	if (isLoggedIn && allowedRoles.includes(role)) {
-		console.log("reroute");
 		return element;
 	}
 

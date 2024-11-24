@@ -1,32 +1,32 @@
 import React, { useState, useContext } from "react";
-import styles from "./css/ParentDashboardTasks.module.css";
+import styles from "../css/ParentDashboardRewards.module.css";
 import { useNavigate } from "react-router-dom";
 
-import { logOutUser } from "./utilities/Utils";
-import { AppContext } from "./utilities/AppContext";
+import { logOutUser } from "../utilities/Utils";
+import { AppContext } from "../utilities/AppContext";
 
 const ParentDashboardTasks = () => {
-	// State to manage tasks, with each child having their own list of tasks
+	// State to manage rewards for each child, with each child having their own list of rewards
 	const [tasks, setTasks] = useState({
-		Adam: ["Vyčistiť izbu", "Urobiť si domácu úlohu", "Napísať správu učiteľovi"],
-  Janko: ["Vyvenčiť psa"],
-  Marta: ["Dokončiť domácu úlohu"],
+		Adam: ["Candy", "5€"],
+		Janko: ["20 minutes of PC time"],
+		Marta: ["10€"],
 	});
 
-	// Function to add a new task for a specific child
+	// Function to add a new reward to a specific child's list
 	const addTask = (name, newTask) => {
 		setTasks((prevTasks) => ({
 			...prevTasks,
-			[name]: [...prevTasks[name], newTask], // Append new task to the existing tasks of the child
+			[name]: [...prevTasks[name], newTask], // Append new reward to the existing list of the child
 		}));
 	};
 
-	// Example usage of addTask function (can be triggered with user input)
-	// addTask('Adam', 'New task for Adam');
-	const navigate = useNavigate();
-
 	const { setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
+	// Example usage of addTask function (can be triggered with user input)
+	// addTask('Adam', 'New reward for Adam');
+
+	const navigate = useNavigate();
 	const handle_redirect = (route) => {
 		navigate(route);
 	};
@@ -69,7 +69,7 @@ const ParentDashboardTasks = () => {
 										</li>
 										<li className="nav-item">
 											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-												Zadať úlohu
+												Pridať úlohu
 											</button>
 										</li>
 									</ul>
@@ -77,7 +77,7 @@ const ParentDashboardTasks = () => {
 										<button
 											className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
 											onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-											Odhlásiť sa
+											Logout
 										</button>
 									</div>
 								</div>
@@ -85,21 +85,21 @@ const ParentDashboardTasks = () => {
 						</nav>
 					</header>
 
-					{/* Main content area for tasks */}
+					{/* Main content area for displaying rewards */}
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
-							{/* Buttons for navigating to different sections */}
+							{/* Buttons for navigating to tasks and rewards sections */}
 							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Úlohy
+								Tasks
 							</button>
 							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Vybrané odmeny
+								Selected Rewards
 							</button>
 						</div>
 
 						<h3>Tasks to Complete Today</h3>
 						<div className={styles.tasksContainer}>
-							{/* Display each child's name and list of tasks */}
+							{/* Display each child's name and list of rewards */}
 							{Object.entries(tasks).map(([name, taskList]) => (
 								<div key={name} className={styles.userTaskGroup}>
 									<div className={styles.userSection}>
@@ -115,20 +115,14 @@ const ParentDashboardTasks = () => {
 								</div>
 							))}
 
-							{/* Legend to describe the status of each task */}
+							{/* Legend to describe the status of rewards */}
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
 									<span className={styles.legendItem}>
 										<span className={styles.completed}></span> Completed
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notCompleted}></span> Not Completed
-									</span>
-									<span className={styles.legendItem}>
-										<span className={styles.pending}></span> Pending Confirmation
-									</span>
-									<span className={styles.legendItem}>
-										<span className={styles.notStarted}></span> Not Started
+										<span className={styles.pending}></span> Pending Completion
 									</span>
 								</div>
 							</div>
