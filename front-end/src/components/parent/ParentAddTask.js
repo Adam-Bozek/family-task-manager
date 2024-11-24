@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
-import { getKidsNames, assignTask } from "./ParentUtils";
+import { getKidsNames, assignTask, getKidsTasks, removeTask } from "./ParentUtils";
 
 import styles from "../css/ParentAddTask.module.css";
 
 const ParentAddTask = () => {
 	// State for tasks and task details
-	const [tasks, setTasks] = useState({});
+	const [tasks, setTasks] = useState({}); // Store tasks grouped by kid's name
 	const [taskData, setTaskData] = useState({
 		name: "",
 		task: "",
@@ -23,33 +23,49 @@ const ParentAddTask = () => {
 	const [selectedKid, setSelectedKid] = useState("Vybrať dieťa");
 	const [selectedKidId, setSelectedKidId] = useState(null);
 
-	// State for rewards and selected reward
-	const [selectedReward, setSelectedReward] = useState("Vybrať odmenu");
 	// State for tooltip
 	const [tooltip, setTooltip] = useState({ visible: false, taskInfo: null });
 
 	// App context to fetch email
 	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
+	// Fetch kids' data and tasks when the component mounts
+	useEffect(() => {
+		const fetchKidsData = async () => {
+			try {
+				const fetchedKids = await getKidsNames(email);
+				setKids(fetchedKids);
+			} catch (err) {
+				console.error("Error fetching kids' names:", err);
+			}
+		};
+
+		const fetchKidsTasks = async () => {
+			try {
+				const fetchedTasks = await getKidsTasks(email);
+
+				// Group tasks by kid's name
+				const groupedTasks = fetchedTasks.reduce((acc, task) => {
+					if (!acc[task.name]) acc[task.name] = [];
+					acc[task.name].push(task);
+					return acc;
+				}, {});
+
+				setTasks(groupedTasks);
+			} catch (err) {
+				console.error("Error fetching kids' tasks:", err);
+			}
+		};
+
+		fetchKidsData();
+		fetchKidsTasks();
+	}, [email]);
+
 	// Navigation function
 	const navigate = useNavigate();
 	const handleRedirect = (route) => {
 		navigate(route);
 	};
-
-	// Fetch kids' names when the component mounts
-	useEffect(() => {
-		const fetchKidsData = async () => {
-			try {
-				const fetchedKids = await getKidsNames(email);
-				setKids(fetchedKids); // Fetched data includes both `id` and `name`
-				console.log(fetchedKids);
-			} catch (err) {
-				console.error("Error fetching kids' names:", err);
-			}
-		};
-		fetchKidsData();
-	}, [email]);
 
 	// Add a new task for the selected kid
 	const addTask = async () => {
@@ -85,16 +101,29 @@ const ParentAddTask = () => {
 	};
 
 	// Remove a specific task for a user
-	const removeTask = (userName, taskIndex) => {
+	const removeTasks = (userName, taskIndex) => {
 		setTasks((prevTasks) => {
+			// Create a copy of the tasks for the selected user
 			const userTasks = [...prevTasks[userName]];
+	
+			// Retrieve the task_id before removing the task
+			const taskIdToRemove = userTasks[taskIndex].task_id;
+			console.log("Removing task with ID:", taskIdToRemove);
+	
+			// Remove the task from the list
 			userTasks.splice(taskIndex, 1);
+	
+			// If no tasks are left for the user, remove the user entry from the state
 			if (userTasks.length === 0) {
 				const { [userName]: _, ...rest } = prevTasks;
 				return rest;
 			}
+	
+			// Update the state with the remaining tasks
 			return { ...prevTasks, [userName]: userTasks };
 		});
+	
+		// Hide the tooltip after removing the task
 		setTooltip({ visible: false, taskInfo: null });
 	};
 
@@ -122,6 +151,44 @@ const ParentAddTask = () => {
 		const colorPalette = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F", "#8E44AD", "#E67E22", "#1ABC9C", "#D35400", "#2C3E50", "#C0392B"];
 		return colorPalette[Math.floor(Math.random() * colorPalette.length)];
 	};
+
+	const handle_removeTask = (userName, taskIndex) => {
+    // Retrieve the task_id from the tasks state
+    const taskId = tasks[userName]?.[taskIndex]?.task_id;
+
+    if (!taskId) {
+        console.error("Task ID not found for the given user and task index.");
+        return;
+    }
+
+    async function deleteTask(taskId) {
+        const isDeleted = await removeTask(taskId);
+        if (isDeleted) {
+            console.log("Task deleted successfully.");
+
+            // Update the tasks state to reflect the removal
+            setTasks((prevTasks) => {
+                const userTasks = [...prevTasks[userName]];
+
+                // Remove the specific task
+                userTasks.splice(taskIndex, 1);
+
+                // If no tasks remain, remove the user entry
+                if (userTasks.length === 0) {
+                    const { [userName]: _, ...rest } = prevTasks;
+                    return rest;
+                }
+
+                return { ...prevTasks, [userName]: userTasks };
+            });
+        } else {
+            console.error("Failed to delete the task.");
+        }
+    }
+
+    deleteTask(taskId);
+};
+
 
 	return (
 		<div className={styles["templateMain"]}>
@@ -223,7 +290,7 @@ const ParentAddTask = () => {
 						<input
 							name="price"
 							type="number"
-							placeholder="Cena"
+							placeholder="Výška odmeny"
 							className={styles.input}
 							value={taskData.price || ""} // Ensure a valid fallback value
 							onChange={handleInputChange}
@@ -234,33 +301,39 @@ const ParentAddTask = () => {
 						</button>
 					</div>
 					<div className={styles.tasksContainer}>
-						{Object.keys(tasks).map((userName, index) => (
-							<div key={index} className={styles.userSection}>
-								<h4>{userName}</h4>
-								<div className={styles.taskList}>
-									{tasks[userName].map((task, taskIndex) => (
-										<span
-											key={taskIndex}
-											className={styles.taskBox}
-											style={{ backgroundColor: task.color }}
-											onMouseEnter={() => showTooltip(task)}
-											onMouseLeave={hideTooltip}>
-											{task.task}
-											{tooltip.visible && tooltip.taskInfo === task && (
-												<div className={styles.tooltip}>
-													<p>Od: {task.startDate}</p>
-													<p>Do: {task.endDate}</p>
-													<p>Odmena: {task.reward}</p>
-													<button onClick={() => removeTask(userName, taskIndex)} className={styles.removeButton}>
-														Zrušiť
-													</button>
-												</div>
-											)}
-										</span>
-									))}
+						{/* Render tasks */}
+						{Object.keys(tasks).length === 0 ? (
+							<p>No tasks assigned yet.</p>
+						) : (
+							Object.keys(tasks).map((userName, index) => (
+								<div key={index} className={styles.userSection}>
+									<h4>{userName}</h4>
+									<div className={styles.taskList}>
+										{tasks[userName].map((task, taskIndex) => (
+											<span
+												key={taskIndex}
+												className={styles.taskBox}
+												style={{ backgroundColor: getRandomColor() }}
+												onMouseEnter={() => showTooltip(task)}
+												onMouseLeave={hideTooltip}>
+												{task.task}
+												{tooltip.visible && tooltip.taskInfo === task && (
+													<div className={styles.tooltip}>
+														<p>Od: {task.startDate}</p>
+														<p>Do: {task.endDate}</p>
+														<p>Odmena: {task.reward}</p>
+														<p>Status: {task.status}</p>
+														<button onClick={() => handle_removeTask(userName, taskIndex)} className={styles.removeButton}>
+															Zrušiť
+														</button>
+													</div>
+												)}
+											</span>
+										))}
+									</div>
 								</div>
-							</div>
-						))}
+							))
+						)}
 					</div>
 				</div>
 			</div>

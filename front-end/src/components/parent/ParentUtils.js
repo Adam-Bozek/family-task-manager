@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-const apiAddress = "http://147.232.205.117:5000";
+const apiAddress = "http://147.232.205.117:5000/api";
 
 // Functions for user "parent"
 export async function getKidsAndTasks() {}
@@ -59,19 +59,19 @@ export async function getFamilyData(email) {
 				members: familyMembers,
 			};
 		} else if (response.status === 406) {
-			alert("Email already exists. Please choose a different email address.");
+			console.error("Email already exists. Please choose a different email address.");
 		} else {
-			alert("User creation was unsuccessful.");
+			console.error("User creation was unsuccessful.");
 			return { keys: [], members: [] };
 		}
 	} catch (err) {
 		console.error("Error fetching family data:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return { keys: [], members: [] };
 	}
@@ -96,24 +96,23 @@ export async function assignTask(kids_id, task, date_from, date_to, reward) {
 			},
 		});
 
-
 		if (response.status === 202) {
 			return true;
 		} else if (response.status === 406) {
-			alert("Email already exists. Please choose a different email address.");
+			console.error("Email already exists. Please choose a different email address.");
 			return false;
 		} else {
-			alert("User creation was unsuccessful.");
+			console.error("User creation was unsuccessful.");
 			return false;
 		}
 	} catch (err) {
 		console.error("Error fetching kids' names:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return false;
 	}
@@ -137,17 +136,17 @@ export async function createReward(email, name, price) {
 		if (response.status === 202) {
 			return true;
 		} else {
-			alert("User creation was unsuccessful.");
+			console.error("User creation was unsuccessful.");
 			return false;
 		}
 	} catch (err) {
 		console.error("Error creating reward:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return false;
 	}
@@ -179,20 +178,20 @@ export async function getRewards(email) {
 
 			return rewardsData; // Return the processed rewards
 		} else if (response.status === 406) {
-			alert("Email already exists. Please choose a different email address.");
+			console.error("Email already exists. Please choose a different email address.");
 			return [];
 		} else {
-			alert("Failed to fetch rewards.");
+			console.error("Failed to fetch rewards.");
 			return [];
 		}
 	} catch (err) {
 		console.error("Error fetching rewards:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return [];
 	}
@@ -214,17 +213,17 @@ export async function removeReward(reward_id) {
 		if (response.status === 202) {
 			return true;
 		} else {
-			alert("User creation was unsuccessful.");
+			console.error("User creation was unsuccessful.");
 			return false;
 		}
 	} catch (err) {
 		console.error("Error fetching kids' names:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return false;
 	}
@@ -246,20 +245,20 @@ export async function deleteFamily(email) {
 		if (response.status === 202) {
 			return true;
 		} else if (response.status === 406) {
-			alert("Email already exists. Please choose a different email address.");
+			console.error("Email already exists. Please choose a different email address.");
 			return false;
 		} else {
-			alert("User creation was unsuccessful.");
+			console.error("User creation was unsuccessful.");
 			return false;
 		}
 	} catch (err) {
 		console.error("Error fetching kids' names:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return false;
 	}
@@ -286,11 +285,11 @@ export async function removeFamilyMember(email) {
 	} catch (err) {
 		console.error("Error fetching family data:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return { keys: [], members: [] };
 	}
@@ -331,20 +330,90 @@ export async function getKidsNames(email) {
 		} else if (response.status === 204) {
 			return null;
 		} else if (response.status === 406) {
-			alert("Email already exists. Please choose a different email address.");
+			console.error("Email already exists. Please choose a different email address.");
 		} else {
-			alert("User creation was unsuccessful.");
+			console.error("User creation was unsuccessful.");
 			return [];
 		}
 	} catch (err) {
 		console.error("Error fetching kids' names:", err);
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			console.error("Network error. Please check your connection and try again.");
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			console.error("An unexpected error occurred. Please try again.");
 		}
 		return [];
+	}
+}
+
+export async function getKidsTasks(email) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Parents_tasks";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			// The response data already appears to be valid JSON; parse it directly
+			const kidsTasks = response.data.return;
+
+			// Map the tasks to a usable format
+			return kidsTasks.map((task) => ({
+				startDate: task.cas_od,
+				endDate: task.cas_do,
+				reward: task.cena_odmeny,
+				task_id: task.id,
+				name: task.meno,
+				status: task.stav,
+				task: task.uloha,
+			}));
+		} else {
+			console.error("Failed to fetch tasks.");
+			return [];
+		}
+	} catch (err) {
+		console.error("Error fetching kids' tasks:", err);
+		console.error("An error occurred while fetching tasks. Please try again later.");
+		return [];
+	}
+}
+
+export async function removeTask(task_id) {
+	try {
+		const formData = new FormData();
+		formData.append("id", task_id);
+
+		const localApiAddress = apiAddress + "/Delete_task";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			console.error("User creation was unsuccessful.");
+			return false;
+		}
+	} catch (err) {
+		console.error("Error fetching kids' names:", err);
+		if (err.response) {
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			console.error("Network error. Please check your connection and try again.");
+		} else {
+			console.error("An unexpected error occurred. Please try again.");
+		}
+		return false;
 	}
 }
