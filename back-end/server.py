@@ -50,8 +50,8 @@ def check_password(plaintext_password, hashed_password):
 app = Flask(__name__)
 CORS(app)
 
-
-@app.route("/Create_user", methods=["POST"])
+# Function for create user
+@app.route("/api/Create_user", methods=["POST"])
 def create_user():
     # Input
     name = request.form.get("name")
@@ -79,8 +79,8 @@ def create_user():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
 
-
-@app.route("/Check_user_exist", methods=["POST"])
+# Function for check if user exist in DB
+@app.route("/api/Check_user_exist", methods=["POST"])
 def check_user_exist():
     # Input
     email = request.form.get("email")
@@ -97,8 +97,8 @@ def check_user_exist():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
 
-
-@app.route("/Login", methods=["POST"])
+# Function for login user
+@app.route("/api/Login", methods=["POST"])
 def login():
     # Input
     email = request.form.get("email")
@@ -133,8 +133,8 @@ def login():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route("/Create_family", methods=["POST"])
+# Function for create family
+@app.route("/api/Create_family", methods=["POST"])
 def create_family():
     # Input
     name_family = request.form.get("family_name")
@@ -165,8 +165,8 @@ def create_family():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route("/Add_to_family", methods=["POST"])
+# Function for add user ti family
+@app.route("/api/Add_to_family", methods=["POST"])
 def add_to_family():
     # Input
     string = request.form.get("string")
@@ -198,26 +198,29 @@ def add_to_family():
         syntax3 = "INSERT INTO clen (id_rodina, id_uzivatel, rola) VALUES (%s, %s, %s)"
         connectiondb(syntax3, (result1[0][0], result2[0][0], "kid"))
 
+        syntax4 = "INSERT INTO penazenka (id_uzivatel, zostatok_penazenky) VALUES (%s, %s)"
+        connectiondb(syntax4, (result2[0][0], "0"))
+
         return jsonify({"message": "Clen bol pridany do rodiny ako Dieta", "role": "kid"}), 202 # Accepted
     elif result == [] and result1 == []:
         return jsonify({"message": "Clen nebol pridany do ziadnej rodiny"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route("/Add_rewards", methods=["POST"])
+# Function for add rewards in family
+@app.route("/api/Add_rewards", methods=["POST"])
 def add_rewards():
     # Input
     email = request.form.get("email")
-    name_reward = request.form.get("name_reward")
+    name = request.form.get("name")
     value = request.form.get("value")
 
     # SQL query
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
-    result = connectiondb(syntax, (email))
+    result = connectiondb(syntax, (email,))
 
     syntax1 = "INSERT INTO odmena (nazov, cena, id_rodina) VALUES (%s, %s, %s)"
-    result1 = connectiondb(syntax1, (name_reward, value, result[0][0]))
+    result1 = connectiondb(syntax1, (name, value, result[0][0],))
 
     # Return
     if not result1:
@@ -225,8 +228,8 @@ def add_rewards():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route("/Delete_family", methods=["POST"])
+# Function for delete whole family
+@app.route("/api/Delete_family", methods=["POST"])
 def delete_family():
     # Input
     email = request.form.get("email")
@@ -250,8 +253,8 @@ def delete_family():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route("/Add_tasks", methods=["POST"])
+# Function for add tasks for member
+@app.route("/api/Add_tasks", methods=["POST"])
 def add_tasks():
     # Input
     id = request.form.get('id')
@@ -261,18 +264,25 @@ def add_tasks():
     reward = request.form.get('reward')
 
     # SQL query
-    syntax = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, id_odmena, stav) VALUES (%s, %s, %s, %s, %s, %s)"
-    result = connectiondb(syntax, (id, task, date_from, date_to, reward, "not done"))
+    syntax = "SELECT id_rodina FROM clen WHERE id_uzivatel = %s"
+    result = connectiondb(syntax, (id,))
+
+    syntax1 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, cena_odmeny, stav, id_rodina) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    result1 = connectiondb(syntax1, (id, task, date_from, date_to, reward, "not done", result[0][0]))
 
     # Return
-    if not result:
+    if not result1:
         return jsonify({"message": "Pridanie ulohy uspesne"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-    
-@app.route('/Parents_tasks', methods=['POST'])
+
+# Function for display family tasks to parents dashboard
+@app.route('/api/Parents_tasks', methods=['POST'])
 def parent_tasks():
+    # Import
+    from datetime import datetime
+
     # Input
     email = request.form.get("email")
 
@@ -280,19 +290,33 @@ def parent_tasks():
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT * FROM ulohy WHERE id_rodina = %s"
-    result1 = connectiondb(syntax1, (result[0][0]))
+    syntax1 = "SELECT ulohy.id, meno, uloha, cas_od, cas_do, cena_odmeny, stav FROM ulohy RIGHT JOIN uzivatel ON ulohy.id_uzivatel = uzivatel.id WHERE id_rodina = %s"
+    result1 = connectiondb(syntax1, (result[0][0],))
 
     # Return
     if result1:
-        return jsonify({"message": "Vypis uloh uspesne", "return": f"{result1}"}), 202 # Accepted
+        # Processing datetime objects
+        formatted_result = [
+            {
+                "id": row[0],
+                "meno": row[1],
+                "uloha": row[2],
+                "cas_od": row[3].strftime("%Y-%m-%d") if isinstance(row[3], datetime) else row[3],
+                "cas_do": row[4].strftime("%Y-%m-%d") if isinstance(row[4], datetime) else row[4],
+                "cena_odmeny": row[5],
+                "stav": row[6]
+            }
+            for row in result1
+        ]
+        return jsonify({"message": "Vypis uloh uspesne", "return": formatted_result}), 202 # Accepted
     elif result1 == []:
         return jsonify({"message": "Vypis uloh neuspesne"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
-@app.route("/Parents_rewards", methods=["POST"])
+# Function for display active rewards to parents dashboard
+@app.route("/api/Parents_rewards", methods=["POST"])
 def parents_rewards():
     # Input
     email = request.form.get("email")
@@ -313,7 +337,8 @@ def parents_rewards():
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500  # Internal Server Error
 
 
-@app.route("/Kids_dashboard", methods=["POST"])
+# Function for display kids dashboard
+@app.route("/api/Kids_dashboard", methods=["POST"])
 def kids_dashboard():
     # Input
     email = request.form.get("email")
@@ -325,7 +350,7 @@ def kids_dashboard():
     syntax1 = "SELECT odmena.nazov, aktivovanie.stav FROM uzivatel INNER JOIN aktivovanie ON aktivovanie.id_uzivatela = uzivatel.id INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE email = %s"
     result1 = connectiondb(syntax1, (email,))
 
-    syntax2 = "SELECT zostatok FROM penazenka RIGHT JOIN uzivatel ON uzivatel.id = penazenak.id_uzivatel WHERE email = %s"
+    syntax2 = "SELECT zostatok_penazenky FROM penazenka RIGHT JOIN uzivatel ON uzivatel.id = penazenka.id_uzivatel WHERE email = %s"
     result2 = connectiondb(syntax2, (email,))
 
     # Return
@@ -336,8 +361,8 @@ def kids_dashboard():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route('/Kids_exchange', methods=['POST'])
+# Function for kids exchange rewards
+@app.route('/api/Kids_exchange', methods=['POST'])
 def kids_exchange():
     # Input
     id = request.form.get('id')
@@ -355,8 +380,8 @@ def kids_exchange():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route('/Select', methods=['POST'])
+# Function for display kids in family
+@app.route('/api/Select', methods=['POST'])
 def select():
     # Input
     email = request.form.get('email')
@@ -376,8 +401,8 @@ def select():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route('/Wallet', methods=['POST'])
+# Function for dispaly wallet and rewards to kids dashboard
+@app.route('/api/Wallet', methods=['POST'])
 def wallet():
     # Input
     email = request.form.get('wallet')
@@ -400,8 +425,8 @@ def wallet():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route('/Hash', methods=['POST'])
+# Function for display hash code
+@app.route('/api/Hash', methods=['POST'])
 def hash():
     # Input
     email = request.form.get('email')
@@ -424,8 +449,8 @@ def hash():
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route('/Delete_member', methods=['POST'])
+# Function for delete member from family
+@app.route('/api/Delete_member', methods=['POST'])
 def delete_member():
     # Input
     email = request.form.get('email')
@@ -437,14 +462,18 @@ def delete_member():
     syntax1 = "DELETE FROM clen WHERE id_uzivatel = %s"
     result1 = connectiondb(syntax1, (result[0][0],))
 
+    # Return
     if not result1:
         return jsonify({"message": "Vymazanie clena uspesne"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
-
-@app.route('/Select_rewards', methods=['POST'])
+# Function for display rewards to parents settings
+@app.route('/api/Select_rewards', methods=['POST'])
 def select_rewards():
+    # Import
+    from decimal import Decimal
+
     # Input
     email = request.form.get('email')
 
@@ -457,14 +486,20 @@ def select_rewards():
 
     # Return
     if result1:
-        return jsonify({"message": "Vypis odmien uspesne", "return": f"{result1}"}), 202 # Accepted
+        # Convert result1 to handle Decimal
+        formatted_result1 = [
+            (row[0], row[1], float(row[2]) if isinstance(row[2], Decimal) else row[2])
+            for row in result1
+        ]
+        return jsonify({"message": "Vypis odmien uspesne", "return": formatted_result1}), 202 # Accepted
     elif result1 == []:
-        return jsonify({"message": "Vypis odmien neuspesne"}), 400  # Bad Request
+        return jsonify({"message": "Vypis odmien neuspesne"}), 400 # Bad Request
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
 
-@app.route('/Delete_reward', methods=['POST'])
+# Function for delete reward for family
+@app.route('/api/Delete_reward', methods=['POST'])
 def delete_reward():
     # Input
     id = request.form.get('id')
@@ -475,7 +510,24 @@ def delete_reward():
 
     # Return
     if not result:
-        return jsonify({"message": "Vymazanie clena uspesne"}), 202 # Accepted
+        return jsonify({"message": "Vymazanie odmeny uspesne"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+# Function for delete reward for family
+@app.route('/api/Delete_task', methods=['POST'])
+def delete_task():
+    # Input
+    id = request.form.get('id')
+
+    # SQL query
+    syntax = "DELETE FROM ulohy WHERE id = %s"
+    result = connectiondb(syntax, (id,))
+
+    # Return
+    if not result:
+        return jsonify({"message": "Vymazanie ulohy uspesne"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
