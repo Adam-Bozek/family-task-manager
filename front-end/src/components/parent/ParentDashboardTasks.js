@@ -1,32 +1,39 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "../css/ParentDashboardTasks.module.css";
 import { useNavigate } from "react-router-dom";
-
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
+import { getKidsTasks } from "./ParentUtils"; // Importing the getKidsTasks function
 
 const ParentDashboardTasks = () => {
-	// State to manage tasks, with each child having their own list of tasks
-	const [tasks, setTasks] = useState({
-		Adam: ["Clean the room", "Do homework", "Write a message to the teacher"],
-		Janko: ["Walk the dog"],
-		Marta: ["Complete homework"],
-	});
-
-	// Function to add a new task for a specific child
-	const addTask = (name, newTask) => {
-		setTasks((prevTasks) => ({
-			...prevTasks,
-			[name]: [...prevTasks[name], newTask], // Append new task to the existing tasks of the child
-		}));
-	};
-
-	// Example usage of addTask function (can be triggered with user input)
-	// addTask('Adam', 'New task for Adam');
+	// State to manage tasks fetched from the API
+	const [tasks, setTasks] = useState({});
+	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 	const navigate = useNavigate();
 
-	const { setName, setIsLoggedIn, setEmail } = useContext(AppContext);
+	// Fetch tasks when the component mounts
+	useEffect(() => {
+		const fetchTasks = async () => {
+			try {
+				const fetchedTasks = await getKidsTasks(email);
 
+				// Group tasks by the child's name
+				const groupedTasks = fetchedTasks.reduce((acc, task) => {
+					if (!acc[task.name]) acc[task.name] = [];
+					acc[task.name].push(task);
+					return acc;
+				}, {});
+
+				setTasks(groupedTasks);
+			} catch (err) {
+				console.error("Error fetching tasks:", err);
+			}
+		};
+
+		fetchTasks();
+	}, [email]);
+
+	// Navigate to a different route
 	const handle_redirect = (route) => {
 		navigate(route);
 	};
@@ -100,20 +107,24 @@ const ParentDashboardTasks = () => {
 						<h3>Tasks to Complete Today</h3>
 						<div className={styles.tasksContainer}>
 							{/* Display each child's name and list of tasks */}
-							{Object.entries(tasks).map(([name, taskList]) => (
-								<div key={name} className={styles.userTaskGroup}>
-									<div className={styles.userSection}>
-										<span className={styles.userName}>{name}</span>
-										<div className={styles.taskList}>
-											{taskList.map((task, index) => (
-												<span key={index} className={styles.taskItem}>
-													{task}
-												</span>
-											))}
+							{Object.entries(tasks).length === 0 ? (
+								<p>No tasks assigned yet.</p>
+							) : (
+								Object.entries(tasks).map(([name, taskList]) => (
+									<div key={name} className={styles.userTaskGroup}>
+										<div className={styles.userSection}>
+											<span className={styles.userName}>{name}</span>
+											<div className={styles.taskList}>
+												{taskList.map((task, index) => (
+													<span key={index} className={styles.taskItem}>
+														{task.task} - {task.status}
+													</span>
+												))}
+											</div>
 										</div>
 									</div>
-								</div>
-							))}
+								))
+							)}
 
 							{/* Legend to describe the status of each task */}
 							<div className={styles.legendContainer}>

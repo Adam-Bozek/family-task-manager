@@ -13,7 +13,6 @@ export async function getFamilyData(email) {
 		formData.append("email", email);
 
 		const localApiAddress = apiAddress + "/Hash";
-
 		const response = await Axios.post(localApiAddress, formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
@@ -21,58 +20,49 @@ export async function getFamilyData(email) {
 		});
 
 		if (response.status === 202) {
-			// Parse the response data
-			const { return: keysString, return1: membersString } = response.data;
+			const { return: keysString, return2: membersString } = response.data;
 
-			// Clean and parse `keysString`
-			const cleanedKeysString = keysString
-				.replace(/\(/g, "[") // Replace '(' with '['
-				.replace(/\)/g, "]") // Replace ')' with ']'
-				.replace(/'/g, '"'); // Replace single quotes with double quotes for valid JSON
+			if (!keysString || !membersString) {
+				console.error("Error: Missing keysString or membersString in response");
+				return { keys: [], members: [] };
+			}
 
-			const keysArray = JSON.parse(cleanedKeysString);
+			let keysArray = [];
+			let membersArray = [];
 
-			// Map `keysArray` to an array of objects
-			const keyData = keysArray.map((data) => ({
-				parentKey: data[0],
-				kidKey: data[1],
-			}));
+			try {
+				const cleanedKeysString = keysString.replace(/\(/g, "[").replace(/\)/g, "]").replace(/'/g, '"');
+				keysArray = JSON.parse(cleanedKeysString);
+			} catch (err) {
+				console.error("Error parsing keysString:", err);
+			}
 
-			// Clean and parse `membersString`
-			const cleanedMembersString = membersString
-				.replace(/\(/g, "[") // Replace '(' with '['
-				.replace(/\)/g, "]") // Replace ')' with ']'
-				.replace(/'/g, '"'); // Replace single quotes with double quotes for valid JSON
+			try {
+				const cleanedMembersString = membersString.replace(/\(/g, "[").replace(/\)/g, "]").replace(/'/g, '"');
+				membersArray = JSON.parse(cleanedMembersString);
+			} catch (err) {
+				console.error("Error parsing membersString:", err);
+			}
 
-			const membersArray = JSON.parse(cleanedMembersString);
-
-			// Map `membersArray` to an array of objects
-			const familyMembers = membersArray.map((member) => ({
-				name: member[0],
-				email: member[1],
-				role: member[2],
-			}));
-
-			// Combine and return both data sets
 			return {
-				keys: keyData,
-				members: familyMembers,
+				keys: keysArray.map((data) => ({
+					parentKey: data[0],
+					kidKey: data[1],
+				})),
+				members: membersArray.map((member) => ({
+					name: member[0],
+					email: member[1],
+					role: member[2],
+				})),
 			};
 		} else if (response.status === 406) {
 			console.error("Email already exists. Please choose a different email address.");
 		} else {
 			console.error("User creation was unsuccessful.");
-			return { keys: [], members: [] };
 		}
+		return { keys: [], members: [] };
 	} catch (err) {
 		console.error("Error fetching family data:", err);
-		if (err.response) {
-			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
-		} else if (err.request) {
-			console.error("Network error. Please check your connection and try again.");
-		} else {
-			console.error("An unexpected error occurred. Please try again.");
-		}
 		return { keys: [], members: [] };
 	}
 }
