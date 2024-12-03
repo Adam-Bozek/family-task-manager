@@ -50,6 +50,8 @@ def check_password(plaintext_password, hashed_password):
 app = Flask(__name__)
 CORS(app)
 
+#TODO: zelene done, cervene notDone, zlte waiting, modre pending
+
 # Function for create user
 @app.route("/api/Create_user", methods=["POST"])
 def create_user():
@@ -268,7 +270,7 @@ def add_tasks():
     result = connectiondb(syntax, (id,))
 
     syntax1 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, cena_odmeny, stav, id_rodina) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    result1 = connectiondb(syntax1, (id, task, date_from, date_to, reward, "not done", result[0][0]))
+    result1 = connectiondb(syntax1, (id, task, date_from, date_to, reward, "pending", result[0][0]))
 
     # Return
     if not result1:
@@ -340,11 +342,15 @@ def parents_rewards():
 # Function for display kids dashboard
 @app.route("/api/Kids_dashboard", methods=["POST"])
 def kids_dashboard():
+    # Import
+    from decimal import Decimal
+    from datetime import datetime
+
     # Input
     email = request.form.get("email")
 
     # SQL query
-    syntax = "SELECT * FROM ulohy RIGHT JOIN uzivatel ON uzivatel.id = ulohy.id_uzivatel WHERE email = %s"
+    syntax = "SELECT ulohy.id, meno, uloha, cas_od, cas_do, cena_odmeny, stav FROM ulohy RIGHT JOIN uzivatel ON uzivatel.id = ulohy.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
     syntax1 = "SELECT odmena.nazov, aktivovanie.stav FROM uzivatel INNER JOIN aktivovanie ON aktivovanie.id_uzivatela = uzivatel.id INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE email = %s"
@@ -354,8 +360,27 @@ def kids_dashboard():
     result2 = connectiondb(syntax2, (email,))
 
     # Return
-    if result and result1 and result2:
-        return jsonify({"message": "Vypis uloh, odmien a penazenky uspesne", "return": f"{result}", "return1": f"{result1}", "return2": f"{result2}"}), 202 # Accepted
+    if (result and result2) or result1:
+        # Processing datetime objects
+        formatted_result = [
+            {
+                "id": row[0],
+                "meno": row[1],
+                "uloha": row[2],
+                "cas_od": row[3].strftime("%Y-%m-%d") if isinstance(row[3], datetime) else row[3],
+                "cas_do": row[4].strftime("%Y-%m-%d") if isinstance(row[4], datetime) else row[4],
+                "cena_odmeny": row[5],
+                "stav": row[6]
+            }
+            for row in result
+        ]
+
+        # Convert result1 to handle Decimal
+        formatted_result2 = [
+            (float(row[0]) if isinstance(row[0], Decimal) else row[0])
+            for row in result2
+        ]
+        return jsonify({"message": "Vypis uloh, odmien a penazenky uspesne", "return": f"{formatted_result}", "return1": f"{result1}", "return2": f"{formatted_result2}"}), 202 # Accepted
     elif result == [] or result1 == [] or result2 == []:
         return jsonify({"message": "Vypis uloh, odmien alebo penazenky neuspesne"}), 400  # Bad Request
     else:
@@ -367,15 +392,18 @@ def kids_exchange():
     # Input
     id = request.form.get('id')
     email = request.form.get('email')
+    difference = request.form.get('difference')
 
     # SQL query
     syntax = "SELECT id FROM uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
     syntax1 = "INSERT INTO aktivovanie (id_uzivatela, id_odmena, stav) VALUES (%s, %s, %s)"
-    result1 = connectiondb(syntax1, (id, result[0][0], "false"))
+    result1 = connectiondb(syntax1, (result[0][0], id, "false"))
 
     if not result1:
+        syntax2 = "UPDATE penazenka SET zostatok_penazenky = %s WHERE id_uzivatel = %s"
+        connectiondb(syntax2, (difference, result[0][0],))
         return jsonify({"message": "Uspesne pridanie zaznamu"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
@@ -404,11 +432,14 @@ def select():
 # Function for dispaly wallet and rewards to kids dashboard
 @app.route('/api/Wallet', methods=['POST'])
 def wallet():
+    # Import
+    from decimal import Decimal
+
     # Input
-    email = request.form.get('wallet')
+    email = request.form.get('email')
 
     # SQL query
-    syntax = "SELECT zostatok FROM uzivatel RIGHT JOIN penazenka ON uzivatel.id = penazenka.id_uzivatel WHERE email = %s"
+    syntax = "SELECT zostatok_penazenky FROM uzivatel RIGHT JOIN penazenka ON uzivatel.id = penazenka.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
     syntax1 = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
@@ -417,11 +448,20 @@ def wallet():
     syntax2 = "SELECT id, nazov, cena FROM odmena WHERE id_rodina = %s"
     result2 = connectiondb(syntax2, (result1[0][0],))
 
+    # Convert result1 to handle Decimal
+    formatted_result = [
+        (float(row[0]) if isinstance(row[0], Decimal) else row[0])
+        for row in result
+    ]
+
+    formatted_result2 = [
+        (row[0], row[1], float(row[2]) if isinstance(row[2], Decimal) else row[2])
+        for row in result2
+    ]
+
     # Return
     if result and result2:
-        return jsonify({"return": f"{result}", "return1": f"{result2}"}), 202 # Accepted
-    elif result == [] or result2 == []:
-        return jsonify({"message": "Bez penazi alebo odmien"}), 204 # No Content
+        return jsonify({"return": f"{formatted_result}", "return1": f"{formatted_result2}"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
