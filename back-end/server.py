@@ -50,6 +50,8 @@ def check_password(plaintext_password, hashed_password):
 app = Flask(__name__)
 CORS(app)
 
+#TODO: zelene done, cervene notDone, zlte waiting, modre pending
+
 # Function for create user
 @app.route("/api/Create_user", methods=["POST"])
 def create_user():
@@ -268,7 +270,7 @@ def add_tasks():
     result = connectiondb(syntax, (id,))
 
     syntax1 = "INSERT INTO ulohy (id_uzivatel, uloha, cas_od, cas_do, cena_odmeny, stav, id_rodina) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    result1 = connectiondb(syntax1, (id, task, date_from, date_to, reward, "not done", result[0][0]))
+    result1 = connectiondb(syntax1, (id, task, date_from, date_to, reward, "pending", result[0][0]))
 
     # Return
     if not result1:
@@ -325,7 +327,7 @@ def parents_rewards():
     syntax = "SELECT id_rodina FROM uzivatel RIGHT JOIN clen ON uzivatel.id = clen.id_uzivatel WHERE email = %s"
     result = connectiondb(syntax, (email,))
 
-    syntax1 = "SELECT uzivatel.meno, odmena.nazov, aktivovanie.stav FROM aktivovanie INNER JOIN uzivatel ON uzivatel.id = aktivovanie.id_uzivatela INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE id_rodina = %s"
+    syntax1 = "SELECT aktivovanie.id, uzivatel.meno, odmena.nazov, aktivovanie.stav FROM aktivovanie INNER JOIN uzivatel ON uzivatel.id = aktivovanie.id_uzivatela INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE id_rodina = %s"
     result1 = connectiondb(syntax1, (result[0][0]))
 
     # Return
@@ -528,6 +530,57 @@ def delete_task():
     # Return
     if not result:
         return jsonify({"message": "Vymazanie ulohy uspesne"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+# Function for kids task confirmation
+@app.route("/api/Kids_confirm", methods=['POST'])
+def kids_confirm():
+    # Input
+    id = request.form.get("id")
+    
+    #SQL query
+    syntax = "UPDATE ulohy SET stav = %s WHERE id = %s"
+    result = connectiondb(syntax, ("waiting", id))
+
+    #Return
+    if not result:
+        return jsonify({"message": "Zmena ulohy uspesne"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+#Function for parents task confirmation
+@app.route("/api/Parents_Tconfirm")
+def parents_Tconfirm():
+    #Input
+    id = request.form.get("id")
+
+    #SQL query
+    syntax = "UPDATE ulohy SET stav = %s WHERE id = %s"
+    result = connectiondb(syntax, ("done", id))
+
+    #Return
+    if not result:
+        return jsonify({"message": "Zmena ulohy uspesne"}), 202 # Accepted
+    else:
+        return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
+
+
+#Function for parents reward confirm
+@app.route("/api/Parents_Rconfirm")
+def parents_Rconfirm():
+    #Input
+    id = request.form.get("id")
+
+    #SQL query
+    syntax = "UPDATE aktivovanie SET stav = %s WHERE id = %s"
+    result = connectiondb(syntax, ("true", id))
+
+    #Return
+    if not result:
+        return jsonify({"message": "Zmena odmeny uspesne"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
