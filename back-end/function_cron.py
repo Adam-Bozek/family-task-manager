@@ -1,3 +1,5 @@
+# Imports
+from datetime import datetime
 import psycopg2
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -38,12 +40,22 @@ def connectiondb(query, params=None):
 
 #Function for deleting database records at midnight
 def deleting_records():
+
+    # Current date and time
+    current_datetime = datetime.now()
+
+    # Formatted date and time
+    formatted_datetime = current_datetime.strftime("%d.%m.%Y %H:%M:%S")
+
     #SQL query
-    syntax = "DELETE FROM ulohy WHERE stav = %s"
-    connectiondb(syntax, ("done", ))
+    syntax = "DELETE FROM ulohy WHERE stav = %s or stav = %s"
+    connectiondb(syntax, ("done", "notDone"))
 
     syntax1 = "DELETE FROM aktivovanie WHERE stav = %s"
-    connectiondb(syntax1, ("t", ))
+    connectiondb(syntax1, ("t",))
+
+    syntax2 = "UPDATE ulohy SET stav = %s WHERE cas_do <= %s"
+    connectiondb(syntax2, ("notDone", formatted_datetime))
 
 
 if __name__ == '__main__':
