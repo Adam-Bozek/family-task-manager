@@ -1,3 +1,4 @@
+# Imports
 import psycopg2
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -328,7 +329,7 @@ def parents_rewards():
     result = connectiondb(syntax, (email,))
 
     syntax1 = "SELECT aktivovanie.id, uzivatel.meno, odmena.nazov, aktivovanie.stav FROM aktivovanie INNER JOIN uzivatel ON uzivatel.id = aktivovanie.id_uzivatela INNER JOIN odmena ON odmena.id = aktivovanie.id_odmena WHERE id_rodina = %s"
-    result1 = connectiondb(syntax1, (result[0][0]))
+    result1 = connectiondb(syntax1, (result[0][0],))
 
     # Return
     if result1:
@@ -380,7 +381,15 @@ def kids_dashboard():
             (float(row[0]) if isinstance(row[0], Decimal) else row[0])
             for row in result2
         ]
-        return jsonify({"message": "Vypis uloh, odmien a penazenky uspesne", "return": f"{formatted_result}", "return1": f"{result1}", "return2": f"{formatted_result2}"}), 202 # Accepted
+
+        # Convert big letters to small letters
+        def convert(data):
+            return [(text, 'true' if value is True else 'false') for text, value in data]
+        
+        data = result1
+        converted_data = convert(data)
+
+        return jsonify({"message": "Vypis uloh, odmien a penazenky uspesne", "return": f"{formatted_result}", "return1": f"{converted_data}", "return2": f"{formatted_result2}"}), 202 # Accepted
     elif result == [] or result1 == [] or result2 == []:
         return jsonify({"message": "Vypis uloh, odmien alebo penazenky neuspesne"}), 400  # Bad Request
     else:
@@ -448,7 +457,7 @@ def wallet():
     syntax2 = "SELECT id, nazov, cena FROM odmena WHERE id_rodina = %s"
     result2 = connectiondb(syntax2, (result1[0][0],))
 
-    # Convert result1 to handle Decimal
+    # Convert result1 and result2 to handle Decimal
     formatted_result = [
         (float(row[0]) if isinstance(row[0], Decimal) else row[0])
         for row in result
@@ -460,7 +469,7 @@ def wallet():
     ]
 
     # Return
-    if result and result2:
+    if result1 and result2:
         return jsonify({"return": f"{formatted_result}", "return1": f"{formatted_result2}"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
@@ -545,12 +554,15 @@ def delete_reward():
     id = request.form.get('id')
 
     # SQL query
-    syntax = "DELETE FROM odmena WHERE id = %s"
+    syntax = "DELETE FROM aktivovanie WHERE id_odmena = %s"
     result = connectiondb(syntax, (id,))
+
+    syntax1 = "DELETE FROM odmena WHERE id = %s"
+    result1 = connectiondb(syntax1, (id,))
 
     # Return
     if not result:
-        return jsonify({"message": "Vymazanie odmeny uspesne"}), 202 # Accepted
+        return jsonify({"message": "Vymazanie odmeny a prepojenia aktivovanie uspesne"}), 202 # Accepted
     else:
         return jsonify({"error": "Nastala chyba na servery!!!"}), 500 # Internal Server Error
 
@@ -590,7 +602,7 @@ def kids_confirm():
 
 
 #Function for parents task confirmation
-@app.route("/api/Parents_Tconfirm")
+@app.route("/api/Parents_Tconfirm", methods=['POST'])
 def parents_Tconfirm():
     #Input
     id = request.form.get("id")
@@ -607,7 +619,7 @@ def parents_Tconfirm():
 
 
 #Function for parents reward confirm
-@app.route("/api/Parents_Rconfirm")
+@app.route("/api/Parents_Rconfirm", methods=['POST'])
 def parents_Rconfirm():
     #Input
     id = request.form.get("id")
