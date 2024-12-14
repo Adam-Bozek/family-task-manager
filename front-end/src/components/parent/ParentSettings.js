@@ -20,9 +20,6 @@ const ParentSettings = () => {
 	const [removedRole, setRemovedRole] = useState("");
 	const [selectedMemberEmail, setSelectedMemberEmail] = useState("");
 
-	const [rewardName, setRewardName] = useState("");
-	const [rewardPrice, setRewardPrice] = useState();
-
 	// Context hooks for shared app-wide state
 	const { email, setName, setIsLoggedIn, setEmail, setRole } = useContext(AppContext);
 
@@ -381,7 +378,7 @@ const ParentSettings = () => {
 									</li>
 									<li className="nav-item">
 										<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-											Pridať úlohu
+											Zadať úlohu
 										</button>
 									</li>
 								</ul>

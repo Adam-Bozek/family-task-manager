@@ -76,7 +76,7 @@ const ParentDashboardTasks = () => {
 										</li>
 										<li className="nav-item">
 											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-												Pridať úlohu
+												Zadať úlohu
 											</button>
 										</li>
 									</ul>
