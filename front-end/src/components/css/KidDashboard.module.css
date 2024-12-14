@@ -1,218 +1,251 @@
-
 /* Hlavný kontajner */
 .mainContainer {
-    background-image: url('../../media/background.png'); /* Nahraď správnou cestou */
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh; /* Nastaví minimálnu výšku na celú výšku okna */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background-image: url('../../media/background.png');
+  /* Nahraď správnou cestou */
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  /* Nastaví minimálnu výšku na celú výšku okna */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Rozmazané pozadie */
 .blurContainer {
-    background-color: rgba(237, 234, 234, 0.59);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    padding: 20px;
-    width: 100%;
-    height: 100%; /* Zabezpečí, že blur pokryje celú dostupnú výšku */
-    min-height: 100vh; /* Prispôsobí sa minimálne celej výške obrazovky */
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Zarovná obsah vertikálne */
-    box-sizing: border-box; /* Zahrnie padding do výpočtu výšky */
+  background-color: rgba(237, 234, 234, 0.59);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  /* Zabezpečí, že blur pokryje celú dostupnú výšku */
+  min-height: 100vh;
+  /* Prispôsobí sa minimálne celej výške obrazovky */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Zarovná obsah vertikálne */
+  box-sizing: border-box;
+  /* Zahrnie padding do výpočtu výšky */
 }
 
-  
 
 
-  /* Obsahové kontajnery */
-  .content {
-    background-color: rgb(249, 247, 247);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    width: 100%;
-    max-width: 1200px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    margin: 20px auto;
-  }
-  
+
+/* Obsahové kontajnery */
+.content {
+  background-color: rgb(249, 247, 247);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
+}
 
 
-  
-  /* Header  */
-  
-  .navbar-settings {
-    position: fixed; /* Udržuje header vždy na vrchu stránky */
-    top: 0; /* Posunie header na vrch */
-    left: 50%; /* Posunie ľavý okraj na stred stránky */
-    transform: translateX(-50%); /* Zarovná header na stred */
-    width: 100%; /* Môžeš nastaviť konkrétnu šírku, napr. 80% */
-    max-width: 1200px; /* Ak chceš obmedziť šírku headera */
-    z-index: 1000; /* Uisti sa, že je nad ostatnými prvkami */
+
+
+/* Header  */
+
+.navbar-settings {
+  position: fixed;
+  /* Udržuje header vždy na vrchu stránky */
+  top: 0;
+  /* Posunie header na vrch */
+  left: 50%;
+  /* Posunie ľavý okraj na stred stránky */
+  transform: translateX(-50%);
+  /* Zarovná header na stred */
+  width: 100%;
+  /* Môžeš nastaviť konkrétnu šírku, napr. 80% */
+  max-width: 1200px;
+  /* Ak chceš obmedziť šírku headera */
+  z-index: 1000;
+  /* Uisti sa, že je nad ostatnými prvkami */
 
 }
+
 .nav-font-weight {
-    font-weight: 600; /* Set a valid value */
-    font-size: 1.7rem;
-  }
-  
-  .nav-button-weight {
-    font-weight: 400; /* Set a valid value */
-    font-size: 1.3rem;
-    padding: 10px;
-  }
-  .navbar {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+  font-weight: 600;
+  /* Set a valid value */
+  font-size: 1.7rem;
 }
-  
+
+.nav-button-weight {
+  font-weight: 400;
+  /* Set a valid value */
+  font-size: 1.3rem;
+  padding: 10px;
+}
+
+.navbar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
 .navbar button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    background-color: #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  background-color: #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .navbar button.activeTab {
-    background-color: #000;
-    color: #fff;
+  background-color: #000;
+  color: #fff;
 }
-  
-  .credits {
-    font-weight: bold;
-  }
-  
-  .navLink {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #000;
-  }
-  
-  .logoutButton {
-    background-color: #000;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
-  /* Úlohy */
-  .tasksList, .rewardsList {
-    display: flex;
-    gap: 10px;
-    
-  }
-  
-  .taskButton, .rewardButton {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    font-size: 1rem;
-  }
-  
 
-  
+.credits {
+  font-weight: bold;
+}
 
+.navLink {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #000;
+}
 
+.logoutButton {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
 
-  /* Legenda */
- /* Legenda */
- .legend {
-    display: flex; /* Uloží položky vedľa seba */
-    justify-content: center; /* Zarovná na stred horizontálne */
-    gap: 20px; /* Nastaví rozostup medzi položkami */
-    margin-top: 20px; /* Odstup od ostatného obsahu */
-    font-weight: bold; /* Hrubé písmo pre text */
-    text-align: center; /* Text vo vnútri zarovnaný na stred */
+/* Úlohy */
+.tasksList,
+.rewardsList {
+  display: flex;
+  gap: 10px;
+
+}
+
+.taskButton,
+.rewardButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
 }
 
 
-  
-  .legendItem {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  /* Farebné kruhy v legende */
-  .circle {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  
-  .done {
-    background-color: #4caf50; /* Zelená */
-  }
-  
-  .notDone {
-    background-color: #f44336; /* Červená */
-  }
-  
-  .waiting {
-    background-color: #ffa726; /* Oranžová */
-  }
-  
-  .pending {
-    background-color: #03a9f4; /* Modrá */
-  }
-  
 
 
 
-  /* Modálne okno pre nastavenie z zatial neurobené na čakajuce na potvrdenie */
+
+/* Legenda */
+/* Legenda */
+.legend {
+  display: flex;
+  /* Uloží položky vedľa seba */
+  justify-content: center;
+  /* Zarovná na stred horizontálne */
+  gap: 20px;
+  /* Nastaví rozostup medzi položkami */
+  margin-top: 20px;
+  /* Odstup od ostatného obsahu */
+  font-weight: bold;
+  /* Hrubé písmo pre text */
+  text-align: center;
+  /* Text vo vnútri zarovnaný na stred */
+}
+
+
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Farebné kruhy v legende */
+.circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.taskButton {
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+}
+
+.done {
+  background-color: #4CAF50; /* Green for completed */
+  color: white;
+}
+
+.notDone {
+  background-color: #f44336; /* Red for not done */
+  color: white;
+}
+
+.waiting {
+  background-color: #FF9800; /* Orange for waiting */
+  color: white;
+}
+
+.pending {
+  background-color: #2196F3; /* Blue for pending */
+  color: white;
+}
+
+
+
+/* Modálne okno pre nastavenie z zatial neurobené na čakajuce na potvrdenie */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modalContent {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-  
-  .confirmButton {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-right: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .cancelButton {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.confirmButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
