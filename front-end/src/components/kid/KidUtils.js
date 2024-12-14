@@ -1,10 +1,5 @@
-    // Functions for user "kid"
-
-    import Axios from "axios";
-
-    const apiAddress = "http://147.232.205.117:5000/api";
-
-    export async function getPoints() {};
+// Functions for user "kid"
+export async function getPoints() {};
 
     export async function getTasks() {};
 
