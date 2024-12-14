@@ -407,3 +407,35 @@ export async function removeTask(task_id) {
 		return false;
 	}
 }
+
+export async function confirmTask(email) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Parents_Tconfirm";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			console.error("User task was not confirmed.");
+			return false;
+		}
+	} catch (err) {
+		console.error("Error creating reward:", err);
+		if (err.response) {
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			console.error("Network error. Please check your connection and try again.");
+		} else {
+			console.error("An unexpected error occurred. Please try again.");
+		}
+		return false;
+	}
+}
