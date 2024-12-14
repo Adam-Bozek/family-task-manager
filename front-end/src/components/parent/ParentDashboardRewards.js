@@ -21,7 +21,7 @@ const markRewardComplete = async (child, reward, id) => {
 	}
 };
 
-const ParentDashboardTasks = () => {
+const ParentDashboardRewards = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [selectedReward, setSelectedReward] = useState(null);
 	const [selectedRewardId, setSelectedRewardId] = useState(null); // New state for reward ID
@@ -188,4 +188,4 @@ const ParentDashboardTasks = () => {
 	);
 };
 
-export default ParentDashboardTasks;
+export default ParentDashboardRewards;

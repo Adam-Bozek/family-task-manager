@@ -3,7 +3,7 @@ import styles from "../css/ParentDashboardTasks.module.css";
 import { useNavigate } from "react-router-dom";
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
-import { getKidsTasks } from "./ParentUtils"; // Importing the getKidsTasks function
+import { getKidsTasks, confirmTask } from "./ParentUtils"; // Importing the getKidsTasks function
 
 const ParentDashboardTasks = () => {
 	// State to manage tasks fetched from the API
@@ -11,11 +11,17 @@ const ParentDashboardTasks = () => {
 	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 	const navigate = useNavigate();
 
+	// Modal state
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedTask, setSelectedTask] = useState(null); // Store selected task details
+
 	// Fetch tasks when the component mounts
 	useEffect(() => {
 		const fetchTasks = async () => {
 			try {
 				const fetchedTasks = await getKidsTasks(email);
+
+				console.log(fetchedTasks)
 
 				// Group tasks by the child's name
 				const groupedTasks = fetchedTasks.reduce((acc, task) => {
@@ -36,6 +42,33 @@ const ParentDashboardTasks = () => {
 	// Navigate to a different route
 	const handle_redirect = (route) => {
 		navigate(route);
+	};
+
+	// Open the modal when a "waiting" task is clicked
+	const handleOpenModal = (task) => {
+		if (task.status === "waiting") {
+			setSelectedTask(task); // Store the task details
+			setIsModalOpen(true); // Open the modal
+		}
+	};
+
+	// Close the modal
+	const handleCloseModal = () => {
+		setSelectedTask(null); // Reset selected task
+		setIsModalOpen(false); // Close the modal
+	};
+
+	// Confirm the task completion (implement the actual functionality as needed)
+	const handleConfirmTask = async () => {
+		const success = await confirmTask(selectedTask.task_id);
+		if (success) {
+			handleCloseModal();
+		} else {
+			alert("Failed to confirm reward");
+			setIsModalOpen(false);
+		}
+
+		handleCloseModal(); // Close the modal after confirming
 	};
 
 	return (
@@ -116,7 +149,11 @@ const ParentDashboardTasks = () => {
 											<span className={styles.userName}>{name}</span>
 											<div className={styles.taskList}>
 												{taskList.map((task, index) => (
-													<span key={index} className={styles.taskItem}>
+													<span
+														key={index}
+														className={styles.taskItem}
+														onClick={() => handleOpenModal(task)} // Open modal on task click
+													>
 														{task.task} - {task.status}
 													</span>
 												))}
@@ -147,6 +184,22 @@ const ParentDashboardTasks = () => {
 					</div>
 				</div>
 			</div>
+
+			{/* Modal for confirming task */}
+			{isModalOpen && selectedTask && (
+				<div className={styles.modal}>
+					<div className={styles.modalContent}>
+						<h3>Confirm Task Completion</h3>
+						<p>{`Do you confirm the task "${selectedTask.task}" for ${selectedTask.name}?`}</p>
+						<button onClick={handleConfirmTask} className={styles.confirmButton}>
+							Confirm
+						</button>
+						<button onClick={handleCloseModal} className={styles.cancelButton}>
+							Cancel
+						</button>
+					</div>
+				</div>
+			)}
 		</>
 	);
 };
