@@ -26,6 +26,7 @@ const KidRewardExchange = ({ userName }) => {
 				console.error("Chyba pri načítaní odmien:", error);
 			}
 		};
+
 		fetchRewards();
 	}, [email]);
 
