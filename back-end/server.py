@@ -614,7 +614,7 @@ def parents_Tconfirm():
     syntax1 = "SELECT cena_odmeny, id_uzivatel FROM ulohy WHERE id = %s"
     result1 = connectiondb(syntax1, (id,))
 
-    syntax2 = "UPDATE penazenka SET zostatok_penazenky = %s WHERE id uzivatel = %s"
+    syntax2 = "UPDATE penazenka SET zostatok_penazenky = %s WHERE id_uzivatel = %s"
     result2 = connectiondb(syntax2, (result1[0][0], result1[0][1]))
 
     #Return
