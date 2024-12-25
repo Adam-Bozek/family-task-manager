@@ -57,6 +57,15 @@ def deleting_records():
     syntax2 = "UPDATE ulohy SET stav = %s WHERE cas_do <= %s"
     connectiondb(syntax2, ("notDone", formatted_datetime))
 
+    syntax3 = "SELECT cena_odmeny, id_uzivatel FROM ulohy WHERE stav = %s"
+    result = connectiondb(syntax3, ('notDone',))
+
+    syntax4 = "UPDATE penazenka SET zostatok_penazenky = %s WHERE id_uzivatel = %s"
+    for row in result:
+        cena_odmeny = row[0]
+        id_uzivatel = row[1]
+        connectiondb(syntax4, (-cena_odmeny, id_uzivatel))
+
 
 if __name__ == '__main__':
     deleting_records()
