@@ -48,23 +48,23 @@ def deleting_records():
     formatted_datetime = current_datetime.strftime("%d.%m.%Y %H:%M:%S")
 
     #SQL query
-    syntax = "DELETE FROM ulohy WHERE stav = %s or stav = %s"
-    connectiondb(syntax, ("done", "notDone"))
+    syntax = "SELECT cena_odmeny, id_uzivatel FROM ulohy WHERE stav = %s"
+    result = connectiondb(syntax, ("notDone",))
 
-    syntax1 = "DELETE FROM aktivovanie WHERE stav = %s"
-    connectiondb(syntax1, ("t",))
-
-    syntax2 = "UPDATE ulohy SET stav = %s WHERE cas_do <= %s"
-    connectiondb(syntax2, ("notDone", formatted_datetime))
-
-    syntax3 = "SELECT cena_odmeny, id_uzivatel FROM ulohy WHERE stav = %s"
-    result = connectiondb(syntax3, ('notDone',))
-
-    syntax4 = "UPDATE penazenka SET zostatok_penazenky = %s WHERE id_uzivatel = %s"
+    syntax1 = "UPDATE penazenka SET zostatok_penazenky = zostatok_penazenky - %s WHERE id_uzivatel = %s"
     for row in result:
         cena_odmeny = row[0]
         id_uzivatel = row[1]
-        connectiondb(syntax4, (-cena_odmeny, id_uzivatel))
+        connectiondb(syntax1, (cena_odmeny, id_uzivatel))
+
+    syntax2 = "DELETE FROM ulohy WHERE stav = %s or stav = %s"
+    connectiondb(syntax2, ("done", "notDone"))
+
+    syntax3 = "DELETE FROM aktivovanie WHERE stav = %s"
+    connectiondb(syntax3, ("t",))
+
+    syntax4 = "UPDATE ulohy SET stav = %s WHERE cas_do <= %s"
+    connectiondb(syntax4, ("notDone", formatted_datetime))
 
 
 if __name__ == '__main__':
