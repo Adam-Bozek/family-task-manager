@@ -16,28 +16,43 @@ const MoreInfo = () => {
 				<div className="col-md-6 text-start">
 					<h1 className={`mx-5 mb-2 mt-4 ${style["welcome-header"]}`}> Info. </h1>
 					<p className={`mx-5 ${style["some-info"]}`}>
-						Praesent a erat turpis. Nunc lectus eros, vehicula sed aliquam non, convallis ut neque. Duis in cursus sapien. Interdum et malesuada fames ac
-						ante ipsum primis in faucibus. Etiam dignissim, augue in pretium feugiat, libero felis sagittis diam, ac scelerisque eros justo ac quam. Sed
-						condimentum a est molestie suscipit. Suspendisse id facilisis erat, et lacinia tortor. Etiam ac est massa. In ut facilisis leo. Donec a elit
-						pellentesque, lobortis diam vitae, finibus felis. Phasellus interdum sagittis mauris non congue. Donec eget justo semper, hendrerit magna id,
-						efficitur magna. Vivamus tristique in odio et gravida. In sollicitudin nulla arcu, ut dapibus ante vehicula sollicitudin. Proin viverra euismod
-						dictum.
-					</p>
+					<h2>Ako to funguje?</h2>
+<ol>
+  <li>
+    <strong>Pridávanie úloh:</strong> Rodič pridá úlohu do systému a priradí jej body, ktoré dieťa získa po jej splnení.
+  </li>
+  <li>
+    <strong>Splnenie úlohy:</strong> Dieťa vykoná úlohu, zaznamená jej splnenie v aplikácii a rodič potvrdí pridelenie bodov.
+  </li>
+  <li>
+    <strong>Získavanie odmien:</strong> Získané body môžu byť vymenené za rôzne odmeny, ktoré rodič prispôsobí podľa preferencií detí.
+  </li>
+  <li>
+    <strong>Motivácia a zodpovednosť:</strong> Tento systém podporuje pozitívne správanie a motivuje deti k plneniu úloh výmenou za odmeny.
+  </li>
+  <li>
+    <strong>Prehľad a kontrola:</strong> Rodičia majú prehľad o splnených úlohách, pridelených bodoch a vymenených odmenách.
+  </li>
+</ol>
+				</p>
 				</div>
 				<div className="col-md-6">
 					<div className="text-end mx-5">
 						<i className={`bi bi-arrow-right-short ${style["moreInfoIcon"]}`} onClick={() => handle_redirect("/Home")}></i>
 					</div>
 					<p className={`mx-5 text-start ${style["some-info"]}`}>
-						Proin tristique iaculis erat, vehicula consectetur ligula laoreet vitae. Curabitur ac pretium sapien. Aenean semper ultricies lacus at feugiat.
-						Quisque nec risus et nibh commodo rutrum a eu sapien. Sed in mauris tempus, mattis ipsum in, mollis ante. In porta nisl sit amet nisl tempor,
-						at hendrerit turpis maximus. Quisque ac ex et ligula facilisis tincidunt. Aliquam dolor nunc, vulputate id purus a, bibendum euismod nisi.
-						Morbi tristique malesuada augue, non facilisis diam lobortis vel. Aliquam sed enim lacus. Etiam tincidunt mattis sem, vitae egestas erat auctor
-						vitae. Donec quis laoreet est, venenatis gravida nisi. Vestibulum a lectus arcu. Nunc accumsan dolor ligula, sit amet imperdiet diam tincidunt
-						eget. Proin maximus congue mauris nec vehicula. Sed rhoncus diam sit amet massa commodo tempus. Sed nunc justo, fringilla nec libero et,
-						tincidunt luctus nunc. Aenean euismod erat enim, ut maximus lorem lobortis a. Integer sagittis, dui ut rutrum tempus, eros sem hendrerit mi,
-						vel molestie diam nisi at felis. Nulla in nisi elit. Maecenas finibus mauris et ante mollis pellentesque. Praesent sed sem vitae tortor
-						condimentum varius.
+					<h2>Výhody tohto systému:</h2>
+      <ul>
+        <li><strong>Motivácia cez odmeny:</strong> Deti sú viac motivované, keď vedia, že za svoju prácu môžu získať niečo, čo si želajú.</li>
+        <li><strong>Učenie zodpovednosti:</strong> Systém pomáha deťom rozvíjať zodpovednosť a schopnosť plniť úlohy v stanovených termínoch.</li>
+        <li><strong>Flexibilita pre rodičov:</strong> Rodičia môžu prispôsobiť úlohy, body a ceny podľa potrieb a záujmov rodiny.</li>
+        <li><strong>Prehľad a kontrola:</strong> Aplikácia poskytuje jednoduchý spôsob, ako sledovať pokrok detí a kontrolovať splnenie úloh.</li>
+        <li><strong>Zábava a organizácia:</strong> Proces sa stáva zábavný a interaktívny, čím pomáha deťom naučiť sa organizovať svoj čas a povinnosti.</li>
+      </ul>
+
+      <p>
+        Tento systém je skvelým nástrojom pre rodiny, ktoré hľadajú spôsob, ako zlepšiť domácu organizáciu a zároveň udržať deti motivované a zapojené do každodenných úloh. Je to jednoduchý spôsob, ako urobiť každodenné povinnosti zábavné a podporiť zodpovednosť a spoluprácu v rodine.
+      </p>
 					</p>
 				</div>
 			</div>

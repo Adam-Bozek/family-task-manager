@@ -17,10 +17,11 @@ const LandingPage = () => {
 				<div className="row p-4 text-start">
 					<div className={`col-md-7 ${style["some-info"]}`}>
 						<p className="mx-5">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam quam eros, porttitor nec pulvinar ut, feugiat sed lectus. Curabitur tincidunt
-							erat eu purus euismod, eget semper mauris sollicitudin. Quisque convallis est turpis. Mauris finibus vestibulum lorem, a malesuada magna
-							feugiat ullamcorper. Phasellus scelerisque sem augue, non efficitur turpis egestas ac. Morbi malesuada mollis risus, nec condimentum magna
-							hendrerit id.
+						Naša aplikácia je navrhnutá tak, aby pomohla vašej rodine organizovať úlohy zábavným a motivačným spôsobom. Rodičia môžu jednoducho pridať úlohy pre deti, ktoré ich potom splnia a získajú za ne body. Tieto body môžu deti vymeniť za rôzne ceny podľa vlastného výberu! Aplikácia prináša rovnováhu medzi zodpovednosťou a odmenou, čím motivuje deti k aktívnemu zapájaniu sa do domácich prác.
+
+
+						
+Začnite dnes a urobte organizáciu úloh zábavnejšou pre celú rodinu!
 						</p>
 						<a
 							href="/MoreInfo"

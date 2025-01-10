@@ -105,24 +105,24 @@ const ParentAddTask = () => {
 		setTasks((prevTasks) => {
 			// Create a copy of the tasks for the selected user
 			const userTasks = [...prevTasks[userName]];
-	
+
 			// Retrieve the task_id before removing the task
 			const taskIdToRemove = userTasks[taskIndex].task_id;
 			console.log("Removing task with ID:", taskIdToRemove);
-	
+
 			// Remove the task from the list
 			userTasks.splice(taskIndex, 1);
-	
+
 			// If no tasks are left for the user, remove the user entry from the state
 			if (userTasks.length === 0) {
 				const { [userName]: _, ...rest } = prevTasks;
 				return rest;
 			}
-	
+
 			// Update the state with the remaining tasks
 			return { ...prevTasks, [userName]: userTasks };
 		});
-	
+
 		// Hide the tooltip after removing the task
 		setTooltip({ visible: false, taskInfo: null });
 	};
@@ -142,53 +142,61 @@ const ParentAddTask = () => {
 		const { name, value } = e.target;
 		setTaskData({
 			...taskData,
-			[name]: name === "price" ? parseFloat(value) || "" : value, // Parse `price` to a number
+			[name]: name === "price" ? parseFloat(value) || "" : value, // Parse price to a number
 		});
 	};
 
 	// Generate a random color for task box
-	const getRandomColor = () => {
-		const colorPalette = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F", "#8E44AD", "#E67E22", "#1ABC9C", "#D35400", "#2C3E50", "#C0392B"];
-		return colorPalette[Math.floor(Math.random() * colorPalette.length)];
-	};
+	const getRandomColor = (() => {
+		const colorPalette = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F"];
+		const assignedColors = new Map();
+		let colorIndex = 0;
+
+		return (taskName) => {
+			if (!assignedColors.has(taskName)) {
+				assignedColors.set(taskName, colorPalette[colorIndex]);
+				colorIndex = (colorIndex + 1) % colorPalette.length;
+			}
+			return assignedColors.get(taskName);
+		};
+	})();
 
 	const handle_removeTask = (userName, taskIndex) => {
-    // Retrieve the task_id from the tasks state
-    const taskId = tasks[userName]?.[taskIndex]?.task_id;
+		// Retrieve the task_id from the tasks state
+		const taskId = tasks[userName]?.[taskIndex]?.task_id;
 
-    if (!taskId) {
-        console.error("Task ID not found for the given user and task index.");
-        return;
-    }
+		if (!taskId) {
+			console.error("Task ID not found for the given user and task index.");
+			return;
+		}
 
-    async function deleteTask(taskId) {
-        const isDeleted = await removeTask(taskId);
-        if (isDeleted) {
-            console.log("Task deleted successfully.");
+		async function deleteTask(taskId) {
+			const isDeleted = await removeTask(taskId);
+			if (isDeleted) {
+				console.log("Task deleted successfully.");
 
-            // Update the tasks state to reflect the removal
-            setTasks((prevTasks) => {
-                const userTasks = [...prevTasks[userName]];
+				// Update the tasks state to reflect the removal
+				setTasks((prevTasks) => {
+					const userTasks = [...prevTasks[userName]];
 
-                // Remove the specific task
-                userTasks.splice(taskIndex, 1);
+					// Remove the specific task
+					userTasks.splice(taskIndex, 1);
 
-                // If no tasks remain, remove the user entry
-                if (userTasks.length === 0) {
-                    const { [userName]: _, ...rest } = prevTasks;
-                    return rest;
-                }
+					// If no tasks remain, remove the user entry
+					if (userTasks.length === 0) {
+						const { [userName]: _, ...rest } = prevTasks;
+						return rest;
+					}
 
-                return { ...prevTasks, [userName]: userTasks };
-            });
-        } else {
-            console.error("Failed to delete the task.");
-        }
-    }
+					return { ...prevTasks, [userName]: userTasks };
+				});
+			} else {
+				console.error("Failed to delete the task.");
+			}
+		}
 
-    deleteTask(taskId);
-};
-
+		deleteTask(taskId);
+	};
 
 	return (
 		<div className={styles["templateMain"]}>

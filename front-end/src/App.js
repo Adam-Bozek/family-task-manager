@@ -32,6 +32,7 @@ const App = () => {
 			<Route path="/Register" element={<RegistrationPage />} />
 			<Route path="/LogIn" element={<LoginPage />} />
 
+
 			{/* Testing routes */}
 			<Route path="/test_template" element={<TEMPLATE />} />
 

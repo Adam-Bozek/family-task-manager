@@ -95,6 +95,29 @@
   font-size: 1rem;
 }
 
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.passwordToggleButton {
+  position: absolute;
+  top: 36%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.loginFormInput {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;  /* Zmenšený margin pre menšie medzery */
+}
+
 /* Media queries for responsive text size */
 @media (max-width: 1400px) {
   .loginWelcomeHeader {
