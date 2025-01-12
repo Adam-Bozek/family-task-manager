@@ -1,84 +1,99 @@
-import React, { useState, useEffect, useContext } from "react";
-import styles from "../css/ParentDashboardTasks.module.css";
+import React, { useState, useContext, useEffect } from "react";
+import styles from "../css/ParentDashboardRewards.module.css";
 import { useNavigate } from "react-router-dom";
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
-import { getKidsTasks, confirmTask } from "./ParentUtils"; // Importing the getKidsTasks function
+import { getKidsRewards, confirmReward } from "./ParentUtils";
 
-const ParentDashboardTasks = () => {
-	// State to manage tasks fetched from the API
-	const [tasks, setTasks] = useState({});
+// Simulated method to mark the reward as confirmed
+const markRewardComplete = async (child, reward, id) => {
+	try {
+		const res = await confirmReward(id);
+		console.log(res);
+
+		if (res) {
+			console.log(`Reward for ${child} marked as completed: ${reward}`);
+			return true;
+		}
+	} catch (err) {
+		console.error("Error fetching rewards:", err);
+		return false;
+	}
+};
+
+const ParentDashboardRewards = () => {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [selectedReward, setSelectedReward] = useState(null);
+	const [selectedRewardId, setSelectedRewardId] = useState(null); // New state for reward ID
+	const [selectedChild, setSelectedChild] = useState(null);
+
 	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 	const navigate = useNavigate();
 
-	// Modal state
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedTask, setSelectedTask] = useState(null); // Store selected task details
+	// State for storing tasks (rewards grouped by child name)
+	const [tasks, setTasks] = useState({});
 
-	// Fetch tasks when the component mounts
+	// Fetch rewards data and group by child name
 	useEffect(() => {
-		const fetchTasks = async () => {
+		const fetchRewards = async () => {
 			try {
-				const fetchedTasks = await getKidsTasks(email);
+				const rewards = await getKidsRewards(email);
 
-				console.log(fetchedTasks);
-
-				// Group tasks by the child's name
-				const groupedTasks = fetchedTasks.reduce((acc, task) => {
-					if (!acc[task.name]) acc[task.name] = [];
-					acc[task.name].push(task);
+				// Group rewards by child name
+				const groupedRewards = rewards.reduce((acc, { name, reward, id }) => {
+					if (!acc[name]) {
+						acc[name] = [];
+					}
+					acc[name].push({ reward, id });
 					return acc;
 				}, {});
 
-				setTasks(groupedTasks);
+				setTasks(groupedRewards);
 			} catch (err) {
-				console.error("Error fetching tasks:", err);
+				console.error("Error fetching rewards:", err);
 			}
 		};
 
-		fetchTasks();
+		if (email) {
+			fetchRewards();
+		}
 	}, [email]);
 
-	// Navigate to a different route
 	const handle_redirect = (route) => {
 		navigate(route);
 	};
 
-	// Open the modal when a "waiting" task is clicked
-	const handleOpenModal = (task) => {
-		if (task.status === "waiting") {
-			setSelectedTask(task); // Store the task details
-			setIsModalOpen(true); // Open the modal
-		}
+	const handleOpenModal = (child, reward, id) => {
+		setSelectedChild(child);
+		setSelectedReward(reward);
+		setSelectedRewardId(id); // Store reward ID
+		setIsModalOpen(true);
 	};
 
-	// Close the modal
 	const handleCloseModal = () => {
-		setSelectedTask(null); // Reset selected task
-		setIsModalOpen(false); // Close the modal
+		setSelectedReward(null);
+		setSelectedRewardId(null); // Reset reward ID
+		setSelectedChild(null);
+		setIsModalOpen(false);
 	};
 
-	// Confirm the task completion (implement the actual functionality as needed)
-	const handleConfirmTask = async () => {
-		const success = await confirmTask(selectedTask.task_id);
+	const handleConfirmReward = async (id) => {
+		const success = await markRewardComplete(selectedChild, selectedReward, id);
 		if (success) {
 			handleCloseModal();
 		} else {
 			alert("Failed to confirm reward");
 			setIsModalOpen(false);
 		}
-
-		handleCloseModal(); // Close the modal after confirming
 	};
 
 	return (
 		<>
 			<div className={styles["templateMain"]}>
 				<div className={styles["blur-container"]}>
-					{/* Header with navigation */}
 					<header className={`container my-3 ${styles["navbar-settings"]}`}>
 						<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
-							<div className={`container-fluid`}>
+							<div className="container-fluid">
 								<button
 									className="navbar-toggler"
 									type="button"
@@ -90,7 +105,6 @@ const ParentDashboardTasks = () => {
 									<span className="navbar-toggler-icon"></span>
 								</button>
 
-								{/* Navbar items and links */}
 								<div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
 									<span className="navbar-brand col-lg-3 me-0" />
 									<ul className="navbar-nav col-lg-6 justify-content-lg-center">
@@ -125,83 +139,53 @@ const ParentDashboardTasks = () => {
 						</nav>
 					</header>
 
-					{/* Main content area for tasks */}
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
-							{/* Buttons for navigating to different sections */}
-							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Úlohy
+							<button className={`${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
+								Tasks
 							</button>
-							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Vybrané odmeny
+							<button className={`${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
+								Selected Rewards
 							</button>
 						</div>
 
-						<h3>Úlohy na splnenie dnes</h3>
+						<h3>Tasks to Complete Today</h3>
 						<div className={styles.tasksContainer}>
-							{/* Display each child's name and list of tasks */}
-							{Object.entries(tasks).length === 0 ? (
-								<p>No tasks assigned yet.</p>
-							) : (
-								Object.entries(tasks).map(([name, taskList]) => (
-									<div key={name} className={styles.userTaskGroup}>
-										<div className={styles.userSection}>
-											<span className={styles.userName}>{name}</span>
-											<div className={styles.taskList}>
-												{taskList.map((task, index) => (
-													<span
-														key={index}
-														className={styles.taskItem}
-														onClick={() => handleOpenModal(task)} // Open modal on task click
-													>
-														{task.task} - {task.status}
-													</span>
-												))}
-											</div>
+							{Object.entries(tasks).map(([child, taskList]) => (
+								<div key={child} className={styles.userTaskGroup}>
+									<div className={styles.userSection}>
+										<span className={styles.userName}>{child}</span>
+										<div className={styles.taskList}>
+											{taskList.map(({ reward, id }, index) => (
+												<span key={index} className={styles.taskItem} onClick={() => handleOpenModal(child, reward, id)}>
+													{reward}
+												</span>
+											))}
 										</div>
 									</div>
-								))
-							)}
-
-							{/* Legend to describe the status of each task */}
-							<div className={styles.legendContainer}>
-								<div className={styles.legend}>
-									<span className={styles.legendItem}>
-										<span className={styles.completed}></span> Splnené
-									</span>
-									<span className={styles.legendItem}>
-										<span className={styles.notCompleted}></span> Nesplnené
-									</span>
-									<span className={styles.legendItem}>
-										<span className={styles.pending}></span> Čaká na potvrdenie
-									</span>
-									<span className={styles.legendItem}>
-										<span className={styles.notStarted}></span> Zatiaľ neurobené
-									</span>
 								</div>
-							</div>
+							))}
 						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* Modal for confirming task */}
-			{isModalOpen && selectedTask && (
-				<div className={styles.modal}>
-					<div className={styles.modalContent}>
-						<h3>Confirm Task Completion</h3>
-						<p>{`Do you confirm the task "${selectedTask.task}" for ${selectedTask.name}?`}</p>
-						<button onClick={handleConfirmTask} className={styles.confirmButton}>
-							Confirm
-						</button>
-						<button onClick={handleCloseModal} className={styles.cancelButton}>
-							Cancel
-						</button>
+				{isModalOpen && (
+					<div className={styles.modal}>
+						<div className={styles.modalContent}>
+							<h3>Confirm Reward Completion</h3>
+							<p>{`Do you confirm the reward "${selectedReward}" for ${selectedChild}?`}</p>
+							<button onClick={() => handleConfirmReward(selectedRewardId)} className={styles.confirmButton}>
+								Confirm
+							</button>
+							<button onClick={handleCloseModal} className={styles.cancelButton}>
+								Cancel
+							</button>
+						</div>
 					</div>
-				</div>
-			)}
+				)}
+			</div>
 		</>
 	);
 };
 
-export default ParentDashboardTasks;
+export default ParentDashboardRewards;
