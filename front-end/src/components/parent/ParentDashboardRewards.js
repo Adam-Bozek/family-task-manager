@@ -176,7 +176,7 @@ const ParentDashboardTasks = () => {
 										<span className={styles.pending}></span> Čaká na potvrdenie
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notStarted}></span> Zatiaľ neurobenée
+										<span className={styles.notStarted}></span> Zatiaľ neurobené
 									</span>
 								</div>
 							</div>
