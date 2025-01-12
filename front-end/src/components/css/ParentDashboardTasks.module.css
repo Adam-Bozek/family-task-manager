@@ -374,20 +374,53 @@
 
   /* Center text in navbar when collapsed */
   .navbar-collapse {
+    display: flex;
+    flex-direction: column; /* Vertikálne usporiadanie */
+    align-items: center; /* Zarovnanie obsahu na stred */
     text-align: center; /* Text v strede */
+    gap: 15px; /* Medzera medzi položkami */
   }
 
   .navbar-nav {
     display: flex;
     flex-direction: column; /* Vertikálne usporiadanie */
     align-items: center; /* Zarovnanie na stred */
+    width: 100%; /* Zaberie celú šírku */
   }
 
-  /* Make the logout button full width, add padding, and adjust font size */
+  .navbar-nav .nav-item {
+    margin-bottom: 10px; /* Medzera medzi položkami */
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 18px; /* Veľkosť textu */
+    font-weight: bold; /* Zvýraznené písmo */
+    color: #333; /* Farba textu */
+    text-decoration: none; /* Odstránenie podčiarknutia */
+    width: 100%; /* Zarovnanie na šírku */
+    text-align: center; /* Zarovnanie textu */
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #000; /* Stmavenie textu pri hover */
+  }
+
+  /* Make the logout button full width */
   .logoutButton {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 14px;
+    margin-top: 20px; /* Medzera nad tlačidlom */
+    padding: 10px 20px; /* Vnútorné odsadenie */
+    background-color: #000; /* Čierne pozadie */
+    color: #fff; /* Biely text */
+    border: none; /* Odstránenie okrajov */
+    border-radius: 5px; /* Okrúhle rohy */
+    cursor: pointer; /* Kurzor na kliknutie */
+    font-size: 16px; /* Veľkosť textu */
+    text-align: center; /* Zarovnanie textu na stred */
+    width: 100%; /* Zaberie celú šírku */
+  }
+
+  .logoutButton:hover {
+    background-color: #333; /* Stmavenie tlačidla pri hover */
   }
 
   /* Add padding to the main container */
@@ -411,13 +444,34 @@
 
   /* Center navbar text and change layout */
   .navbar-collapse {
-    text-align: center;
+    display: flex;
+    flex-direction: column; /* Vertikálne usporiadanie */
     align-items: center; /* Zarovnanie obsahu */
+    text-align: center; /* Text v strede */
+    gap: 15px; /* Medzera medzi položkami */
   }
 
   .navbar-nav {
     flex-direction: column; /* Vertikálne usporiadanie */
     align-items: center; /* Zarovnanie na stred */
+    width: 100%; /* Zaberie celú šírku */
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 10px; /* Medzera medzi položkami */
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 18px; /* Veľkosť textu */
+    font-weight: bold; /* Zvýraznené písmo */
+    color: #333; /* Farba textu */
+    text-decoration: none; /* Odstránenie podčiarknutia */
+    width: 100%; /* Zarovnanie na šírku */
+    text-align: center; /* Zarovnanie textu */
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #000; /* Stmavenie textu pri hover */
   }
 
   /* Change the layout of the legend container to a column with a gap between items */
@@ -425,16 +479,26 @@
     flex-direction: column;
     gap: 10px;
   }
-}
 
-/* Additional media query for screens with a maximum width of 480px */
-@media (max-width: 480px) {
-  /* Adjust the form container's padding and gap between form elements */
-  .formContainer {
-    padding: 5px;
-    gap: 5px;
+  /* Make the logout button full width */
+  .logoutButton {
+    margin-top: 20px; /* Medzera nad tlačidlom */
+    padding: 10px 20px; /* Vnútorné odsadenie */
+    background-color: #000; /* Čierne pozadie */
+    color: #fff; /* Biely text */
+    border: none; /* Odstránenie okrajov */
+    border-radius: 5px; /* Okrúhle rohy */
+    cursor: pointer; /* Kurzor na kliknutie */
+    font-size: 16px; /* Veľkosť textu */
+    text-align: center; /* Zarovnanie textu na stred */
+    width: 100%; /* Zaberie celú šírku */
+  }
+
+  .logoutButton:hover {
+    background-color: #333; /* Stmavenie tlačidla pri hover */
   }
 }
+
 .modal {
   position: fixed;
   top: 0;

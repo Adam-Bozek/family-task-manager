@@ -89,58 +89,58 @@ const ParentDashboardRewards = () => {
 
 	return (
 		<>
-			<div className={styles["templateMain"]}>
-				<div className={styles["blur-container"]}>
-					<header className={`container my-3 ${styles["navbar-settings"]}`}>
-						<nav
-							className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`}
-							aria-label="Thirteenth navbar example">
-							<div className="container-fluid">
-								<button
-									className="navbar-toggler"
-									type="button"
-									data-bs-toggle="collapse"
-									data-bs-target="#navbarsExample11"
-									aria-controls="navbarsExample11"
-									aria-expanded="false"
-									aria-label="Toggle navigation">
-									<span className="navbar-toggler-icon"></span>
-								</button>
-
-								<div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
-									<span className="navbar-brand col-lg-3 me-0" />
-									<ul className="navbar-nav col-lg-6 justify-content-lg-center">
-										<li className="nav-item ">
+					<div className={styles["templateMain"]}>
+							<div className={styles["blur-container"]}>
+								{/* Header with navigation */}
+								<header className={`container my-3 ${styles["navbar-settings"]}`}>
+									<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
+										<div className={`container-fluid`}>
 											<button
-												className={`nav-link ${styles["nav-font-weight"]} active`}
-												aria-current="page"
-												onClick={() => handle_redirect("/ParentDashboardTasks")}>
-												Domov
+												className="navbar-toggler"
+												type="button"
+												data-bs-toggle="collapse"
+												data-bs-target="#navbarsExample11"
+												aria-controls="navbarsExample11"
+												aria-expanded="false"
+												aria-label="Toggle navigation">
+												<span className="navbar-toggler-icon"></span>
 											</button>
-										</li>
-										<li className="nav-item mx-4">
-											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
-												Nastavenia
-											</button>
-										</li>
-										<li className="nav-item">
-											<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
-												Zadať úlohu
-											</button>
-										</li>
-									</ul>
-									<div className="d-lg-flex col-lg-3 justify-content-lg-end">
-										<button
-											className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
-											onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-											Odhlásiť sa
-										</button>
-									</div>
-								</div>
-							</div>
-						</nav>
-					</header>
-
+			
+											{/* Navbar items and links */}
+											<div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+												<span className="navbar-brand col-lg-3 me-0" />
+												<ul className="navbar-nav col-lg-6 justify-content-lg-center">
+													<li className="nav-item ">
+														<button
+															className={`nav-link ${styles["nav-font-weight"]} active`}
+															aria-current="page"
+															onClick={() => handle_redirect("/ParentDashboardTasks")}>
+															Domov
+														</button>
+													</li>
+													<li className="nav-item mx-4">
+														<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentSettings")}>
+															Nastavenia
+														</button>
+													</li>
+													<li className="nav-item">
+														<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/ParentTasks")}>
+															Zadať úlohu
+														</button>
+													</li>
+												</ul>
+												<div className="d-lg-flex col-lg-3 justify-content-lg-end">
+													<button
+														className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
+														onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
+														Odhlásiť sa
+													</button>
+												</div>
+											</div>
+										</div>
+									</nav>
+								</header>
+								
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
 							<button className={`${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
@@ -174,8 +174,14 @@ const ParentDashboardRewards = () => {
 
 						{/* Legend */}
 						<div className={styles.legendContainer}>
-							<span className={styles.completed}></span> Splnené
-							<span className={styles.pending}></span> Čakajúce na splnenie
+							<div className={styles.legend}>
+								<span className={styles.legendItem}>
+									<span className={styles.completed}></span> Splnené
+								</span>
+								<span className={styles.legendItem}>
+									<span className={styles.pending}></span> Čaká na potvrdenie
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>

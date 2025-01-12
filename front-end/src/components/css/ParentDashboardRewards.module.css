@@ -220,21 +220,20 @@
 }
 
 .pending {
-  background-color: #ffc107;
+  background-color: #ffc107; /* Žltá farba pre čakajúce */
   width: 12px;
   height: 12px;
-  border-radius: 50%; /* Make into circles */
+  border-radius: 50%; /* Kruhový indikátor */
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 8px; /* Medzera medzi kruhom a textom */
 }
-/* Color indicators for various statuses */
 .completed {
-  background-color: #2e8b57;
+  background-color: #28a745; /* Zelená farba pre splnené */
   width: 12px;
   height: 12px;
-  border-radius: 50%; /* Make into circles */
+  border-radius: 50%; /* Kruhový indikátor */
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 8px; /* Medzera medzi kruhom a textom */
 }
 
 .tasksContainer {
