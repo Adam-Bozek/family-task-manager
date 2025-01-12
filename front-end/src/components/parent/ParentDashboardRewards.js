@@ -140,7 +140,7 @@ const ParentDashboardRewards = () => {
 										</div>
 									</nav>
 								</header>
-								
+
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
 							<button className={`${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
@@ -170,7 +170,7 @@ const ParentDashboardRewards = () => {
 									</div>
 								</div>
 							))}
-						</div>
+						
 
 						{/* Legend */}
 						<div className={styles.legendContainer}>
@@ -185,7 +185,7 @@ const ParentDashboardRewards = () => {
 						</div>
 					</div>
 				</div>
-
+				</div>
 				{isModalOpen && (
 					<div className={styles.modal}>
 						<div className={styles.modalContent}>
