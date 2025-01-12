@@ -21,6 +21,7 @@ export async function getPoints(email) {
 
 			// Handle malformed response formats
 			let tasks = [];
+			let tasksToChooseFrom = [];
 			let rewards = [];
 			let credits = 0;
 
@@ -64,10 +65,21 @@ export async function getPoints(email) {
 				}
 			}
 
+			if (data.return3) {
+				try {
+					// Replace single quotes with double quotes for valid JSON
+					const correctedReturn3 = data.return3.replace(/'/g, '"');
+					tasksToChooseFrom = JSON.parse(correctedReturn3);
+				} catch (err) {
+					console.error("Error parsing tasks_to_choose_from:", err);
+				}
+			}
+
+			console.log("Tasks to choose from:", tasksToChooseFrom);
 			console.log("Tasks:", tasks);
 			console.log("Rewards:", rewards);
 
-			return { tasks, rewards, credits };
+			return { tasks, tasksToChooseFrom, rewards, credits };
 		}
 	} catch (err) {
 		console.error("Error fetching points:", err);
@@ -94,6 +106,39 @@ export async function markTaskComplete(reward_id) {
 		formData.append("id", reward_id);
 
 		const localApiAddress = apiAddress + "/Kids_confirm";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else {
+			console.error("User task was not confirmed.");
+			return false;
+		}
+	} catch (err) {
+		console.error("Error creating reward:", err);
+		if (err.response) {
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			console.error("Network error. Please check your connection and try again.");
+		} else {
+			console.error("An unexpected error occurred. Please try again.");
+		}
+		return false;
+	}
+}
+
+export async function markTaskMine(email, task_id) {
+	try {
+		const formData = new FormData();
+		formData.append("id", task_id);
+		formData.append("email", email);
+
+		const localApiAddress = apiAddress + "/Kids_task";
 
 		const response = await Axios.post(localApiAddress, formData, {
 			headers: {

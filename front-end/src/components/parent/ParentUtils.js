@@ -62,10 +62,8 @@ export async function getFamilyData(email) {
 	}
 }
 
-export async function assignTask(kids_id, task, date_from, date_to, reward) {
+export async function assignKidTask(kids_id, task, date_from, date_to, reward) {
 	try {
-		console.log("Reward: " + reward);
-
 		const formData = new FormData();
 		formData.append("id", kids_id);
 		formData.append("task", task);
@@ -84,6 +82,45 @@ export async function assignTask(kids_id, task, date_from, date_to, reward) {
 		if (response.status === 202) {
 			return true;
 		} else if (response.status === 406) {
+			console.error("Email already exists. Please choose a different email address.");
+			return false;
+		} else {
+			console.error("User creation was unsuccessful.");
+			return false;
+		}
+	} catch (err) {
+		console.error("Error fetching kids' names:", err);
+		if (err.response) {
+			console.error(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+		} else if (err.request) {
+			console.error("Network error. Please check your connection and try again.");
+		} else {
+			console.error("An unexpected error occurred. Please try again.");
+		}
+		return false;
+	}
+}
+
+export async function assignFamilyTask(email_rodica , task, date_from, date_to, reward) {
+	try {
+		const formData = new FormData();
+		formData.append("email", email_rodica);
+		formData.append("task", task);
+		formData.append("date_from", date_from);
+		formData.append("date_to", date_to);
+		formData.append("reward", reward);
+
+		const localApiAddress = apiAddress + "/Family_task";
+
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
+
+		if (response.status === 202) {
+			return true;
+		} else if (response.status === 500) {
 			console.error("Email already exists. Please choose a different email address.");
 			return false;
 		} else {

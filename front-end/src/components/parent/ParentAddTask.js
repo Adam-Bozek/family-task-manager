@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
-import { getKidsNames, assignTask, getKidsTasks, removeTask } from "./ParentUtils";
+import { getKidsNames, assignKidTask, assignFamilyTask, getKidsTasks, removeTask } from "./ParentUtils";
 
 import styles from "../css/ParentAddTask.module.css";
 
@@ -70,10 +70,38 @@ const ParentAddTask = () => {
 	// Add a new task for the selected kid
 	const addTask = async () => {
 		// Mark the function as async
-		if (selectedKid && taskData.task) {
+		if (selectedKid && taskData.task && selectedKidId != null) {
 			// Make the async call to assign the task first
 			try {
-				const res = await assignTask(selectedKidId, taskData.task, taskData.startDate, taskData.endDate, taskData.price);
+				const res = await assignKidTask(selectedKidId, taskData.task, taskData.startDate, taskData.endDate, taskData.price);
+
+				// If res is false (indicating an error or failure), skip adding the task
+				if (!res) {
+					console.error("Task assignment failed. Task will not be added.");
+					return; // Exit the function early if the task assignment failed
+				}
+
+				// If task assignment succeeded, then add the task to the local state
+				setTasks((prevTasks) => {
+					const userTasks = prevTasks[selectedKid] || [];
+					return {
+						...prevTasks,
+						[selectedKid]: [...userTasks, { ...taskData, color: getRandomColor() }],
+					};
+				});
+
+				console.log("Task assigned successfully:", res);
+			} catch (error) {
+				console.error("Error assigning task:", error);
+			}
+
+			// Clear task data after attempting to add
+			setTaskData({ name: "", task: "", startDate: "", endDate: "", price: "" });
+		}
+		if (selectedKid && taskData.task && selectedKidId == null) {
+			// Make the async call to assign the task first
+			try {
+				const res = await assignFamilyTask(email, taskData.task, taskData.startDate, taskData.endDate, taskData.price);
 
 				// If res is false (indicating an error or failure), skip adding the task
 				if (!res) {
@@ -256,21 +284,37 @@ const ParentAddTask = () => {
 								{selectedKid}
 							</button>
 							<ul className="dropdown-menu">
-								{kids && kids.length > 0 ? ( // Check if there are kids
-									kids.map((kid) => (
-										<li key={kid.id}>
+								{kids && kids.length > 0 ? (
+									[
+										// Pridať stály záznam na začiatok
+										<li key="all-kids">
 											<a
 												className="dropdown-item"
 												href="#"
 												onClick={() => {
-													setTaskData({ ...taskData, name: kid.name });
-													setSelectedKid(kid.name);
-													setSelectedKidId(kid.id);
+													setTaskData({ ...taskData, name: "Pre výber deťmi" });
+													setSelectedKid("Pre výber deťmi");
+													setSelectedKidId(null);
 												}}>
-												{kid.name}
+												Pre výber deťmi
 											</a>
-										</li>
-									))
+										</li>,
+										// Potom namapovať ostatné deti
+										...kids.map((kid) => (
+											<li key={kid.id}>
+												<a
+													className="dropdown-item"
+													href="#"
+													onClick={() => {
+														setTaskData({ ...taskData, name: kid.name });
+														setSelectedKid(kid.name);
+														setSelectedKidId(kid.id);
+													}}>
+													{kid.name}
+												</a>
+											</li>
+										)),
+									]
 								) : (
 									<li>
 										<span className="dropdown-item text-muted">Žiadne deti na výber</span>
