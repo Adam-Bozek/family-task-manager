@@ -130,10 +130,10 @@ const ParentDashboardTasks = () => {
 						<div className={styles.formContainer}>
 							{/* Buttons for navigating to different sections */}
 							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Tasks
+								Úlohy
 							</button>
 							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Selected Rewards
+								Vybrané odmeny
 							</button>
 						</div>
 
