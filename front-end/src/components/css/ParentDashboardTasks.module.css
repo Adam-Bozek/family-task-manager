@@ -1,197 +1,154 @@
-/* Main page container styling */
 .pageContainer {
-  background-image: url('../../media/background.png'); /* Set background image */
-  background-size: cover; /* Scale image to cover the entire container */
-  background-position: center; /* Center the background image */
-  min-height: 100vh; /* Ensure background covers full viewport height */
+  background-image: url('../../media/background.png');
+  background-size: cover; /* Ensure background image covers entire area */
+  background-position: center; /* Center background image */
+  min-height: 100vh; /* Use min-height to cover full screen height */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  overflow: hidden; /* Hide overflow to prevent content spilling out */
+  overflow: hidden; /* Hide overflow if content exceeds container */
 }
 
-/* Header styling */
 .header {
   width: 80%;
   max-width: 1200px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Space between header elements */
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Space below header */
 }
 
-/* Styling for the logout button */
 .logoutButton {
-  padding: 15px 30px; /* Add padding to make the button larger */
+  padding: 15px 30px; /* Increase padding for a wider button */
   background-color: #000;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center;
-  font-size: 16px;
+  text-align: center; /* Center text in button */
+  font-size: 16px; /* Set font size for readability */
 }
 
-/* Main container styling */
 .mainContainer {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-start; /* Align items to left side */
   width: 100%;
-  background-color: rgba(248, 254, 255, 0.70); /* Semi-transparent background */
-  backdrop-filter: blur(20px); /* Apply blur effect behind the container */
+  background-color: rgba(248, 254, 255, 0.70); /* Semi-transparent white background */
+  backdrop-filter: blur(20px); /* Add blur effect */
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
-  margin: 0px auto;
-  max-width: 1320px;
-  box-sizing: border-box; /* Includes padding and borders in dimensions */
+  margin: 0px auto; /* Center container horizontally */
+  max-width: 1320px; /* Limit maximum width */
+  box-sizing: border-box; /* Include padding in width/height calculations */
 }
 
-/* Form container styling */
 .formContainer {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* Zarovnanie tlačidiel naľavo */
-  gap: 15px; /* Medzera medzi tlačidlami */
-  margin-bottom: 20px;
+  justify-content: flex-start; /* Align buttons to the left */
+  gap: 10px; /* Space between buttons */
+  margin-bottom: 20px; /* Space below button container */
 }
 
-/* Styling for input fields */
 .input {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 5px; /* Rounded input corners */
 }
 
-/* Confirm button styling */
 .confirmButton {
-  padding: 15px 30px;
+  padding: 15px 30px; /* Increase padding for larger button */
   background-color: #000000;
   color: #fff;
   border: none;
   border-radius: 2px;
   cursor: pointer;
-  text-align: center;
-  font-size: 16px;
+  text-align: center; /* Center text within button */
+  font-size: 16px; /* Set font size */
 }
 
-/* Hover effect for confirm button */
 .confirmButton:hover {
-  background-color: #292929;
+  background-color: #292929; /* Darker color on hover */
 }
 
-/* General button styling */
+/* Style for buttons within .buttonFrame */
 .buttonFrame button {
   padding: 15px 30px;
   font-size: 16px;
-  text-align: center;
+  text-align: center; /* Center text within button */
 }
 
-/* Tasks container styling */
 .tasksContainer {
   flex: 1;
   padding: 40px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Allow vertical scrolling */
-  max-height: 400px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 400px; /* Set max height for scrolling */
   gap: 15px; /* Space between user sections */
-  position: relative;
+  position: relative; /* For positioning child elements */
 }
 
-/* Styling for individual user sections */
 .userSection {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Space below each user section */
 }
 
-/* Task list styling */
 .taskList {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping of tasks */
-  gap: 10px;
-  margin-left: 20px;
+  flex-wrap: wrap; /* Allow tasks to wrap */
+  gap: 10px; /* Space between tasks */
+  margin-left: 20px; /* Space between name and tasks */
 }
 
-/* Task box styling */
 .taskBox {
   padding: 10px;
   color: #fff;
   border-radius: 5px;
 }
 
-/* Styling for navigation buttons */
-.tabButton {
-  padding: 15px 30px; /* Zvýraznené vnútorné odsadenie pre lepšiu čitateľnosť */
-  border-radius: 10px; /* Okrúhlejšie rohy pre moderný vzhľad */
-  font-size: 18px; /* Väčšie písmo */
-  font-weight: 600; /* Zvýraznená hrúbka písma */
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Plynulé animácie pre hover efekt */
+.tabButtonActive,
+.tabButtonInactive {
+  margin-right: 10px; /* Space between buttons */
 }
 
-/* Active tab button */
-.tabButton.active {
-  background-color: #000; /* Čierne pozadie pre aktívne tlačidlo */
-  color: #fff; /* Biely text */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Jemný tieň pre zvýraznenie */
-  transform: translateY(-2px); /* Zvýraznenie aktívneho tlačidla */
-}
-
-/* Inactive tab button */
-.tabButton.inactive {
-  background-color: #d3d3d3; /* Svetlošedé pozadie pre neaktívne tlačidlo */
-  color: #fff; /* Biely text */
-}
-
-/* Hover efekt pre tlačidlá */
-.tabButton:hover {
-  background-color: #555; /* Tmavšie pozadie pri hover */
-  transform: translateY(-1px); /* Jemné zdvihnutie pri hover */
-}
-
-
-
-/* Navigation font and button styles */
+/* Styling for navbar font */
 .nav-font-weight {
-  font-weight: 655;
-  font-size: 1.7rem;
+  font-weight: 655; /* Set valid font weight */
+  font-size: 1.7rem; /* Font size for larger text */
 }
 
 .nav-button-weight {
-  font-weight: 400;
+  font-weight: 400; /* Set valid font weight */
   font-size: 1.30rem;
   padding: 10px;
 }
 
-/* Template main section styling */
 .templateMain {
   background-image: url('../../media/background.png');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
+  background-repeat: no-repeat; /* Prevent background from repeating */
+  height: 100vh; /* Full viewport height */
   width: 100%;
   display: flex;
 }
 
-/* Blur container for background effects */
 .blur-container {
   background-color: rgba(237, 234, 234, 0.59);
   backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px); /* Safari compatibility */
   padding: 20px;
   width: 100%;
   text-align: center;
 }
 
-/* Navbar styling with shadow */
 .navbar-settings {
   box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -199,32 +156,45 @@
   padding: 0;
 }
 
-/* Tooltip styling */
+.background {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px); /* Safari compatibility */
+}
+
 .tooltip {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute; /* Position tooltip above tasks */
+  background-color: rgba(0, 0, 0, 0.8); /* Dark tooltip background */
   color: white;
   padding: 10px;
   border-radius: 5px;
-  z-index: 10;
-  transition: opacity 0.3s;
+  z-index: 10; /* Ensure tooltip appears on top */
+  transition: opacity 0.3s; /* Smooth fade effect */
 }
 
-/* Legend container styling */
+.taskBox {
+  position: relative; /* For tooltip positioning */
+}
+
+.userSection {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black; /* Line separating user sections */
+}
+
 .legendContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  border-radius: 0 0 20px 20px;
+  border-radius: 0 0 20px 20px; /* Rounded corners on bottom */
   max-width: 100%;
 }
 
-/* Legend items for different task statuses */
 .legend {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Allow legend items to wrap */
   justify-content: center;
 }
 
@@ -238,15 +208,35 @@
 /* Color indicators for various statuses */
 .completed {
   background-color: #2e8b57;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Make into circles */
+  display: inline-block;
+  margin-right: 8px;
 }
 .notCompleted {
   background-color: #ff6b6b;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Make into circles */
+  display: inline-block;
+  margin-right: 8px;
 }
 .pending {
   background-color: #ffc107;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Make into circles */
+  display: inline-block;
+  margin-right: 8px;
 }
 .notStarted {
   background-color: #00bcd4;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Make into circles */
+  display: inline-block;
+  margin-right: 8px;
 }
 
 /* User name styling */
@@ -262,37 +252,137 @@
   background-color: #e1e1e1;
   color: #000;
 }
+.tasksContainer {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 16px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between user sections */
+}
 
-/* Media queries for responsive adjustments */
+.userTaskGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.userName {
+  font-weight: bold;
+  color: #333;
+  margin-right: 10px;
+  font-size: 20px; /* Increased font size for emphasis */
+}
+
+.taskList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between tasks */
+  color: #555;
+}
+
+.taskItem {
+  background-color: #f1f1f1;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Hover effect for task items */
+.taskItem:hover {
+  background-color: #e1e1e1;
+  color: #000;
+}
+
+/* Styling pre tlačidlo Úlohy (aktívne) */
+.buttonTask {
+  padding: 15px 25px; /* Vnútorné odsadenie */
+  background-color: #000000; /* Čierne pozadie */
+  color: #fff; /* Biely text */
+  border: none;
+  border-radius: 10px; /* Okrúhle rohy */
+  font-size: 16px; /* Veľkosť textu */
+  font-weight: 600; /* Mierne zvýraznené písmo */
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Jemný hover efekt */
+}
+
+/* Styling pre tlačidlo Vybrané odmeny (neaktívne) */
+.buttonReward {
+  padding: 15px 25px; /* Vnútorné odsadenie */
+  background-color: #d3d3d3; /* Svetlošedé pozadie */
+  color: #fff; /* Biely text */
+  border: none;
+  border-radius: 10px; /* Okrúhle rohy */
+  font-size: 16px; /* Veľkosť textu */
+  font-weight: 600; /* Mierne zvýraznené písmo */
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Jemný hover efekt */
+}
+
+
+/* This block applies styles for devices with a maximum width of 768px */
 @media (max-width: 768px) {
+  /* Make the header full width and arrange items vertically */
   .header {
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
   }
+
+  /* Make the logout button full width, add padding, and adjust font size */
   .logoutButton {
     width: 100%;
     padding: 10px 0;
     font-size: 14px;
   }
+
+  /* Add padding to the main container */
   .mainContainer {
     padding: 10px;
   }
 }
 
+/* This block applies styles for devices with a maximum width of 480px */
 @media (max-width: 480px) {
+  /* Adjust the font size of navigation elements */
   .nav-font-weight {
     font-size: 1.2rem;
   }
+
+  /* Adjust the font size and padding for navigation buttons */
   .nav-button-weight {
     font-size: 1rem;
     padding: 8px;
   }
+
+  /* Change the layout of the legend container to a column with a gap between items */
   .legendContainer {
     flex-direction: column;
     gap: 10px;
   }
 }
+
+/* Additional media query for screens with a maximum width of 480px */
+@media (max-width: 480px) {
+  /* Adjust the form container's padding and gap between form elements */
+  .formContainer {
+    padding: 5px;
+    gap: 5px;
+  }
+}
+
+
 
 .modal {
   position: fixed;
@@ -313,23 +403,4 @@
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.confirmButton {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-right: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cancelButton {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
 }

@@ -131,7 +131,7 @@ const ParentDashboardRewards = () => {
 										<button
 											className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
 											onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-											Logout
+											Odhlásiť sa
 										</button>
 									</div>
 								</div>
@@ -142,14 +142,14 @@ const ParentDashboardRewards = () => {
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
 							<button className={`${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Tasks
+								Úlohy
 							</button>
 							<button className={`${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Selected Rewards
+								Vybrané odmeny
 							</button>
 						</div>
 
-						<h3>Tasks to Complete Today</h3>
+						<h3>Úlohy na splnenie dnes</h3>
 						<div className={styles.tasksContainer}>
 							{Object.entries(tasks).map(([child, taskList]) => (
 								<div key={child} className={styles.userTaskGroup}>
