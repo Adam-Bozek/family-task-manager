@@ -1,299 +1,155 @@
-/* Main page container styling */
+/* Hlavný kontajner stránky */
 .pageContainer {
-  background-image: url('../../media/background.png'); /* Set background image */
-  background-size: cover; /* Scale image to cover the entire container */
-  background-position: center; /* Center the background image */
-  min-height: 100vh; /* Ensure background covers full viewport height */
+  background-image: url('../../media/background.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  overflow: hidden; /* Hide overflow to prevent content spilling out */
+  overflow: hidden;
 }
 
-/* Header styling */
-.header {
-  width: 80%;
+/* Hlavný kontajner obsahu */
+.mainContainer {
+  width: 90%;
   max-width: 1200px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Záložky pre sekcie (Úlohy, Vybrané odmeny) */
+.formContainer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-/* Styling for the logout button */
-.logoutButton {
-  padding: 15px 30px; /* Add padding to make the button larger */
+.tabButton {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tabButton.active {
   background-color: #000;
   color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 16px;
 }
 
-/* Main container styling */
-.mainContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  background-color: rgba(248, 254, 255, 0.70); /* Semi-transparent background */
-  backdrop-filter: blur(20px); /* Apply blur effect behind the container */
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
-  margin: 0px auto;
-  max-width: 1320px;
-  box-sizing: border-box; /* Includes padding and borders in dimensions */
-}
-
-/* Form container styling */
-.formContainer {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start; /* Zarovnanie tlačidiel naľavo */
-  gap: 15px; /* Medzera medzi tlačidlami */
-  margin-bottom: 20px;
-}
-
-/* Styling for input fields */
-.input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Confirm button styling */
-.confirmButton {
-  padding: 15px 30px;
-  background-color: #000000;
-  color: #fff;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 16px;
-}
-
-/* Hover effect for confirm button */
-.confirmButton:hover {
-  background-color: #292929;
-}
-
-/* General button styling */
-.buttonFrame button {
-  padding: 15px 30px;
-  font-size: 16px;
-  text-align: center;
-}
-
-/* Tasks container styling */
-.tasksContainer {
-  flex: 1;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto; /* Allow vertical scrolling */
-  max-height: 400px;
-  gap: 15px; /* Space between user sections */
-  position: relative;
-}
-
-/* Styling for individual user sections */
-.userSection {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-/* Task list styling */
-.taskList {
-  display: flex;
-  flex-wrap: wrap; /* Allow wrapping of tasks */
-  gap: 10px;
-  margin-left: 20px;
-}
-
-/* Task box styling */
-.taskBox {
-  padding: 10px;
-  color: #fff;
-  border-radius: 5px;
-}
-
-/* Styling for navigation buttons */
-.tabButton {
-  padding: 15px 30px; /* Zvýraznené vnútorné odsadenie pre lepšiu čitateľnosť */
-  border-radius: 10px; /* Okrúhlejšie rohy pre moderný vzhľad */
-  font-size: 18px; /* Väčšie písmo */
-  font-weight: 600; /* Zvýraznená hrúbka písma */
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Plynulé animácie pre hover efekt */
-}
-
-/* Active tab button */
-.tabButton.active {
-  background-color: #000; /* Čierne pozadie pre aktívne tlačidlo */
-  color: #fff; /* Biely text */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Jemný tieň pre zvýraznenie */
-  transform: translateY(-2px); /* Zvýraznenie aktívneho tlačidla */
-}
-
-/* Inactive tab button */
 .tabButton.inactive {
-  background-color: #d3d3d3; /* Svetlošedé pozadie pre neaktívne tlačidlo */
-  color: #fff; /* Biely text */
+  background-color: #e0e0e0;
+  color: #555;
 }
 
 /* Hover efekt pre tlačidlá */
 .tabButton:hover {
-  background-color: #555; /* Tmavšie pozadie pri hover */
-  transform: translateY(-1px); /* Jemné zdvihnutie pri hover */
+  background-color: #d3d3d3;
 }
 
-
-
-/* Navigation font and button styles */
-.nav-font-weight {
-  font-weight: 655;
-  font-size: 1.7rem;
-}
-
-.nav-button-weight {
-  font-weight: 400;
-  font-size: 1.30rem;
-  padding: 10px;
-}
-
-/* Template main section styling */
-.templateMain {
-  background-image: url('../../media/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
-  width: 100%;
+/* Zoznam úloh */
+.tasksContainer {
   display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* Blur container for background effects */
-.blur-container {
-  background-color: rgba(237, 234, 234, 0.59);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  padding: 20px;
-  width: 100%;
+.userSection {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.userName {
+  font-weight: bold;
+  font-size: 18px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.taskList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Farebné označenia úloh */
+.taskBox {
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
   text-align: center;
 }
 
-/* Navbar styling with shadow */
-.navbar-settings {
-  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  border-radius: 15px;
-  padding: 0;
+.taskBox.green {
+  background-color: #28a745; /* Splnené */
 }
 
-/* Tooltip styling */
-.tooltip {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 10;
-  transition: opacity 0.3s;
+.taskBox.red {
+  background-color: #dc3545; /* Nesplnené */
 }
 
-/* Legend container styling */
+.taskBox.yellow {
+  background-color: #ffc107; /* Čaká na potvrdenie */
+}
+
+.taskBox.blue {
+  background-color: #17a2b8; /* Zatiaľ neurobené */
+}
+
+.taskBox:hover {
+  opacity: 0.9;
+}
+
+/* Legenda */
 .legendContainer {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  border-radius: 0 0 20px 20px;
-  max-width: 100%;
-}
-
-/* Legend items for different task statuses */
-.legend {
-  display: flex;
   gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin-top: 20px;
+  font-size: 14px;
 }
 
 .legendItem {
   display: flex;
   align-items: center;
-  font-weight: 500;
+  gap: 8px;
   color: #333;
 }
 
-/* Color indicators for various statuses */
-.completed {
-  background-color: #2e8b57;
+.legendCircle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
 }
-.notCompleted {
-  background-color: #ff6b6b;
+
+.legendCircle.green {
+  background-color: #28a745;
 }
-.pending {
+
+.legendCircle.red {
+  background-color: #dc3545;
+}
+
+.legendCircle.yellow {
   background-color: #ffc107;
 }
-.notStarted {
-  background-color: #00bcd4;
+
+.legendCircle.blue {
+  background-color: #17a2b8;
 }
 
-/* User name styling */
-.userName {
-  font-weight: bold;
-  color: #333;
-  margin-right: 10px;
-  font-size: 20px;
-}
-
-/* Optional hover effect for task items */
-.taskItem:hover {
-  background-color: #e1e1e1;
-  color: #000;
-}
-
-/* Media queries for responsive adjustments */
-@media (max-width: 768px) {
-  .header {
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .logoutButton {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 14px;
-  }
-  .mainContainer {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-font-weight {
-    font-size: 1.2rem;
-  }
-  .nav-button-weight {
-    font-size: 1rem;
-    padding: 8px;
-  }
-  .legendContainer {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
+/* Modal pre potvrdenie úloh */
 .modal {
   position: fixed;
   top: 0;
