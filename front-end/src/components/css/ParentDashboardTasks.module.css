@@ -1,19 +1,16 @@
-/* Main page container styling */
 .pageContainer {
-  background-image: url('../../media/background.png'); /* Set background image */
-  background-size: cover; /* Scale image to cover the entire container */
-  background-position: center; /* Center the background image */
-  min-height: 100vh; /* Ensure background covers full viewport height */
+  background-image: url('../../media/background.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  overflow: hidden; /* Hide overflow to prevent content spilling out */
 }
 
-/* Header styling */
 .header {
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   display: flex;
   justify-content: space-between;
@@ -21,288 +18,168 @@
   margin-bottom: 20px;
 }
 
-/* Styling for the logout button */
 .logoutButton {
-  padding: 15px 30px; /* Add padding to make the button larger */
+  padding: 10px 20px;
   background-color: #000;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  text-align: center;
-  font-size: 16px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
-/* Main container styling */
+.logoutButton:hover {
+  background-color: #333;
+}
+
 .mainContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  background-color: rgba(248, 254, 255, 0.70); /* Semi-transparent background */
-  backdrop-filter: blur(20px); /* Apply blur effect behind the container */
+  width: 90%;
+  max-width: 1200px;
+  background-color: rgba(248, 254, 255, 0.9);
+  backdrop-filter: blur(20px);
   padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
-  margin: 0px auto;
-  max-width: 1320px;
-  box-sizing: border-box; /* Includes padding and borders in dimensions */
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Form container styling */
-.formContainer {
-  width: 100%;
+.tabs {
   display: flex;
-  justify-content: flex-start; /* Align items to the left */
-  gap: 10px; /* Space between elements */
+  justify-content: start;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-/* Styling for input fields */
-.input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Confirm button styling */
-.confirmButton {
-  padding: 15px 30px;
-  background-color: #000000;
-  color: #fff;
+.tabButton {
+  padding: 10px 20px;
   border: none;
-  border-radius: 2px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 16px;
   cursor: pointer;
-  text-align: center;
-  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
-/* Hover effect for confirm button */
-.confirmButton:hover {
-  background-color: #292929;
+.tabButton.active {
+  background-color: #000;
+  color: #fff;
 }
 
-/* General button styling */
-.buttonFrame button {
-  padding: 15px 30px;
-  font-size: 16px;
-  text-align: center;
+.tabButton:hover {
+  background-color: #ddd;
 }
 
-/* Tasks container styling */
+.tasksTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
 .tasksContainer {
-  flex: 1;
-  padding: 40px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Allow vertical scrolling */
-  max-height: 400px;
-  gap: 15px; /* Space between user sections */
-  position: relative;
+  gap: 20px;
 }
 
-/* Styling for individual user sections */
 .userSection {
   display: flex;
-  align-items: center;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Task list styling */
+.userName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
 .taskList {
   display: flex;
-  flex-wrap: wrap; /* Allow wrapping of tasks */
+  flex-wrap: wrap;
   gap: 10px;
-  margin-left: 20px;
 }
 
-/* Task box styling */
 .taskBox {
-  padding: 10px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
   color: #fff;
-  border-radius: 5px;
-}
-
-/* Styling for active and inactive tab buttons */
-.tabButtonActive,
-.tabButtonInactive {
-  margin-right: 10px;
-}
-
-/* Navigation font and button styles */
-.nav-font-weight {
-  font-weight: 655;
-  font-size: 1.7rem;
-}
-
-.nav-button-weight {
-  font-weight: 400;
-  font-size: 1.30rem;
-  padding: 10px;
-}
-
-/* Template main section styling */
-.templateMain {
-  background-image: url('../../media/background.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-}
-
-/* Blur container for background effects */
-.blur-container {
-  background-color: rgba(237, 234, 234, 0.59);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  padding: 20px;
-  width: 100%;
   text-align: center;
+  cursor: pointer;
 }
 
-/* Navbar styling with shadow */
-.navbar-settings {
-  box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  border-radius: 15px;
-  padding: 0;
+.taskBox.green {
+  background-color: #28a745; /* Splnené */
 }
 
-/* Tooltip styling */
-.tooltip {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 10;
-  transition: opacity 0.3s;
+.taskBox.red {
+  background-color: #dc3545; /* Nesplnené */
 }
 
-/* Legend container styling */
+.taskBox.yellow {
+  background-color: #ffc107; /* Čaká na potvrdenie */
+}
+
+.taskBox.blue {
+  background-color: #17a2b8; /* Zatiaľ neurobené */
+}
+
 .legendContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  border-radius: 0 0 20px 20px;
-  max-width: 100%;
-}
-
-/* Legend items for different task statuses */
-.legend {
-  display: flex;
+  justify-content: space-between;
   gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin-top: 20px;
 }
 
 .legendItem {
   display: flex;
   align-items: center;
-  font-weight: 500;
-  color: #333;
+  gap: 8px;
+  font-size: 14px;
 }
 
-/* Color indicators for various statuses */
-.completed {
-  background-color: #2e8b57;
+.legendItem span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
 }
-.notCompleted {
-  background-color: #ff6b6b;
+
+.legendItem span.green {
+  background-color: #28a745;
 }
-.pending {
+
+.legendItem span.red {
+  background-color: #dc3545;
+}
+
+.legendItem span.yellow {
   background-color: #ffc107;
 }
-.notStarted {
-  background-color: #00bcd4;
+
+.legendItem span.blue {
+  background-color: #17a2b8;
 }
 
-/* User name styling */
-.userName {
-  font-weight: bold;
-  color: #333;
-  margin-right: 10px;
-  font-size: 20px;
-}
-
-/* Optional hover effect for task items */
-.taskItem:hover {
-  background-color: #e1e1e1;
-  color: #000;
-}
-
-/* Media queries for responsive adjustments */
+/* Mobilné zobrazenie */
 @media (max-width: 768px) {
-  .header {
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .logoutButton {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 14px;
-  }
   .mainContainer {
-    padding: 10px;
+    width: 100%;
+    padding: 15px;
   }
-}
 
-@media (max-width: 480px) {
-  .nav-font-weight {
-    font-size: 1.2rem;
+  .tasksContainer {
+    gap: 15px;
   }
-  .nav-button-weight {
-    font-size: 1rem;
-    padding: 8px;
-  }
+
   .legendContainer {
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px;
   }
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modalContent {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.confirmButton {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-right: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cancelButton {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
 }
