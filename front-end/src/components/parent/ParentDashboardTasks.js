@@ -117,7 +117,7 @@ const ParentDashboardTasks = () => {
 										<button
 											className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
 											onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-											Logout
+											Odhlásiť sa
 										</button>
 									</div>
 								</div>
