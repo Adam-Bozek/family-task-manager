@@ -3,7 +3,7 @@ import styles from "../css/ParentDashboardTasks.module.css";
 import { useNavigate } from "react-router-dom";
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
-import { getKidsTasks, confirmTask } from "./ParentUtils"; // Importing the getKidsTasks function
+import { getKidsTasks, confirmTask } from "./ParentUtils";
 
 const ParentDashboardTasks = () => {
 	// State to manage tasks fetched from the API
@@ -44,7 +44,7 @@ const ParentDashboardTasks = () => {
 		navigate(route);
 	};
 
-	// Open the modal when a "waiting" task is clicked
+	// Open the modal when a task is clicked
 	const handleOpenModal = (task) => {
 		if (task.status === "waiting") {
 			setSelectedTask(task); // Store the task details
@@ -58,17 +58,23 @@ const ParentDashboardTasks = () => {
 		setIsModalOpen(false); // Close the modal
 	};
 
-	// Confirm the task completion (implement the actual functionality as needed)
+	// Confirm the task completion
 	const handleConfirmTask = async () => {
 		const success = await confirmTask(selectedTask.task_id);
 		if (success) {
+			setTasks((prevTasks) => {
+				// Update the task status
+				const updatedTasks = { ...prevTasks };
+				const childTasks = updatedTasks[selectedTask.name].map((task) =>
+					task.task_id === selectedTask.task_id ? { ...task, status: "done" } : task
+				);
+				updatedTasks[selectedTask.name] = childTasks;
+				return updatedTasks;
+			});
 			handleCloseModal();
 		} else {
-			alert("Failed to confirm reward");
-			setIsModalOpen(false);
+			alert("Failed to confirm task.");
 		}
-
-		handleCloseModal(); // Close the modal after confirming
 	};
 
 	return (
@@ -77,8 +83,8 @@ const ParentDashboardTasks = () => {
 				<div className={styles["blur-container"]}>
 					{/* Header with navigation */}
 					<header className={`container my-3 ${styles["navbar-settings"]}`}>
-						<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
-							<div className={`container-fluid`}>
+						<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Navbar">
+							<div className="container-fluid">
 								<button
 									className="navbar-toggler"
 									type="button"
@@ -94,7 +100,7 @@ const ParentDashboardTasks = () => {
 								<div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
 									<span className="navbar-brand col-lg-3 me-0" />
 									<ul className="navbar-nav col-lg-6 justify-content-lg-center">
-										<li className="nav-item ">
+										<li className="nav-item">
 											<button
 												className={`nav-link ${styles["nav-font-weight"]} active`}
 												aria-current="page"
@@ -129,19 +135,18 @@ const ParentDashboardTasks = () => {
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
 							{/* Buttons for navigating to different sections */}
-							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
+							<button className={`${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
 								Úlohy
 							</button>
-							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
+							<button className={`${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
 								Vybrané odmeny
 							</button>
 						</div>
 
 						<h3>Úlohy na splnenie dnes</h3>
 						<div className={styles.tasksContainer}>
-							{/* Display each child's name and list of tasks */}
 							{Object.entries(tasks).length === 0 ? (
-								<p>No tasks assigned yet.</p>
+								<p>Zatiaľ nie sú priradené žiadne úlohy.</p>
 							) : (
 								Object.entries(tasks).map(([name, taskList]) => (
 									<div key={name} className={styles.userTaskGroup}>
@@ -149,20 +154,23 @@ const ParentDashboardTasks = () => {
 											<span className={styles.userName}>{name}</span>
 											<div className={styles.taskList}>
 												{taskList.map((task, index) => (
-													<span
+													<button
 														key={index}
-														className={styles.taskItem}
-														onClick={() => handleOpenModal(task)} // Open modal on task click
+														className={`${styles.taskButton} ${styles[task.status] || ""}`} // Dynamically apply status-based styles
+														onClick={
+															task.status === "notDone" || task.status === "pending"
+																? () => handleOpenModal(task)
+																: null
+														}
 													>
-														{task.task} - {task.status}
-													</span>
+														{task.task}
+													</button>
 												))}
 											</div>
 										</div>
 									</div>
 								))
 							)}
-
 							{/* Legend to describe the status of each task */}
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
@@ -180,7 +188,6 @@ const ParentDashboardTasks = () => {
 									</span>
 								</div>
 							</div>
-		
 						</div>
 					</div>
 				</div>
@@ -190,13 +197,13 @@ const ParentDashboardTasks = () => {
 			{isModalOpen && selectedTask && (
 				<div className={styles.modal}>
 					<div className={styles.modalContent}>
-						<h3>Potvrdiť dokončenie odmeny</h3>
-						<p>{`Do you confirm the task "${selectedTask.task}" for ${selectedTask.name}?`}</p>
+						<h3>Potvrdiť dokončenie úlohy</h3>
+						<p>{`Potvrdiť úlohu "${selectedTask.task}" pre ${selectedTask.name}?`}</p>
 						<button onClick={handleConfirmTask} className={styles.confirmButton}>
 							Potvrdiť
 						</button>
 						<button onClick={handleCloseModal} className={styles.cancelButton}>
-							Zrusiť
+							Zrušiť
 						</button>
 					</div>
 				</div>

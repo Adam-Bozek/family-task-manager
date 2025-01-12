@@ -251,7 +251,7 @@
   margin-right: 8px;
 }
 .notCompleted {
-  background-color: #ff6b6b;
+  background-color: #f44336;
   width: 12px;
   height: 12px;
   border-radius: 50%; /* Make into circles */
@@ -315,13 +315,6 @@
   color: white;
 }
 
-.taskItem {
-  background-color: green;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
 .userSection {
   display: flex;
   align-items: center;
@@ -333,7 +326,48 @@
   
   color: #555;
 }
+/* Task Button Base Style */
+.taskButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
 
+/* Styles for Each Task Status */
+
+/* Splnené (done) */
+.taskButton.done {
+  background-color: #28a745; /* Green */
+  color: #fff;
+}
+
+/* Nesplnené (notDone) */
+.taskButton.notDone {
+  background-color: #dc3545; /* Red */
+  color: #fff;
+}
+
+/* Čaká na potvrdenie (waiting) */
+.taskButton.waiting {
+  background-color: #ffc107; /* Yellow */
+  color: #333; /* Darker text for readability */
+}
+
+/* Zatiaľ neurobené (pending) */
+.taskButton.pending {
+  background-color: #17a2b8; /* Blue */
+  color: #fff;
+}
+
+/* Hover Effects */
+.taskButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05); /* Slight scaling effect */
+}
 /* Styling pre tlačidlo Úlohy (aktívne) */
 .buttonTask {
   padding: 15px 25px; /* Vnútorné odsadenie */
@@ -363,69 +397,31 @@
 }
 
 
-/* This block applies styles for devices with a maximum width of 768px */
 @media (max-width: 768px) {
-  /* Make the header full width and arrange items vertically */
-  .header {
-    width: 100%;
-    flex-direction: column;
-    align-items: center; /* Zarovnanie obsahu do stredu */
-  }
-
-  /* Center text in navbar when collapsed */
+  /* Zarovnanie textu v navigácii na stred */
   .navbar-collapse {
+    text-align: center; /* Zarovná text na stred */
     display: flex;
-    flex-direction: column; /* Vertikálne usporiadanie */
-    align-items: center; /* Zarovnanie obsahu na stred */
-    text-align: center; /* Text v strede */
-    gap: 15px; /* Medzera medzi položkami */
+    flex-direction: column; /* Usporiadanie položiek vertikálne */
+    align-items: center; /* Zarovná všetky položky na stred */
   }
 
   .navbar-nav {
-    display: flex;
-    flex-direction: column; /* Vertikálne usporiadanie */
+    flex-direction: column; /* Vertikálne usporiadanie položiek */
     align-items: center; /* Zarovnanie na stred */
-    width: 100%; /* Zaberie celú šírku */
   }
 
   .navbar-nav .nav-item {
-    margin-bottom: 10px; /* Medzera medzi položkami */
+    margin-bottom: 10px; /* Medzera medzi jednotlivými položkami */
   }
 
-  .navbar-nav .nav-link {
-    font-size: 18px; /* Veľkosť textu */
-    font-weight: bold; /* Zvýraznené písmo */
-    color: #333; /* Farba textu */
-    text-decoration: none; /* Odstránenie podčiarknutia */
-    width: 100%; /* Zarovnanie na šírku */
-    text-align: center; /* Zarovnanie textu */
+  .navbar-toggler {
+    margin: 0 auto; /* Zarovná tlačidlo na otvorenie menu do stredu */
   }
 
-  .navbar-nav .nav-link:hover {
-    color: #000; /* Stmavenie textu pri hover */
-  }
-
-  /* Make the logout button full width */
-  .logoutButton {
-    margin-top: 20px; /* Medzera nad tlačidlom */
-    padding: 10px 20px; /* Vnútorné odsadenie */
-    background-color: #000; /* Čierne pozadie */
-    color: #fff; /* Biely text */
-    border: none; /* Odstránenie okrajov */
-    border-radius: 5px; /* Okrúhle rohy */
-    cursor: pointer; /* Kurzor na kliknutie */
-    font-size: 16px; /* Veľkosť textu */
-    text-align: center; /* Zarovnanie textu na stred */
+  .btn {
+    margin-top: 10px; /* Medzera medzi tlačidlami */
     width: 100%; /* Zaberie celú šírku */
-  }
-
-  .logoutButton:hover {
-    background-color: #333; /* Stmavenie tlačidla pri hover */
-  }
-
-  /* Add padding to the main container */
-  .mainContainer {
-    padding: 10px;
   }
 }
 
