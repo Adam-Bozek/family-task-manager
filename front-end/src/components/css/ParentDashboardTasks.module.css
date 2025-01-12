@@ -283,11 +283,7 @@
   font-size: 20px;
 }
 
-/* Optional hover effect for task items */
-.taskItem:hover {
-  background-color: #e1e1e1;
-  color: #000;
-}
+
 .tasksContainer {
   width: 100%;
   margin-top: 20px;
@@ -316,11 +312,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px; /* Space between tasks */
-  color: #555;
+  color: white;
 }
 
 .taskItem {
-  background-color: #f1f1f1;
+  background-color: green;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 14px;
@@ -334,8 +330,8 @@
 
 /* Hover effect for task items */
 .taskItem:hover {
-  background-color: #e1e1e1;
-  color: #000;
+  
+  color: #555;
 }
 
 /* Styling pre tlačidlo Úlohy (aktívne) */
@@ -373,7 +369,18 @@
   .header {
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center; /* Zarovnanie obsahu do stredu */
+  }
+
+  /* Center text in navbar when collapsed */
+  .navbar-collapse {
+    text-align: center; /* Text v strede */
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: column; /* Vertikálne usporiadanie */
+    align-items: center; /* Zarovnanie na stred */
   }
 
   /* Make the logout button full width, add padding, and adjust font size */
@@ -402,6 +409,17 @@
     padding: 8px;
   }
 
+  /* Center navbar text and change layout */
+  .navbar-collapse {
+    text-align: center;
+    align-items: center; /* Zarovnanie obsahu */
+  }
+
+  .navbar-nav {
+    flex-direction: column; /* Vertikálne usporiadanie */
+    align-items: center; /* Zarovnanie na stred */
+  }
+
   /* Change the layout of the legend container to a column with a gap between items */
   .legendContainer {
     flex-direction: column;
@@ -417,9 +435,6 @@
     gap: 5px;
   }
 }
-
-
-
 .modal {
   position: fixed;
   top: 0;
@@ -439,4 +454,23 @@
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.confirmButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }

@@ -107,10 +107,16 @@
   margin-left: 20px; /* Space between name and tasks */
 }
 
+/* Štýly pre jednotlivé stavy úloh */
 .taskBox {
-  padding: 10px;
-  color: #fff;
+  padding: 10px 15px;
   border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
 .tabButtonActive,
@@ -175,7 +181,15 @@
 .taskBox {
   position: relative; /* For tooltip positioning */
 }
-
+/* Splnené úlohy */
+.taskBox.completed {
+  background-color: #28a745; /* Zelená farba */
+}
+/* Čakajúce na potvrdenie */
+.taskBox.pending {
+  background-color: #ffc107; /* Oranžová farba */
+  color: #333; /* Tmavší text na svetlom pozadí */
+}
 .userSection {
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -247,18 +261,20 @@
   font-size: 20px; /* Increased font size for emphasis */
 }
 
+/* Kontejner úloh */
 .taskList {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Space between tasks */
-  color: #555;
+  gap: 10px; /* Priestor medzi jednotlivými úlohami */
+  margin-left: 20px;
 }
 
 .taskItem {
-  background-color: #f1f1f1;
+  background-color: #ffc107;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 14px;
+  color: white;
 }
 
 .userSection {
@@ -269,8 +285,7 @@
 
 /* Hover effect for task items */
 .taskItem:hover {
-  background-color: #e1e1e1;
-  color: #000;
+  color: #555;
 }
 
 /* Styling pre tlačidlo Úlohy (aktívne) */
