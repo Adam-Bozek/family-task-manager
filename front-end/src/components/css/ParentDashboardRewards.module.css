@@ -181,15 +181,6 @@
 .taskBox {
   position: relative; /* For tooltip positioning */
 }
-/* Splnené úlohy */
-.taskBox.completed {
-  background-color: #28a745; /* Zelená farba */
-}
-/* Čakajúce na potvrdenie */
-.taskBox.pending {
-  background-color: #ffc107; /* Oranžová farba */
-  color: #333; /* Tmavší text na svetlom pozadí */
-}
 .userSection {
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -285,6 +276,43 @@
 /* Hover effect for task items */
 .taskItem:hover {
   color: #555;
+}
+.taskButton {
+  display: inline-flex; /* Použijeme inline-flex pre lepšie zarovnanie */
+  align-items: center; /* Vertikálne zarovnanie textu */
+  justify-content: center; /* Horizontálne zarovnanie textu */
+  padding: 10px 15px; /* Nastavíme padding pre lepší vzhľad */
+  border: none;
+  border-radius: 5px; /* Zaoblené rohy */
+  font-size: 14px; /* Nastavenie veľkosti textu */
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  white-space: nowrap; /* Zabráni zalomeniu textu */
+  overflow: hidden; /* Zabránime pretečeniu textu */
+  text-overflow: ellipsis; /* Skryjeme pretečený text ... */
+  min-width: 100px; /* Minimálna šírka tlačidla */
+  max-width: 200px; /* Voliteľná maximálna šírka tlačidla */
+}
+
+/* Farby pre rôzne stavy */
+.taskButton.done {
+  background-color: #28a745; /* Zelená farba */
+  color: #fff;
+}
+
+
+.taskButton.pending {
+  background-color: #ffc107; /* Žltá farba */
+  color: #333;
+}
+
+
+
+/* Hover efekty */
+.taskButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
 }
 
 /* Styling pre tlačidlo Úlohy (aktívne) */

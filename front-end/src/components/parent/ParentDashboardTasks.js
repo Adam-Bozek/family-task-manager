@@ -170,16 +170,16 @@ const ParentDashboardTasks = () => {
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
 									<span className={styles.legendItem}>
-										<span className={styles.done}></span> Splnené
+										<span className={styles.a}></span> Splnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notDone}></span> Nesplnené
+										<span className={styles.b}></span> Nesplnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.pending}></span> Čaká na potvrdenie
+										<span className={styles.c}></span> Čaká na potvrdenie
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.waiting}></span> Zatiaľ neurobené
+										<span className={styles.d}></span> Zatiaľ neurobené
 									</span>
 								</div>
 							</div>
