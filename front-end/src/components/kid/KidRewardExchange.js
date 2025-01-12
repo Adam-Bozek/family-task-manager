@@ -34,12 +34,12 @@ const KidRewardExchange = ({ userName }) => {
 		if (credits >= reward.price) {
 			try {
 				await getExchangedRewards(email, reward.id, credits - reward.price);
-	
+
 				// Opätovné načítanie údajov používateľa
 				const { remainingCredits, rewards } = await getRewards(email);
 				setCredits(remainingCredits); // Aktualizácia kreditov
 				setRewards(rewards); // Aktualizácia odmien
-	
+
 				alert(`Úspešne ste si vymenili odmenu: ${reward.name}`);
 			} catch (error) {
 				console.error("Chyba:", error);

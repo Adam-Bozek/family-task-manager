@@ -468,58 +468,57 @@ export async function confirmReward(reward_id) {
 }
 
 export async function getKidsRewards(email) {
-    try {
-        const formData = new FormData();
-        formData.append("email", email);
+	try {
+		const formData = new FormData();
+		formData.append("email", email);
 
-        const localApiAddress = apiAddress + "/Parents_rewards";
+		const localApiAddress = apiAddress + "/Parents_rewards";
 
-        const response = await Axios.post(localApiAddress, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
+		const response = await Axios.post(localApiAddress, formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		});
 
-        if (response.status === 202) {
-            const rawResponse = response.data.return; // Get the 'return' string
-            console.log("Raw API Response:", rawResponse);
+		if (response.status === 202) {
+			const rawResponse = response.data.return; // Get the 'return' string
+			console.log("Raw API Response:", rawResponse);
 
-            // Pre-process and fix any formatting issues with the raw response
-            const sanitizedResponse = rawResponse
-                .replace(/\(/g, "[") // Replace '(' with '['
-                .replace(/\)/g, "]") // Replace ')' with ']'
-                .replace(/'/g, '"')  // Replace single quotes with double quotes
-                .replace(/\bFalse\b/g, "false") // Replace `False` with `false`
-                .replace(/\bTrue\b/g, "true");  // Replace `True` with `true`
+			// Pre-process and fix any formatting issues with the raw response
+			const sanitizedResponse = rawResponse
+				.replace(/\(/g, "[") // Replace '(' with '['
+				.replace(/\)/g, "]") // Replace ')' with ']'
+				.replace(/'/g, '"') // Replace single quotes with double quotes
+				.replace(/\bFalse\b/g, "false") // Replace `False` with `false`
+				.replace(/\bTrue\b/g, "true"); // Replace `True` with `true`
 
-            console.log("Sanitized API Response:", sanitizedResponse);
+			console.log("Sanitized API Response:", sanitizedResponse);
 
-            // Parse the sanitized response
-            const rewardsList = JSON.parse(sanitizedResponse);
+			// Parse the sanitized response
+			const rewardsList = JSON.parse(sanitizedResponse);
 
-            // Map the list into objects
-            const rewards = rewardsList.map(([id, name, reward, isCompleted]) => ({
-                id,
-                name,
-                reward,
-                isCompleted,
-            }));
+			// Map the list into objects
+			const rewards = rewardsList.map(([id, name, reward, isCompleted]) => ({
+				id,
+				name,
+				reward,
+				isCompleted,
+			}));
 
-            return rewards;
-        } else {
-            console.error("Unexpected API response status:", response.status);
-            return [];
-        }
-    } catch (err) {
-        console.error("Error fetching rewards:", err);
-        if (err.response) {
-            console.error(`Server Error: ${err.response.data.message || "An error occurred."}`);
-        } else if (err.request) {
-            console.error("Network Error. Please check your connection.");
-        } else {
-            console.error("Unexpected Error. Please try again.");
-        }
-        return [];
-    }
+			return rewards;
+		} else {
+			console.error("Unexpected API response status:", response.status);
+			return [];
+		}
+	} catch (err) {
+		console.error("Error fetching rewards:", err);
+		if (err.response) {
+			console.error(`Server Error: ${err.response.data.message || "An error occurred."}`);
+		} else if (err.request) {
+			console.error("Network Error. Please check your connection.");
+		} else {
+			console.error("Unexpected Error. Please try again.");
+		}
+		return [];
+	}
 }
-
