@@ -40,11 +40,11 @@ const ParentDashboardRewards = () => {
 				const rewards = await getKidsRewards(email);
 
 				// Group rewards by child name
-				const groupedRewards = rewards.reduce((acc, { name, reward, id }) => {
+				const groupedRewards = rewards.reduce((acc, { name, reward, id, status }) => {
 					if (!acc[name]) {
 						acc[name] = [];
 					}
-					acc[name].push({ reward, id });
+					acc[name].push({ reward, id, status });
 					return acc;
 				}, {});
 
@@ -92,7 +92,9 @@ const ParentDashboardRewards = () => {
 			<div className={styles["templateMain"]}>
 				<div className={styles["blur-container"]}>
 					<header className={`container my-3 ${styles["navbar-settings"]}`}>
-						<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
+						<nav
+							className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`}
+							aria-label="Thirteenth navbar example">
 							<div className="container-fluid">
 								<button
 									className="navbar-toggler"
@@ -156,8 +158,11 @@ const ParentDashboardRewards = () => {
 									<div className={styles.userSection}>
 										<span className={styles.userName}>{child}</span>
 										<div className={styles.taskList}>
-											{taskList.map(({ reward, id }, index) => (
-												<span key={index} className={styles.taskItem} onClick={() => handleOpenModal(child, reward, id)}>
+											{taskList.map(({ reward, id, status }, index) => (
+												<span
+													key={index}
+													className={`${styles.taskItem} ${styles[status]}`}
+													onClick={() => handleOpenModal(child, reward, id)}>
 													{reward}
 												</span>
 											))}
@@ -166,19 +171,25 @@ const ParentDashboardRewards = () => {
 								</div>
 							))}
 						</div>
+
+						{/* Legend */}
+						<div className={styles.legendContainer}>
+							<span className={styles.completed}></span> Splnené
+							<span className={styles.pending}></span> Čakajúce na splnenie
+						</div>
 					</div>
 				</div>
 
 				{isModalOpen && (
 					<div className={styles.modal}>
 						<div className={styles.modalContent}>
-							<h3>Confirm Reward Completion</h3>
+							<h3>Potvrdiť dokončenie odmeny</h3>
 							<p>{`Do you confirm the reward "${selectedReward}" for ${selectedChild}?`}</p>
 							<button onClick={() => handleConfirmReward(selectedRewardId)} className={styles.confirmButton}>
-								Confirm
+								Potvrdiť
 							</button>
 							<button onClick={handleCloseModal} className={styles.cancelButton}>
-								Cancel
+								Zrušiť
 							</button>
 						</div>
 					</div>

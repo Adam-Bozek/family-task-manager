@@ -100,17 +100,53 @@
   margin-bottom: 20px; /* Space below each user section */
 }
 
-.taskList {
-  display: flex;
-  flex-wrap: wrap; /* Allow tasks to wrap */
-  gap: 10px; /* Space between tasks */
-  margin-left: 20px; /* Space between name and tasks */
+
+
+/* Štýly pre jednotlivé stavy úloh */
+.taskBox {
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
-.taskBox {
-  padding: 10px;
-  color: #fff;
-  border-radius: 5px;
+/* Splnené úlohy */
+.taskBox.completed {
+  background-color: #28a745; /* Zelená farba */
+}
+
+/* Nesplnené úlohy */
+.taskBox.notCompleted {
+  background-color: #dc3545; /* Červená farba */
+}
+
+/* Čakajúce na potvrdenie */
+.taskBox.pending {
+  background-color: #ffc107; /* Oranžová farba */
+  color: #333; /* Tmavší text na svetlom pozadí */
+}
+
+/* Zatiaľ neurobené */
+.taskBox.notStarted {
+  background-color: #17a2b8; /* Modrá farba */
+}
+
+/* Hover efekty */
+.taskBox:hover {
+  opacity: 0.9;
+  transform: scale(1.05); /* Jemné zväčšenie na hover */
+}
+
+/* Kontejner úloh */
+.taskList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Priestor medzi jednotlivými úlohami */
+  margin-left: 20px;
 }
 
 .tabButtonActive,

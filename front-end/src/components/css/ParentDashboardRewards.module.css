@@ -205,23 +205,22 @@
   color: #333;
 }
 
-.completed,
-.notCompleted,
-.pending,
-.notStarted {
+.pending {
+  background-color: #ffc107;
   width: 12px;
   height: 12px;
   border-radius: 50%; /* Make into circles */
   display: inline-block;
   margin-right: 8px;
 }
-
+/* Color indicators for various statuses */
 .completed {
-  background-color: #2e8b57; /* Green color for completed tasks */
-}
-
-.pending {
-  background-color: #ffc107; /* Yellow color for pending tasks */
+  background-color: #2e8b57;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Make into circles */
+  display: inline-block;
+  margin-right: 8px;
 }
 
 .tasksContainer {

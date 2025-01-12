@@ -189,13 +189,13 @@ const ParentDashboardTasks = () => {
 			{isModalOpen && selectedTask && (
 				<div className={styles.modal}>
 					<div className={styles.modalContent}>
-						<h3>Confirm Task Completion</h3>
+						<h3>Potvrdiť dokončenie odmeny</h3>
 						<p>{`Do you confirm the task "${selectedTask.task}" for ${selectedTask.name}?`}</p>
 						<button onClick={handleConfirmTask} className={styles.confirmButton}>
-							Confirm
+							Potvrdiť
 						</button>
 						<button onClick={handleCloseModal} className={styles.cancelButton}>
-							Cancel
+							Zrusiť
 						</button>
 					</div>
 				</div>
