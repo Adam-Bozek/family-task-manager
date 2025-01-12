@@ -101,40 +101,6 @@
 }
 
 
-
-/* Štýly pre jednotlivé stavy úloh */
-.taskBox {
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  color: #fff;
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.3s ease;
-}
-
-/* Splnené úlohy */
-.taskBox.completed {
-  background-color: #28a745; /* Zelená farba */
-}
-
-/* Nesplnené úlohy */
-.taskBox.notCompleted {
-  background-color: #dc3545; /* Červená farba */
-}
-
-/* Čakajúce na potvrdenie */
-.taskBox.pending {
-  background-color: #ffc107; /* Oranžová farba */
-  color: #333; /* Tmavší text na svetlom pozadí */
-}
-
-/* Zatiaľ neurobené */
-.taskBox.notStarted {
-  background-color: #17a2b8; /* Modrá farba */
-}
-
 /* Hover efekty */
 .taskBox:hover {
   opacity: 0.9;
@@ -241,39 +207,6 @@
   color: #333;
 }
 
-/* Color indicators for various statuses */
-.completed {
-  background-color: #2e8b57;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%; /* Make into circles */
-  display: inline-block;
-  margin-right: 8px;
-}
-.notCompleted {
-  background-color: #f44336;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%; /* Make into circles */
-  display: inline-block;
-  margin-right: 8px;
-}
-.pending {
-  background-color: #ffc107;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%; /* Make into circles */
-  display: inline-block;
-  margin-right: 8px;
-}
-.notStarted {
-  background-color: #00bcd4;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%; /* Make into circles */
-  display: inline-block;
-  margin-right: 8px;
-}
 
 /* User name styling */
 .userName {
@@ -308,11 +241,12 @@
   font-size: 20px; /* Increased font size for emphasis */
 }
 
+/* Odstupy medzi tlačidlami */
 .taskList {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px; /* Space between tasks */
-  color: white;
+  flex-wrap: wrap; /* Zabezpečí zalomenie tlačidiel na ďalší riadok */
+  gap: 15px; /* Priestor medzi tlačidlami */
+  margin-left: 20px;
 }
 
 .userSection {
@@ -326,48 +260,51 @@
   
   color: #555;
 }
-/* Task Button Base Style */
 .taskButton {
-  padding: 10px 20px;
+  display: inline-flex; /* Použijeme inline-flex pre lepšie zarovnanie */
+  align-items: center; /* Vertikálne zarovnanie textu */
+  justify-content: center; /* Horizontálne zarovnanie textu */
+  padding: 10px 15px; /* Nastavíme padding pre lepší vzhľad */
   border: none;
-  border-radius: 5px;
-  font-size: 14px;
+  border-radius: 5px; /* Zaoblené rohy */
+  font-size: 14px; /* Nastavenie veľkosti textu */
   font-weight: bold;
   cursor: pointer;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  white-space: nowrap; /* Zabráni zalomeniu textu */
+  overflow: hidden; /* Zabránime pretečeniu textu */
+  text-overflow: ellipsis; /* Skryjeme pretečený text ... */
+  min-width: 100px; /* Minimálna šírka tlačidla */
+  max-width: 200px; /* Voliteľná maximálna šírka tlačidla */
 }
 
-/* Styles for Each Task Status */
-
-/* Splnené (done) */
+/* Farby pre rôzne stavy */
 .taskButton.done {
-  background-color: #28a745; /* Green */
+  background-color: #28a745; /* Zelená farba */
   color: #fff;
 }
 
-/* Nesplnené (notDone) */
 .taskButton.notDone {
-  background-color: #dc3545; /* Red */
+  background-color: #dc3545; /* Červená farba */
   color: #fff;
 }
 
-/* Čaká na potvrdenie (waiting) */
-.taskButton.waiting {
-  background-color: #ffc107; /* Yellow */
-  color: #333; /* Darker text for readability */
-}
-
-/* Zatiaľ neurobené (pending) */
 .taskButton.pending {
-  background-color: #17a2b8; /* Blue */
+  background-color: #ffc107; /* Žltá farba */
+  color: #333;
+}
+
+.taskButton.waiting {
+  background-color: #17a2b8; /* Modrá farba */
   color: #fff;
 }
 
-/* Hover Effects */
+/* Hover efekty */
 .taskButton:hover {
   opacity: 0.9;
-  transform: scale(1.05); /* Slight scaling effect */
+  transform: scale(1.05);
 }
+
 /* Styling pre tlačidlo Úlohy (aktívne) */
 .buttonTask {
   padding: 15px 25px; /* Vnútorné odsadenie */

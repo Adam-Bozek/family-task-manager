@@ -3,7 +3,7 @@ import styles from "../css/ParentDashboardTasks.module.css";
 import { useNavigate } from "react-router-dom";
 import { logOutUser } from "../utilities/Utils";
 import { AppContext } from "../utilities/AppContext";
-import { getKidsTasks, confirmTask } from "./ParentUtils";
+import { getKidsTasks, confirmTask } from "./ParentUtils"; // Importing the getKidsTasks function
 
 const ParentDashboardTasks = () => {
 	// State to manage tasks fetched from the API
@@ -44,7 +44,7 @@ const ParentDashboardTasks = () => {
 		navigate(route);
 	};
 
-	// Open the modal when a task is clicked
+	// Open the modal when a "waiting" task is clicked
 	const handleOpenModal = (task) => {
 		if (task.status === "waiting") {
 			setSelectedTask(task); // Store the task details
@@ -58,23 +58,17 @@ const ParentDashboardTasks = () => {
 		setIsModalOpen(false); // Close the modal
 	};
 
-	// Confirm the task completion
+	// Confirm the task completion (implement the actual functionality as needed)
 	const handleConfirmTask = async () => {
 		const success = await confirmTask(selectedTask.task_id);
 		if (success) {
-			setTasks((prevTasks) => {
-				// Update the task status
-				const updatedTasks = { ...prevTasks };
-				const childTasks = updatedTasks[selectedTask.name].map((task) =>
-					task.task_id === selectedTask.task_id ? { ...task, status: "done" } : task
-				);
-				updatedTasks[selectedTask.name] = childTasks;
-				return updatedTasks;
-			});
 			handleCloseModal();
 		} else {
-			alert("Failed to confirm task.");
+			alert("Failed to confirm reward");
+			setIsModalOpen(false);
 		}
+
+		handleCloseModal(); // Close the modal after confirming
 	};
 
 	return (
@@ -83,8 +77,8 @@ const ParentDashboardTasks = () => {
 				<div className={styles["blur-container"]}>
 					{/* Header with navigation */}
 					<header className={`container my-3 ${styles["navbar-settings"]}`}>
-						<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Navbar">
-							<div className="container-fluid">
+						<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Thirteenth navbar example">
+							<div className={`container-fluid`}>
 								<button
 									className="navbar-toggler"
 									type="button"
@@ -100,7 +94,7 @@ const ParentDashboardTasks = () => {
 								<div className="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
 									<span className="navbar-brand col-lg-3 me-0" />
 									<ul className="navbar-nav col-lg-6 justify-content-lg-center">
-										<li className="nav-item">
+										<li className="nav-item ">
 											<button
 												className={`nav-link ${styles["nav-font-weight"]} active`}
 												aria-current="page"
@@ -135,10 +129,10 @@ const ParentDashboardTasks = () => {
 					<div className={styles.mainContainer}>
 						<div className={styles.formContainer}>
 							{/* Buttons for navigating to different sections */}
-							<button className={`${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
+							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
 								Úlohy
 							</button>
-							<button className={`${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
+							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
 								Vybrané odmeny
 							</button>
 						</div>
@@ -156,14 +150,14 @@ const ParentDashboardTasks = () => {
 												{taskList.map((task, index) => (
 													<button
 														key={index}
-														className={`${styles.taskButton} ${styles[task.status] || ""}`} // Dynamically apply status-based styles
+														className={`${styles.taskButton} ${styles[task.status] || ""}`} // Dynamicky aplikuje správne triedy
 														onClick={
-															task.status === "notDone" || task.status === "pending"
+															task.status === "notDone" || task.status === "pending" || task.status === "done" || task.status === "waiting"
 																? () => handleOpenModal(task)
 																: null
 														}
 													>
-														{task.task}
+														{task.task} {/* Zobrazenie textu úlohy */}
 													</button>
 												))}
 											</div>
@@ -171,23 +165,25 @@ const ParentDashboardTasks = () => {
 									</div>
 								))
 							)}
+
 							{/* Legend to describe the status of each task */}
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
 									<span className={styles.legendItem}>
-										<span className={styles.completed}></span> Splnené
+										<span className={styles.done}></span> Splnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notCompleted}></span> Nesplnené
+										<span className={styles.notDone}></span> Nesplnené
 									</span>
 									<span className={styles.legendItem}>
 										<span className={styles.pending}></span> Čaká na potvrdenie
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notStarted}></span> Zatiaľ neurobené
+										<span className={styles.waiting}></span> Zatiaľ neurobené
 									</span>
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -197,13 +193,13 @@ const ParentDashboardTasks = () => {
 			{isModalOpen && selectedTask && (
 				<div className={styles.modal}>
 					<div className={styles.modalContent}>
-						<h3>Potvrdiť dokončenie úlohy</h3>
-						<p>{`Potvrdiť úlohu "${selectedTask.task}" pre ${selectedTask.name}?`}</p>
+						<h3>Potvrdiť dokončenie odmeny</h3>
+						<p>{`Potvrdiť odmenu "${selectedTask.task}" pre ${selectedTask.name}?`}</p>
 						<button onClick={handleConfirmTask} className={styles.confirmButton}>
 							Potvrdiť
 						</button>
 						<button onClick={handleCloseModal} className={styles.cancelButton}>
-							Zrušiť
+							Zrusiť
 						</button>
 					</div>
 				</div>
