@@ -11,7 +11,7 @@ const KidDashboard = () => {
 
 	const [tasks, setTasks] = useState([]); // Stav pre úlohy
 
-	const { email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
+	const { name, email, setName, setIsLoggedIn, setEmail } = useContext(AppContext);
 
 	// Stav pre modálne okno (otvorené/zatvorené)
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,12 +55,14 @@ const KidDashboard = () => {
 
 	// Otvorí modálne okno pre konkrétnu úlohu
 	const handleOpenModal = (item) => {
+		console.log("Open modal");
 		setSelectedItem(item); // Nastaví vybranú úlohu
 		setIsModalOpen(true); // Zobrazí modálne okno
 	};
 
 	// Zavrie modálne okno
 	const handleCloseModal = () => {
+		console.log("Close modal");
 		setSelectedItem(null); // Vyčistí výber úlohy
 		setIsModalOpen(false); // Skryje modálne okno
 	};
@@ -73,7 +75,7 @@ const KidDashboard = () => {
 			if (ret) {
 				setTasks((prevTasks) =>
 					prevTasks.map(
-						(task) => (task.id === task_id ? { ...task, status: "done" } : task), // Set status to "done"
+						(task) => (task.id === task_id ? { ...task, stav: "waiting" } : task), // Update status to "waiting"
 					),
 				);
 
@@ -82,13 +84,28 @@ const KidDashboard = () => {
 				alert("Úloha nebola potvrdená");
 			}
 		} catch (err) {
-			console.error("Chyba pri splnení úlohy:", err);
+			console.error("Chyba pri označení úlohy ako splnenej:", err);
 		}
 	};
 
 	const navigate = useNavigate();
 	const handle_redirect = (route) => {
 		navigate(route);
+	};
+
+	const getStatusTitle = (status) => {
+		switch (status) {
+			case "notDone":
+				return "Nesplnené";
+			case "pending":
+				return "Zatiaľ neurobené";
+			case "done":
+				return "Splnené";
+			case "waiting":
+				return "Čaká na potvrdenie";
+			default:
+				return "Iné";
+		}
 	};
 
 	return (
@@ -129,11 +146,55 @@ const KidDashboard = () => {
 					</nav>
 				</header>
 
+				<div className={styles.content}>
+					<section className={styles.tasks}>
+						<h2>Ahoj {name}!</h2>
+						<h5>Tieto úlohy treba splniť, nezabudni!</h5>
+
+						{/* Trello-style task boards */}
+						<div className={styles.boards}>
+							{["notDone", "pending", "waiting", "done"].map((status) => (
+								<div key={status} className={styles.board}>
+									<h3>{getStatusTitle(status)}</h3> {/* Titles for each column */}
+									<div className={styles.tasksList}>
+										{tasks
+											.filter((task) => task.stav === status)
+											.map((task) => (
+												<button
+													key={task.id}
+													className={`${styles.taskButton} ${styles[task.stav] || ""}`} // Apply dynamic styles
+													onClick={status === "notDone" || status === "pending" ? () => handleOpenModal(task) : null}>
+													{task.name}
+												</button>
+											))}
+									</div>
+								</div>
+							))}
+						</div>
+
+						{/* Legenda úloh */}
+						<div className={styles.legend}>
+							<div className={styles.legendItem}>
+								<span className={`${styles.circle} ${styles.done}`} /> Splnené
+							</div>
+							<div className={styles.legendItem}>
+								<span className={`${styles.circle} ${styles.notDone}`} /> Nesplnené
+							</div>
+							<div className={styles.legendItem}>
+								<span className={`${styles.circle} ${styles.waiting}`} /> Čaká na potvrdenie
+							</div>
+							<div className={styles.legendItem}>
+								<span className={`${styles.circle} ${styles.pending}`} /> Zatiaľ neurobené
+							</div>
+						</div>
+					</section>
+				</div>
+
 				{/* Sekcia úloh */}
 				<div className={styles.content}>
 					<section className={styles.tasks}>
-						<h2>Ahoj Janko!</h2>
-						<h5>Tieto úlohy treba splniť dnes, nezabudni!</h5>
+						<h2>Ahoj {name}!</h2>
+						<h5>Tieto úlohy treba splniť, nezabudni!</h5>
 
 						{/* Zoznam úloh */}
 						<div className={styles.tasksList}>
@@ -207,7 +268,7 @@ const KidDashboard = () => {
 							<button onClick={() => handleConfirm(selectedItem.id)} className={styles.confirmButton}>
 								Áno
 							</button>
-							<button onClick={() => handleCloseModal} className={styles.cancelButton}>
+							<button onClick={() => handleCloseModal()} className={styles.cancelButton}>
 								Zrušiť
 							</button>
 						</div>
