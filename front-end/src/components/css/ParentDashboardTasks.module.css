@@ -53,8 +53,8 @@
 .formContainer {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* Align items to the left */
-  gap: 10px; /* Space between elements */
+  justify-content: flex-start; /* Zarovnanie tlačidiel naľavo */
+  gap: 15px; /* Medzera medzi tlačidlami */
   margin-bottom: 20px;
 }
 
@@ -125,10 +125,32 @@
   border-radius: 5px;
 }
 
-/* Styling for active and inactive tab buttons */
-.tabButtonActive,
-.tabButtonInactive {
-  margin-right: 10px;
+/* Styling for navigation buttons */
+.tabButton {
+  padding: 10px 20px; /* Vnútorné odsadenie */
+  border-radius: 5px; /* Okrúhle rohy */
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Animácia na prechod */
+}
+
+/* Active tab button */
+.tabButton.active {
+  background-color: #000; /* Čierne pozadie pre aktívne tlačidlo */
+  color: #fff; /* Biely text */
+}
+
+/* Inactive tab button */
+.tabButton.inactive {
+  background-color: #d3d3d3; /* Svetlošedé pozadie pre neaktívne tlačidlo */
+  color: #fff; /* Biely text */
+}
+
+/* Hover effect for buttons */
+.tabButton:hover {
+  background-color: #555; /* Jemné stmavenie na hover */
 }
 
 /* Navigation font and button styles */
