@@ -127,19 +127,21 @@
 
 /* Styling for navigation buttons */
 .tabButton {
-  padding: 10px 20px; /* Vnútorné odsadenie */
-  border-radius: 5px; /* Okrúhle rohy */
-  font-size: 16px;
-  font-weight: 500;
+  padding: 15px 30px; /* Zvýraznené vnútorné odsadenie pre lepšiu čitateľnosť */
+  border-radius: 10px; /* Okrúhlejšie rohy pre moderný vzhľad */
+  font-size: 18px; /* Väčšie písmo */
+  font-weight: 600; /* Zvýraznená hrúbka písma */
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Animácia na prechod */
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Plynulé animácie pre hover efekt */
 }
 
 /* Active tab button */
 .tabButton.active {
   background-color: #000; /* Čierne pozadie pre aktívne tlačidlo */
   color: #fff; /* Biely text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Jemný tieň pre zvýraznenie */
+  transform: translateY(-2px); /* Zvýraznenie aktívneho tlačidla */
 }
 
 /* Inactive tab button */
@@ -148,10 +150,13 @@
   color: #fff; /* Biely text */
 }
 
-/* Hover effect for buttons */
+/* Hover efekt pre tlačidlá */
 .tabButton:hover {
-  background-color: #555; /* Jemné stmavenie na hover */
+  background-color: #555; /* Tmavšie pozadie pri hover */
+  transform: translateY(-1px); /* Jemné zdvihnutie pri hover */
 }
+
+
 
 /* Navigation font and button styles */
 .nav-font-weight {
