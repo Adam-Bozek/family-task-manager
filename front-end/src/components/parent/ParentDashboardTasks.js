@@ -130,14 +130,14 @@ const ParentDashboardTasks = () => {
 						<div className={styles.formContainer}>
 							{/* Buttons for navigating to different sections */}
 							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Tasks
+								Úlohy
 							</button>
 							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Selected Rewards
+								Vybrané odmeny
 							</button>
 						</div>
 
-						<h3>Tasks to Complete Today</h3>
+						<h3>Úlohy na splnenie dnes</h3>
 						<div className={styles.tasksContainer}>
 							{/* Display each child's name and list of tasks */}
 							{Object.entries(tasks).length === 0 ? (
@@ -167,16 +167,16 @@ const ParentDashboardTasks = () => {
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
 									<span className={styles.legendItem}>
-										<span className={styles.completed}></span> Completed
+										<span className={styles.completed}></span> Splnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notCompleted}></span> Not Completed
+										<span className={styles.notCompleted}></span> Nesplnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.pending}></span> Pending Confirmation
+										<span className={styles.pending}></span> Čaká na potvrdenie
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notStarted}></span> Not Started
+										<span className={styles.notStarted}></span> Zatiaľ neurobené
 									</span>
 								</div>
 							</div>
