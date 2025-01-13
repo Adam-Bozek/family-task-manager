@@ -28,7 +28,7 @@ const LoginPage = () => {
 			const loginSuccess = await logInUser(email, password, setIsLoggedIn, setEmail, setRole);
 			console.log("Login Success:", loginSuccess);
 			if (!loginSuccess) {
-				alert("Email alebo heslo je zle."); // Alert: Email or password is wrong
+				alert("Email alebo heslo sú zlé alebo nevyplnené")
 			}
 		} catch (error) {
 			console.error("Login error:", error);

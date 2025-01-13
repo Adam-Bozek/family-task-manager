@@ -21,8 +21,6 @@ const ParentDashboardTasks = () => {
 			try {
 				const fetchedTasks = await getKidsTasks(email);
 
-				console.log(fetchedTasks);
-
 				// Group tasks by the child's name
 				const groupedTasks = fetchedTasks.reduce((acc, task) => {
 					if (!acc[task.name]) acc[task.name] = [];
@@ -117,7 +115,7 @@ const ParentDashboardTasks = () => {
 										<button
 											className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
 											onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-											Logout
+											Odhlásiť sa
 										</button>
 									</div>
 								</div>
@@ -130,18 +128,17 @@ const ParentDashboardTasks = () => {
 						<div className={styles.formContainer}>
 							{/* Buttons for navigating to different sections */}
 							<button className={` ${styles["buttonTask"]} my-1`} onClick={() => handle_redirect("/ParentDashboardTasks")}>
-								Tasks
+								Úlohy
 							</button>
 							<button className={` ${styles["buttonReward"]} my-1`} onClick={() => handle_redirect("/ParentDashboardRewards")}>
-								Selected Rewards
+								Vybrané odmeny
 							</button>
 						</div>
 
-						<h3>Tasks to Complete Today</h3>
+						<h3>Úlohy na splnenie dnes</h3>
 						<div className={styles.tasksContainer}>
-							{/* Display each child's name and list of tasks */}
 							{Object.entries(tasks).length === 0 ? (
-								<p>No tasks assigned yet.</p>
+								<p>Zatiaľ nie sú priradené žiadne úlohy.</p>
 							) : (
 								Object.entries(tasks).map(([name, taskList]) => (
 									<div key={name} className={styles.userTaskGroup}>
@@ -149,13 +146,17 @@ const ParentDashboardTasks = () => {
 											<span className={styles.userName}>{name}</span>
 											<div className={styles.taskList}>
 												{taskList.map((task, index) => (
-													<span
+													<button
 														key={index}
-														className={styles.taskItem}
-														onClick={() => handleOpenModal(task)} // Open modal on task click
+														className={`${styles.taskButton} ${styles[task.status] || ""}`} // Dynamicky aplikuje správne triedy
+														onClick={
+															task.status === "notDone" || task.status === "pending" || task.status === "done" || task.status === "waiting"
+																? () => handleOpenModal(task)
+																: null
+														}
 													>
-														{task.task} - {task.status}
-													</span>
+														{task.task} {/* Zobrazenie textu úlohy */}
+													</button>
 												))}
 											</div>
 										</div>
@@ -167,19 +168,20 @@ const ParentDashboardTasks = () => {
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
 									<span className={styles.legendItem}>
-										<span className={styles.completed}></span> Completed
+										<span className={styles.a}></span> Splnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notCompleted}></span> Not Completed
+										<span className={styles.b}></span> Nesplnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.pending}></span> Pending Confirmation
+										<span className={styles.c}></span> Čaká na potvrdenie
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.notStarted}></span> Not Started
+										<span className={styles.d}></span> Zatiaľ neurobené
 									</span>
 								</div>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -189,13 +191,13 @@ const ParentDashboardTasks = () => {
 			{isModalOpen && selectedTask && (
 				<div className={styles.modal}>
 					<div className={styles.modalContent}>
-						<h3>Confirm Task Completion</h3>
-						<p>{`Do you confirm the task "${selectedTask.task}" for ${selectedTask.name}?`}</p>
+						<h3>Potvrdiť dokončenie odmeny</h3>
+						<p>{`Potvrdiť odmenu "${selectedTask.task}" pre ${selectedTask.name}?`}</p>
 						<button onClick={handleConfirmTask} className={styles.confirmButton}>
-							Confirm
+							Potvrdiť
 						</button>
 						<button onClick={handleCloseModal} className={styles.cancelButton}>
-							Cancel
+							Zrusiť
 						</button>
 					</div>
 				</div>

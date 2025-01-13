@@ -4,6 +4,8 @@
     "connectiondb",
     "jsonify",
     "languagedetector",
-    "psycopg"
+    "psycopg",
+    "Rconfirm",
+    "Tconfirm"
   ]
 }

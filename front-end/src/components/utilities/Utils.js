@@ -96,12 +96,12 @@ export async function createUserAccount(name, surname, email, password) {
 
 		// Check response status for success confirmation
 		if (response.status === 201) {
-			alert("User successfully created.");
+			alert("Používateľ bol úspešne vytvorený.");
 			return true;
 		} else if (response.status === 406) {
-			alert("Email already exists. Please choose a different email address.");
+			alert("Tento email už existuje. Zvoľte iný email.");
 		} else {
-			alert("User creation was unsuccessful.");
+			alert("Vytvorenie účtu zlyhalo.");
 			return false;
 		}
 	} catch (err) {
@@ -109,13 +109,13 @@ export async function createUserAccount(name, surname, email, password) {
 		console.error("Error creating account:", err);
 
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			alert(`Chyba: ${err.response.data.message || "Serverová chyba. Skúste to znova neskôr."}`);
 			return false;
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			alert("Chyba siete. Skontrolujte pripojenie a skúste to znova.");
 			return false;
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			alert("Nastala neočakávaná chyba. Skúste to znova.");
 			return false;
 		}
 	}
@@ -149,13 +149,13 @@ export async function checkIfUserExists(email) {
 		console.error("Error verifying user:", err);
 
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			alert(`Chyba: ${err.response.data.message || "Serverová chyba. Skúste to znova neskôr."}`);
 			return false;
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			alert("Chyba siete. Skontrolujte pripojenie a skúste to znova.");
 			return false;
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			alert("Nastala neočakávaná chyba. Skúste to znova.");
 			return false;
 		}
 	}
@@ -206,13 +206,13 @@ export async function logInUser(email, password, setIsLoggedIn, setEmail, setRol
 		console.error("Error logging in:", err);
 
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			alert(`Chyba: ${err.response.data.message || "Serverová chyba. Skúste to znova neskôr."}`);
 			return false;
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			alert("Chyba siete. Skontrolujte pripojenie a skúste to znova.");
 			return false;
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			alert("Nastala neočakávaná chyba. Skúste to znova.");
 			return false;
 		}
 	}
@@ -266,13 +266,13 @@ export async function familyCreation(family_name, email) {
 		console.error("Error logging in:", err);
 
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			alert(`Chyba: ${err.response.data.message || "Serverová chyba. Skúste to znova neskôr."}`);
 			return false;
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
+			alert("Chyba siete. Skontrolujte pripojenie a skúste to znova.");
 			return false;
 		} else {
-			alert("An unexpected error occurred. Please try again.");
+			alert("Nastala neočakávaná chyba. Skúste to znova.");
 			return false;
 		}
 	}
@@ -313,14 +313,14 @@ export async function addToFamily(join_code, email) {
 		console.error("Error adding to family:", err);
 
 		if (err.response) {
-			alert(`Error: ${err.response.data.message || "Server error. Please try again later."}`);
+			alert(`Chyba: ${err.response.data.message || "Serverová chyba. Skúste to znova neskôr."}`);
 			return { success: false, message: err.response.data.message };
 		} else if (err.request) {
-			alert("Network error. Please check your connection and try again.");
-			return { success: false, message: "Network error. Please try again." };
+			alert("Chyba siete. Skontrolujte pripojenie a skúste to znova.");
+			return { success: false, message: "Chyba siete. Skúste to znova." };
 		} else {
-			alert("An unexpected error occurred. Please try again.");
-			return { success: false, message: "Unexpected error occurred." };
+			alert("Nastala neočakávaná chyba. Skúste to znova.");
+			return { success: false, message: "Nastala neočakávaná chyba." };
 		}
 	}
 }

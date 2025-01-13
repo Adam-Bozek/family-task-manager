@@ -107,10 +107,16 @@
   margin-left: 20px; /* Space between name and tasks */
 }
 
+/* Štýly pre jednotlivé stavy úloh */
 .taskBox {
-  padding: 10px;
-  color: #fff;
+  padding: 10px 15px;
   border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.3s ease;
 }
 
 .tabButtonActive,
@@ -175,7 +181,6 @@
 .taskBox {
   position: relative; /* For tooltip positioning */
 }
-
 .userSection {
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -205,23 +210,21 @@
   color: #333;
 }
 
-.completed,
-.notCompleted,
-.pending,
-.notStarted {
+.a {
+  background-color: #ffc107; /* Žltá farba pre čakajúce */
   width: 12px;
   height: 12px;
-  border-radius: 50%; /* Make into circles */
+  border-radius: 50%; /* Kruhový indikátor */
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 8px; /* Medzera medzi kruhom a textom */
 }
-
-.completed {
-  background-color: #2e8b57; /* Green color for completed tasks */
-}
-
-.pending {
-  background-color: #ffc107; /* Yellow color for pending tasks */
+.b {
+  background-color: #28a745; /* Zelená farba pre splnené */
+  width: 12px;
+  height: 12px;
+  border-radius: 50%; /* Kruhový indikátor */
+  display: inline-block;
+  margin-right: 8px; /* Medzera medzi kruhom a textom */
 }
 
 .tasksContainer {
@@ -248,18 +251,20 @@
   font-size: 20px; /* Increased font size for emphasis */
 }
 
+/* Kontejner úloh */
 .taskList {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Space between tasks */
-  color: #555;
+  gap: 10px; /* Priestor medzi jednotlivými úlohami */
+  margin-left: 20px;
 }
 
 .taskItem {
-  background-color: #f1f1f1;
+  background-color: green;
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 14px;
+  color: white;
 }
 
 .userSection {
@@ -270,30 +275,72 @@
 
 /* Hover effect for task items */
 .taskItem:hover {
-  background-color: #e1e1e1;
-  color: #000;
+  color: #555;
+}
+.taskButton {
+  display: inline-flex; /* Použijeme inline-flex pre lepšie zarovnanie */
+  align-items: center; /* Vertikálne zarovnanie textu */
+  justify-content: center; /* Horizontálne zarovnanie textu */
+  padding: 10px 15px; /* Nastavíme padding pre lepší vzhľad */
+  border: none;
+  border-radius: 5px; /* Zaoblené rohy */
+  font-size: 14px; /* Nastavenie veľkosti textu */
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  white-space: nowrap; /* Zabráni zalomeniu textu */
+  overflow: hidden; /* Zabránime pretečeniu textu */
+  text-overflow: ellipsis; /* Skryjeme pretečený text ... */
+  min-width: 100px; /* Minimálna šírka tlačidla */
+  max-width: 200px; /* Voliteľná maximálna šírka tlačidla */
 }
 
+/* Farby pre rôzne stavy */
+.taskButton.done {
+  background-color: #28a745; /* Zelená farba */
+  color: #fff;
+}
+
+
+.taskButton.pending {
+  background-color: #ffc107; /* Žltá farba */
+  color: #333;
+}
+
+
+
+/* Hover efekty */
+.taskButton:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* Styling pre tlačidlo Úlohy (aktívne) */
 .buttonTask {
-  padding: 15px;
-  background-color: grey;
-  color: #fff;
+  padding: 15px 25px; /* Vnútorné odsadenie */
+  background-color: #d3d3d3; /* Čierne pozadie */
+  color: #fff; /* Biely text */
   border: none;
-  border-radius: 5px;
+  border-radius: 10px; /* Okrúhle rohy */
+  font-size: 16px; /* Veľkosť textu */
+  font-weight: 600; /* Mierne zvýraznené písmo */
   cursor: pointer;
-  font-size: 16px;
   text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Jemný hover efekt */
 }
 
+/* Styling pre tlačidlo Vybrané odmeny (neaktívne) */
 .buttonReward {
-  padding: 15px;
-  background-color: #000000;
-  color: #fff;
+  padding: 15px 25px; /* Vnútorné odsadenie */
+  background-color: #000000; /* Svetlošedé pozadie */
+  color: #fff; /* Biely text */
   border: none;
-  border-radius: 5px;
+  border-radius: 10px; /* Okrúhle rohy */
+  font-size: 16px; /* Veľkosť textu */
+  font-weight: 600; /* Mierne zvýraznené písmo */
   cursor: pointer;
-  font-size: 16px;
   text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Jemný hover efekt */
 }
 
 
