@@ -174,7 +174,6 @@ const ParentDashboardRewards = () => {
 								</div>
 							))}
 
-
 							{/* Legend */}
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
