@@ -145,8 +145,8 @@ def create_family():
 
     # Generate 16-digit code
     N = 16
-    code = "".join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
-    code1 = "".join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
+    code = "".join(random.choices(string.ascii_letters + string.digits, k=N))
+    code1 = "".join(random.choices(string.ascii_letters + string.digits, k=N))
 
     # SQL query
     syntax = "INSERT INTO rodina (jedinecny_kod_R, jedinecny_kod_D, nazov_rodiny) VALUES (%s, %s, %s)"
