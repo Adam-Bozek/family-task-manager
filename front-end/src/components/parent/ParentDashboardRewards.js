@@ -180,10 +180,10 @@ const ParentDashboardRewards = () => {
 							<div className={styles.legendContainer}>
 								<div className={styles.legend}>
 									<span className={styles.legendItem}>
-										<span className={styles.completed}></span> Splnené
+										<span className={styles.b}></span> Splnené
 									</span>
 									<span className={styles.legendItem}>
-										<span className={styles.pending}></span> Čaká na potvrdenie
+										<span className={styles.a}></span> Čaká na potvrdenie
 									</span>
 								</div>
 							</div>

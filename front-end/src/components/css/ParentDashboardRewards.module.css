@@ -210,7 +210,7 @@
   color: #333;
 }
 
-.pending {
+.a {
   background-color: #ffc107; /* Žltá farba pre čakajúce */
   width: 12px;
   height: 12px;
@@ -218,7 +218,7 @@
   display: inline-block;
   margin-right: 8px; /* Medzera medzi kruhom a textom */
 }
-.completed {
+.b {
   background-color: #28a745; /* Zelená farba pre splnené */
   width: 12px;
   height: 12px;
