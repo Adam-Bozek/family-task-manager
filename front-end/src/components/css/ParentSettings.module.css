@@ -68,7 +68,25 @@
     color: #fff;
 }
 
-
+.deleteButton {
+    background-color: #1c1c1c; 
+    color: #ffffff;
+    border: none; 
+    border-radius: 8px; 
+    padding: 10px 20px; 
+    font-size: 14px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    display: inline-block; 
+    text-align: center; 
+    transition: transform 0.3s ease, background-color 0.3s ease; 
+  }
+  
+  /* Hover effect */
+  .deleteButton:hover {
+    transform: scale(1.05); 
+    background-color: #333333; 
+  }
 
 .membersContainer {
     display: flex;
