@@ -127,8 +127,9 @@ const ParentDashboardTasks = () => {
 										</button>
 									</div>
 								</div>
+								
 							</div>
-						</nav>
+							</nav>
 					</header>
 
 					{/* Main content area for tasks */}
@@ -199,7 +200,7 @@ const ParentDashboardTasks = () => {
 			{isModalOpen && selectedTask && (
 				<div className={styles.modal}>
 					<div className={styles.modalContent}>
-						<h3>Potvrdiť dokončenie odmeny</h3>
+						<h3>Potvrdenie</h3>
 						<p>{`Potvrdiť odmenu "${selectedTask.task}" pre ${selectedTask.name}?`}</p>
 						<button onClick={handleConfirmTask} className={styles.confirmButton}>
 							Potvrdiť

@@ -202,7 +202,7 @@ const ParentDashboardRewards = () => {
 				{isModalOpen && (
 					<div className={styles.modal}>
 						<div className={styles.modalContent}>
-							<h3>Potvrdiť dokončenie odmeny</h3>
+							<h3>Potvrdenie</h3>
 							<p>{`Potvrdiť odmenu "${selectedReward}" pre ${selectedChild}?`}</p>
 							<button onClick={() => handleConfirmReward(selectedRewardId)} className={styles.confirmButton}>
 								Potvrdiť
