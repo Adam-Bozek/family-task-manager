@@ -292,7 +292,7 @@
   overflow: hidden; /* Zabránime pretečeniu textu */
   text-overflow: ellipsis; /* Skryjeme pretečený text ... */
   min-width: 100px; /* Minimálna šírka tlačidla */
-  max-width: 200px; /* Voliteľná maximálna šírka tlačidla */
+  max-width: 500px; /* Voliteľná maximálna šírka tlačidla */
 }
 
 /* Farby pre rôzne stavy */

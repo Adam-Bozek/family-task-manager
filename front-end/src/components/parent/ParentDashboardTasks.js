@@ -56,18 +56,26 @@ const ParentDashboardTasks = () => {
 		setIsModalOpen(false); // Close the modal
 	};
 
-	// Confirm the task completion (implement the actual functionality as needed)
 	const handleConfirmTask = async () => {
 		const success = await confirmTask(selectedTask.task_id);
 		if (success) {
-			handleCloseModal();
+		  // Update the task status in the state
+		  setTasks((prevTasks) => {
+			const updatedTasks = { ...prevTasks };
+			const updatedTaskList = updatedTasks[selectedTask.name].map((task) =>
+			  task.task_id === selectedTask.task_id ? { ...task, status: "done" } : task // Update status to "done" for the confirmed task
+			);
+			updatedTasks[selectedTask.name] = updatedTaskList;
+			return updatedTasks;
+		  });
+	  
+		  handleCloseModal(); // Close the modal
 		} else {
-			alert("Failed to confirm reward");
-			setIsModalOpen(false);
+		  alert("Failed to confirm task");
+		  setIsModalOpen(false);
 		}
-
-		handleCloseModal(); // Close the modal after confirming
-	};
+	  };
+	  
 
 	return (
 		<>

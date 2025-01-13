@@ -82,13 +82,22 @@ const ParentDashboardRewards = () => {
 	const handleConfirmReward = async (id) => {
 		const success = await markRewardComplete(selectedChild, selectedReward, id);
 		if (success) {
-			handleCloseModal();
+		  // Update the task status in the state
+		  setTasks((prevTasks) => {
+			const updatedTasks = { ...prevTasks };
+			const updatedTaskList = updatedTasks[selectedChild].map((task) =>
+			  task.id === id ? { ...task, status: "done" } : task // Update status to "done" for the confirmed reward
+			);
+			updatedTasks[selectedChild] = updatedTaskList;
+			return updatedTasks;
+		  });
+	  
+		  handleCloseModal(); // Close the modal
 		} else {
-			alert("Failed to confirm reward");
-			setIsModalOpen(false);
+		  alert("Failed to confirm reward");
+		  setIsModalOpen(false);
 		}
-	};
-
+	  };
 	return (
 		<>
 			<div className={styles["templateMain"]}>
