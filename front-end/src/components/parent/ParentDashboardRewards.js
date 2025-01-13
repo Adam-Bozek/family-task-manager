@@ -37,25 +37,27 @@ const ParentDashboardRewards = () => {
 	useEffect(() => {
 		const fetchRewards = async () => {
 			try {
-				const rewards = await getKidsRewards(email);
+				const rewards = await getKidsRewards(email); // Fetch rewards using the provided function
 
 				// Group rewards by child name
-				const groupedRewards = rewards.reduce((acc, { name, reward, id, status }) => {
-					if (!acc[name]) {
-						acc[name] = [];
-					}
-					acc[name].push({ reward, id, status });
+				const groupedRewards = rewards.reduce((acc, { id, name, reward, isCompleted }) => {
+					if (!acc[name]) acc[name] = [];
+					acc[name].push({
+						id,
+						reward,
+						status: isCompleted ? "done" : "pending", // Determine status based on isCompleted
+					});
 					return acc;
 				}, {});
 
-				setTasks(groupedRewards);
+				setTasks(groupedRewards); // Update the state with grouped rewards
 			} catch (err) {
 				console.error("Error fetching rewards:", err);
 			}
 		};
 
 		if (email) {
-			fetchRewards();
+			fetchRewards(); // Fetch rewards if email is present
 		}
 	}, [email]);
 

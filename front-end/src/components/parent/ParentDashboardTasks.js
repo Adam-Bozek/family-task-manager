@@ -21,8 +21,6 @@ const ParentDashboardTasks = () => {
 			try {
 				const fetchedTasks = await getKidsTasks(email);
 
-				console.log(fetchedTasks);
-
 				// Group tasks by the child's name
 				const groupedTasks = fetchedTasks.reduce((acc, task) => {
 					if (!acc[task.name]) acc[task.name] = [];
