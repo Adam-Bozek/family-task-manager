@@ -312,22 +312,22 @@
 
 /* Farby pre rôzne stavy */
 .taskButton.done {
-  background-color: #28a745; /* Zelená farba */
+  background-color: #4CAF50; /* Zelená farba */
   color: #fff;
 }
 
 .taskButton.notDone {
-  background-color: #dc3545; /* Červená farba */
+  background-color: #f44336; /* Červená farba */
   color: #fff;
 }
 
 .taskButton.pending {
-  background-color: #ffc107; /* Žltá farba */
-  color: #333;
+  background-color: #2196F3; /* Žltá farba */
+  color: #fff;
 }
 
 .taskButton.waiting {
-  background-color: #17a2b8; /* Modrá farba */
+  background-color: #FF9800; /* Modrá farba */
   color: #fff;
 }
 

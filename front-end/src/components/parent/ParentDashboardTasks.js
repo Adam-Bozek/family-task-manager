@@ -144,7 +144,7 @@ const ParentDashboardTasks = () => {
 							</button>
 						</div>
 
-						<h3>Úlohy na splnenie dnes</h3>
+						<h3>Úlohy na splnenie:</h3>
 						<div className={styles.tasksContainer}>
 							{Object.entries(tasks).length === 0 ? (
 								<p>Zatiaľ nie sú priradené žiadne úlohy.</p>
