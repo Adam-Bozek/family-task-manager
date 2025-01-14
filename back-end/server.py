@@ -145,8 +145,8 @@ def create_family():
 
     # Generate 16-digit code
     N = 16
-    code = "".join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
-    code1 = "".join(random.choices(string.ascii_lowercase + string.punctuation, k=N))
+    code = "".join(random.choices(string.ascii_letters + string.digits, k=N))
+    code1 = "".join(random.choices(string.ascii_letters + string.digits, k=N))
 
     # SQL query
     syntax = "INSERT INTO rodina (jedinecny_kod_R, jedinecny_kod_D, nazov_rodiny) VALUES (%s, %s, %s)"
@@ -244,11 +244,12 @@ def delete_family():
     syntax1 = "SELECT id_rodina FROM clen WHERE id_uzivatel = %s"
     result1 = connectiondb(syntax1, (result[0][0],))
 
+    syntax3 = "DELETE FROM clen WHERE id_rodina = %s"
+    result3 = connectiondb(syntax3, (result1[0][0],))
+
     syntax2 = "DELETE FROM rodina WHERE id = %s"
     result2 = connectiondb(syntax2, (result1[0][0],))
 
-    syntax3 = "DELETE FROM clen WHERE id_rodina = %s"
-    result3 = connectiondb(syntax3, (result1[0][0],))
 
     # Return
     if not result2 and not result3:
