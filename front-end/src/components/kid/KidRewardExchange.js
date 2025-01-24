@@ -59,36 +59,33 @@ const KidRewardExchange = ({ userName }) => {
 		<div className={styles["templateMain"]}>
 			<div className={styles["blur-container"]}>
 				<header className={`container my-3 ${styles["navbar-settings"]}`}>
-					<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`}>
-						<div className="container-fluid">
-							<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false">
-								<span className="navbar-toggler-icon"></span>
-							</button>
-							<div className="collapse navbar-collapse" id="navbar">
-								<div className="navbar-brand col-lg-3">
-									<span className={`fw-bold ${styles["credits"]}`}>{credits} Kreditov</span>
-								</div>
-								<ul className="navbar-nav col-lg-6 justify-content-center">
-									<li className="nav-item">
-										<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/KidDashboard")}>
-											Domov
-										</button>
-									</li>
-									<li className="nav-item mx-4">
-										<button className={`nav-link ${styles["nav-font-weight"]} active`} onClick={() => handle_redirect("/KidRewardExchange")}>
-											Obchod
-										</button>
-									</li>
-								</ul>
-								<div className="col-lg-3 d-flex justify-content-end">
-									<button className={`btn btn-dark ${styles["nav-button-weight"]}`} onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
-										Odhlásiť sa
-									</button>
-								</div>
-							</div>
-						</div>
-					</nav>
-				</header>
+									<nav className={`navbar navbar-expand-lg bg-body-tertiary p-2 rounded-4 ${styles["background"]}`} aria-label="Navbar">
+										<div className="container-fluid">
+											<div className="navbar-brand col-lg-3 me-0 d-flex align-items-center">
+												<span className={`fw-bold ${styles["credits"]}`}>{credits} Kreditov</span>
+											</div>
+											<ul className="navbar-nav col-lg-6 justify-content-lg-center">
+												<li className="nav-item">
+													<button className={`nav-link ${styles["nav-font-weight"]} active`} aria-current="page" onClick={() => handle_redirect("/KidDashboard")}>
+														Domov
+													</button>
+												</li>
+												<li className="nav-item mx-4">
+													<button className={`nav-link ${styles["nav-font-weight"]}`} onClick={() => handle_redirect("/KidRewardExchange")}>
+														Obchod
+													</button>
+												</li>
+											</ul>
+											<div className="d-lg-flex col-lg-3 justify-content-lg-end">
+												<button
+													className={`btn btn-dark ${styles["nav-button-weight"]} rounded-4 my-1`}
+													onClick={() => logOutUser(setName, setIsLoggedIn, setEmail)}>
+													Odhlásiť sa
+												</button>
+											</div>
+										</div>
+									</nav>
+								</header>
 
 				<div className={styles["mainContainer"]}>
 					<h2 className={styles["welcomeText"]}>Ahoj {userName}!</h2>

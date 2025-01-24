@@ -12,21 +12,19 @@
 
 
 
-.blurContent {
-    background-color: rgba(237, 234, 234, 0.59);
-    backdrop-filter: blur(30px); 
-    -webkit-backdrop-filter: blur(30px); 
-   
-    }
+
 
 
 .blurContainer {
     background-color: rgba(237, 234, 234, 0.59);
-    backdrop-filter: blur(30px); 
-    -webkit-backdrop-filter: blur(30px); 
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     padding: 20px;
     width: 100%;
-    
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
     }
 
 
@@ -43,7 +41,7 @@
     overflow-y: auto;
     height: 600px;
     margin: 0 auto;
-    max-width: 1320px;
+    max-width: 1300px;
 }
 
   
@@ -51,6 +49,7 @@
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
+    
 }
   
 .navbar button {
@@ -241,6 +240,68 @@ form {
 
 
 
+/* Responzívne štýly */
+@media (max-width: 1200px) {
+    .content {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .navbar {
+        gap: 10px;
+    }
+
+    .infoText {
+        font-size: 1rem;
+        margin-top: 100px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .deleteButton {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    .submitButton, .cancelButton {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .membersContainer, .rewardsContainer {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar button {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .deleteButton, .submitButton, .cancelButton {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .infoText {
+        font-size: 0.9rem;
+    }
+
+    .content {
+        padding: 10px;
+    }
+}
 
 
 
